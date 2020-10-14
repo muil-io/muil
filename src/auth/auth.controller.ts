@@ -18,7 +18,7 @@ export class AuthController {
   async signup(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     const user = await this.authService.createUser(createUserDto);
 
-    const token = this.jwtService.sign({ id: user.id, email: user.email, name: user.name });
+    const token = this.jwtService.sign(user);
 
     res.cookie('jwt', token, {
       httpOnly: true,
@@ -33,7 +33,7 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   async login(@Req() { user }, @Res() res: Response) {
-    const token = this.jwtService.sign({ id: user.id, email: user.email, name: user.name });
+    const token = this.jwtService.sign(user);
 
     res.cookie('jwt', token, {
       httpOnly: true,

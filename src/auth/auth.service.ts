@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { PrismaService } from 'shared/modules/prisma';
 import { ConflictError } from 'shared/exceptions';
 import { encryptPassword } from 'shared/utils/password';
@@ -29,7 +29,7 @@ export class AuthService {
       throw new ConflictError(`Project ID '${newUser.projectId}' already exists`);
     }
 
-    const id = uuidv4();
+    const id = uuid();
     const { password, ...user } = newUser;
     const hash = await encryptPassword(password);
 

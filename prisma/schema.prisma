@@ -15,3 +15,12 @@ model Users {
   projectId   String  @unique
   projectName String
 }
+
+model ApiKeys {
+  name         String
+  apiKeyPrefix String @id
+  apiKeyHash   String
+  createdAt    String
+  projectId    String
+  enabled      Int
+}
