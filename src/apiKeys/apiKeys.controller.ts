@@ -19,15 +19,15 @@ export class ApiKeysController {
     return this.apiKeysService.create(projectId, name);
   }
 
-  @Post('/:apiKeyPrefix/:action(enable|disable)')
+  @Post('/:id/:action(enable|disable)')
   @UseGuards(JwtAuthGuard)
-  async action(@Req() { user: { projectId } }, @Param() { apiKeyPrefix, action }) {
-    return this.apiKeysService.setEnabled(projectId, apiKeyPrefix, action === 'enable');
+  async action(@Req() { user: { projectId } }, @Param() { id, action }) {
+    return this.apiKeysService.setEnabled(projectId, id, action === 'enable');
   }
 
-  @Delete('/:apiKeyPrefix')
+  @Delete('/:id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Req() { user: { projectId } }, @Param() { apiKeyPrefix }) {
-    return this.apiKeysService.delete(projectId, apiKeyPrefix);
+  async delete(@Req() { user: { projectId } }, @Param() { id }) {
+    return this.apiKeysService.delete(projectId, id);
   }
 }

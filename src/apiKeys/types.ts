@@ -1,6 +1,6 @@
 export type ApiKey = {
   name: string;
-  apiKeyPrefix: string;
+  id: string;
   apiKeyHash?: string;
   createdAt: string;
   projectId?: string;

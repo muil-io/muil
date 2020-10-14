@@ -17,10 +17,10 @@ model Users {
 }
 
 model ApiKeys {
-  name         String
-  apiKeyPrefix String @id
-  apiKeyHash   String
-  createdAt    String
-  projectId    String
-  enabled      Int
+  name       String
+  id         String @id
+  apiKeyHash String
+  createdAt  String
+  projectId  String
+  enabled    Int
 }

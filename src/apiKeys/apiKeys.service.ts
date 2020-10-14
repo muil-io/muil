@@ -11,9 +11,9 @@ export class ApiKeysService {
 
   async findAll(projectId: string): Promise<ApiKey[]> {
     return (await this.prisma.apiKeys.findMany({ where: { projectId } })).map(
-      ({ name, apiKeyPrefix, createdAt, enabled }) => ({
+      ({ name, id, createdAt, enabled }) => ({
         name,
-        apiKeyPrefix,
+        id,
         createdAt,
         enabled: enabled === 1,
       }),
@@ -22,15 +22,15 @@ export class ApiKeysService {
 
   async create(projectId: string, name: string): Promise<ApiKey[]> {
     const apiKeyRaw = uuid().replace(/-/g, '');
-    const apiKeyPrefix = apiKeyRaw.slice(0, 8);
-    const apiKey = `${apiKeyPrefix}.${apiKeyRaw.slice(8)}.${projectId}`;
+    const id = apiKeyRaw.slice(0, 8);
+    const apiKey = `${id}.${apiKeyRaw.slice(8)}.${projectId}`;
     const apiKeyHash = sha512(apiKey).toString();
     const createdAt = new Date().toISOString();
 
     await this.prisma.apiKeys.create({
       data: {
+        id,
         name,
-        apiKeyPrefix,
         apiKeyHash,
         createdAt,
         projectId,
@@ -41,14 +41,14 @@ export class ApiKeysService {
     return this.findAll(projectId);
   }
 
-  async setEnabled(projectId: string, apiKeyPrefix: string, enabled: boolean): Promise<ApiKey[]> {
-    const apiKey = await this.prisma.apiKeys.findOne({ where: { apiKeyPrefix } });
+  async setEnabled(projectId: string, id: string, enabled: boolean): Promise<ApiKey[]> {
+    const apiKey = await this.prisma.apiKeys.findOne({ where: { id } });
     if (!apiKey || apiKey.projectId !== projectId) {
-      throw new NotFoundError(`Api Key '${apiKeyPrefix}' doesn't exists`);
+      throw new NotFoundError(`Api Key '${id}' doesn't exists`);
     }
 
     await this.prisma.apiKeys.update({
-      where: { apiKeyPrefix },
+      where: { id },
       data: {
         enabled: enabled ? 1 : 0,
       },
@@ -57,13 +57,13 @@ export class ApiKeysService {
     return this.findAll(projectId);
   }
 
-  async delete(projectId: string, apiKeyPrefix: string): Promise<ApiKey[]> {
-    const apiKey = await this.prisma.apiKeys.findOne({ where: { apiKeyPrefix } });
+  async delete(projectId: string, id: string): Promise<ApiKey[]> {
+    const apiKey = await this.prisma.apiKeys.findOne({ where: { id } });
     if (!apiKey || apiKey.projectId !== projectId) {
-      throw new NotFoundError(`Api Key '${apiKeyPrefix}' doesn't exists`);
+      throw new NotFoundError(`Api Key '${id}' doesn't exists`);
     }
 
-    await this.prisma.apiKeys.delete({ where: { apiKeyPrefix } });
+    await this.prisma.apiKeys.delete({ where: { id } });
     return this.findAll(projectId);
   }
 }
