@@ -1,13 +1,18 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
   readonly email: string;
 
-  @IsOptional()
   @IsString()
-  readonly name?: string;
+  readonly name: string;
 
   @IsString()
   readonly password: string;
+
+  @IsString()
+  readonly projectId: string;
+
+  @IsString()
+  readonly projectName: string;
 }

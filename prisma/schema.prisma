@@ -8,8 +8,10 @@ datasource db {
 }
 
 model Users {
-  id       String  @id
-  email    String  @unique
-  name     String?
-  password String
+  id          String  @id
+  email       String  @unique
+  password    String
+  name        String?
+  projectId   String  @unique
+  projectName String
 }

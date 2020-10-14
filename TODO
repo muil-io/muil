@@ -1,5 +1,4 @@
 TODO
 ----
-1. VSCode debugging (Watch mode)
-2. Protect db with pass
-3. Monorepo + Lerna
+1. Protect db with pass
+2. Monorepo + Lerna

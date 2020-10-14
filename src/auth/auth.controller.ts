@@ -15,8 +15,8 @@ export class AuthController {
   ) {}
 
   @Post('signup')
-  async signup(@Body() { email, password, name }: CreateUserDto, @Res() res: Response) {
-    const user = await this.authService.createUser(email, password, name);
+  async signup(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const user = await this.authService.createUser(createUserDto);
 
     const token = this.jwtService.sign({ id: user.id, email: user.email, name: user.name });
 
@@ -48,6 +48,6 @@ export class AuthController {
   @Get('me')
   @UseGuards(JwtAuthGuard)
   async me(@Req() { user }) {
-    return this.authService.getUser(user.email);
+    return this.authService.getUser({ id: user.id });
   }
 }
