@@ -1,4 +1,4 @@
 TODO
 ----
-1. Protect db with pass
-2. Monorepo + Lerna
+1. Move nest dependencies
+2. Protect db with pass

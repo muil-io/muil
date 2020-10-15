@@ -1,0 +1,24 @@
+{
+  "name": "@muil/server",
+  "version": "1.0.0",
+  "dependencies": {
+    "@nestjs/config": "^0.5.0",
+    "@nestjs/jwt": "^7.1.0",
+    "@prisma/client": "^2.9.0",
+    "aws-sdk": "^2.771.0",
+    "bcrypt": "^5.0.0",
+    "cookie-parser": "^1.4.5",
+    "crypto-js": "^4.0.0",
+    "express": "^4.17.1",
+    "nestjs-pino": "^1.2.0",
+    "pino-pretty": "^4.3.0",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/crypto-js": "^4.0.1",
+    "@types/express": "^4.17.3",
+    "@types/uuid": "^8.3.0"
+  }
+}
