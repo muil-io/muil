@@ -1,0 +1,24 @@
+{
+  "name": "@muil/templates-renderer",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "html-minifier": "^4.0.0",
+    "juice": "^7.0.0",
+    "puppeteer-core": "^5.3.1",
+    "require-from-string": "^2.0.2"
+  },
+  "peerDependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "styled-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/html-minifier": "^4.0.0",
+    "@types/puppeteer-core": "^2.0.0",
+    "@types/require-from-string": "^1.2.0"
+  }
+}

@@ -16,6 +16,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/server/tsconfig.json"
       }
+    },
+    "templates-renderer": {
+      "type": "library",
+      "root": "libs/templates-renderer",
+      "entryFile": "index",
+      "sourceRoot": "libs/templates-renderer/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/templates-renderer/tsconfig.json"
+      }
     }
   }
 }

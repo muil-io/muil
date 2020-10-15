@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,8 +20,15 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'import/no-extraneous-dependencies': [
       'error',
-      { packageDir: path.join(__dirname, 'node_modules') },
+      {
+        packageDir: [
+          __dirname,
+          path.join(__dirname, '/apps/server'),
+          path.join(__dirname, '/libs/templates-renderer'),
+        ],
+      },
     ],
+    'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'class-methods-use-this': 'off',
     'max-classes-per-file': 'off',

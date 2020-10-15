@@ -11,6 +11,13 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "incremental": true,
-    "paths": {}
+    "paths": {
+      "@muil/templates-renderer": [
+        "libs/templates-renderer/src"
+      ],
+      "@muil/templates-renderer/*": [
+        "libs/templates-renderer/src/*"
+      ]
+    }
   }
 }

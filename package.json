@@ -2,7 +2,8 @@
   "private": true,
   "license": "UNLICENSED",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "libs/*"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
@@ -75,7 +76,12 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "@muil/templates-renderer/(.*)": "<rootDir>/libs/templates-renderer/src/$1",
+      "@muil/templates-renderer": "<rootDir>/libs/templates-renderer/src"
+    }
   }
 }
