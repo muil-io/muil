@@ -11,6 +11,8 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "incremental": true,
+    "types": ["react", "jest"],
+    "jsx": "react",
     "paths": {
       "@muil/templates-renderer": [
         "libs/templates-renderer/src"

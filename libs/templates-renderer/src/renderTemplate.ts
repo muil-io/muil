@@ -1,66 +1,99 @@
-import juice from 'juice';
-import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import * as fs from 'fs';
+import { NodeVM } from 'vm2';
+import * as juice from 'juice';
 import { minify } from 'html-minifier';
-import requireFromString from 'require-from-string';
 import emailTemplate from './emailTemplate';
 import { styledComponentsStyleCollector } from './styleCollectors';
-
-type Options = {
-  template: string;
-  templateCss?: string;
-  props?: string;
-  styleCollectors?: any[];
-  shadowSupport?: boolean;
-  inlineCss?: boolean;
-  minifyHtml?: boolean;
-};
+import { generatePdf, generatePng } from './puppeteer';
+import { RenderOptions } from './types';
 
 const renderTemplate = async ({
-  template,
-  templateCss = null,
-  props = '{}',
+  type = 'html',
+  templatePath,
+  templateCssPath = null,
+  props = {},
   styleCollectors = [styledComponentsStyleCollector],
   shadowSupport = false,
   inlineCss = true,
   minifyHtml = true,
-}: Options) => {
-  if (!template) return '';
+}: RenderOptions): Promise<string | Buffer> => {
+  if (!templatePath) return '';
 
-  try {
-    const ReactComponent = await requireFromString(template);
-    const ReactElement = React.createElement(ReactComponent.default, JSON.parse(props));
+  const reactElementVm = new NodeVM({
+    timeout: 5000,
+    sandbox: {
+      props,
+    },
+    require: {
+      external: ['react', 'react-dom/server'],
+    },
+  });
 
-    let html = emailTemplate({
-      css: templateCss,
-      styles: (await Promise.all(styleCollectors.map((collector) => collector(ReactElement)))).join(
-        '\n',
-      ),
-      content: renderToStaticMarkup(ReactElement),
-      shadowSupport,
+  const ReactElement = reactElementVm.run(
+    `
+        const {createElement} = require('react');
+        const ReactComponent = require('${templatePath}');
+        const ReactElement = createElement(ReactComponent.default, props);
+        module.exports = ReactElement;
+      `,
+    'renderTemplate.js',
+  );
+
+  const contentVm = new NodeVM({
+    timeout: 5000,
+    sandbox: {
+      ReactElement,
+    },
+    require: {
+      external: ['react-dom/server'],
+    },
+  });
+
+  const content = contentVm.run(
+    `
+        const { renderToStaticMarkup } = require('react-dom/server');
+
+        const content = renderToStaticMarkup(ReactElement);
+        module.exports = content;
+      `,
+    'renderTemplate.js',
+  );
+
+  const templateCss = templateCssPath ? fs.readFileSync(templateCssPath, 'utf-8') : null;
+
+  let html = emailTemplate({
+    css: templateCss,
+    styles: (await Promise.all(styleCollectors.map((collector) => collector(ReactElement)))).join(
+      '\n',
+    ),
+    content,
+    shadowSupport,
+  });
+
+  if (inlineCss) {
+    html = juice(html);
+  }
+
+  if (minifyHtml) {
+    html = minify(html, {
+      preventAttributesEscaping: true,
+      minifyCSS: true,
+      minifyURLs: true,
+      removeEmptyAttributes: true,
+      removeComments: true,
     });
+  }
 
-    if (inlineCss) {
-      html = juice(html);
+  switch (type) {
+    case 'png': {
+      return generatePng(html);
     }
-
-    if (minifyHtml) {
-      html = minify(html, {
-        preventAttributesEscaping: true,
-        minifyCSS: true,
-        minifyURLs: true,
-        removeEmptyAttributes: true,
-        removeComments: true,
-      });
+    case 'pdf': {
+      return generatePdf(html);
     }
-
-    return html;
-  } catch (err) {
-    return {
-      error: {
-        message: err.toString(),
-      },
-    };
+    default: {
+      return html;
+    }
   }
 };
 

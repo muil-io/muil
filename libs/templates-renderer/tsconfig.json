@@ -2,8 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "types": ["react"],
-    "jsx": "react",
     "outDir": "../../dist/libs/templates-renderer"
   },
   "include": ["src/**/*"],

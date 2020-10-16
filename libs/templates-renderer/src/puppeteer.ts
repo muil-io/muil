@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer-core';
+import * as puppeteer from 'puppeteer-core';
 
 const getPage = async (html: string) => {
   const browser = await puppeteer.launch({
