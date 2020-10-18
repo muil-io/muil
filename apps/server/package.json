@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@muil/templates-renderer": "1.0.0",
     "@nestjs/config": "^0.5.0",
     "@nestjs/jwt": "^7.1.0",
     "@prisma/client": "^2.9.0",
@@ -11,6 +12,7 @@
     "cookie-parser": "^1.4.5",
     "crypto-js": "^4.0.0",
     "express": "^4.17.1",
+    "glob": "^7.1.6",
     "nestjs-pino": "^1.2.0",
     "pino-pretty": "^4.3.0",
     "react": "^16.14.0",
@@ -23,6 +25,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/crypto-js": "^4.0.1",
     "@types/express": "^4.17.3",
+    "@types/glob": "^7.1.3",
     "@types/react": "^16.9.52",
     "@types/react-dom": "^16.9.8",
     "@types/styled-components": "^5.1.4",
