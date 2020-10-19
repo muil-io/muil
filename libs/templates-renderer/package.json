@@ -2,6 +2,7 @@
   "name": "@muil/templates-renderer",
   "version": "1.0.0",
   "license": "MIT",
+  "main": "dist/libs/templates-renderer/src/index.js",
   "scripts": {
     "build": "tsc"
   },
@@ -10,6 +11,7 @@
     "juice": "^7.0.0",
     "puppeteer-core": "^5.3.1",
     "request": "^2.88.2",
+    "uuid": "^8.3.1",
     "vm2": "^3.9.2"
   },
   "peerDependencies": {

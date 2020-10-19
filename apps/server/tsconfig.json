@@ -3,7 +3,13 @@
   "compilerOptions": {
     "declaration": false,
     "baseUrl": "./src",
-    "outDir": "../../dist/apps/server"
+    "outDir": "../../dist",
+    // "outDir": "../../dist/apps/server",
+    "paths": {
+      "@muil/*": [
+        "../../../libs/*/src"
+      ]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

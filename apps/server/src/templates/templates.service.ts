@@ -4,14 +4,18 @@ import * as path from 'path';
 import * as g from 'glob';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'shared/modules/prisma';
+import { TemplatesRendererService } from '@muil/templates-renderer';
+import { NotFoundError } from 'shared/exceptions';
 import { File } from './types';
 
 const glob = promisify(g);
 
 @Injectable()
 export class TemplatesService {
-  constructor(private configService: ConfigService, private prisma: PrismaService) {}
+  constructor(
+    private configService: ConfigService,
+    private templatesRendererService: TemplatesRendererService,
+  ) {}
 
   async findAll(projectId: string) {
     const templatesDirectory = path.join(
@@ -63,5 +67,29 @@ export class TemplatesService {
       fs.promises.unlink(path.join(templatesDirectory, `${templateId}.css`)),
       fs.promises.unlink(path.join(templatesDirectory, `${templateId}.json`)),
     ]);
+  }
+
+  async render(projectId: string, branch: string, templateId: string) {
+    const templatePath = path.join(
+      this.configService.get<string>('TEMPLATES_DIRECTORY'),
+      projectId,
+      branch,
+      `${templateId}.js`,
+    );
+    if (!fs.existsSync(templatePath)) {
+      throw new NotFoundError(`Template '${templateId}' doesn't exists`);
+    }
+
+    const templateCssPath = path.join(
+      this.configService.get<string>('TEMPLATES_DIRECTORY'),
+      projectId,
+      branch,
+      `${templateId}.css`,
+    );
+
+    return this.templatesRendererService.render({
+      templatePath,
+      templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
+    });
   }
 }

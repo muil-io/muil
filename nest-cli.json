@@ -4,7 +4,7 @@
   "monorepo": true,
   "root": "apps/server",
   "compilerOptions": {
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/server/tsconfig.json"
   },
   "projects": {

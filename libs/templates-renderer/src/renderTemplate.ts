@@ -1,24 +1,15 @@
+import { ReactNode } from 'react';
 import * as fs from 'fs';
 import { NodeVM } from 'vm2';
 import * as juice from 'juice';
+import { v4 as uuid } from 'uuid';
 import { minify } from 'html-minifier';
 import emailTemplate from './emailTemplate';
 import { styledComponentsStyleCollector } from './styleCollectors';
 import { generatePdf, generatePng } from './puppeteer';
 import { RenderOptions } from './types';
 
-const renderTemplate = async ({
-  type = 'html',
-  templatePath,
-  templateCssPath = null,
-  props = {},
-  styleCollectors = [styledComponentsStyleCollector],
-  shadowSupport = false,
-  inlineCss = true,
-  minifyHtml = true,
-}: RenderOptions): Promise<string | Buffer> => {
-  if (!templatePath) return '';
-
+const createReactElement = async (templatePath: string, props): Promise<ReactNode> => {
   const reactElementVm = new NodeVM({
     timeout: 5000,
     sandbox: {
@@ -29,16 +20,28 @@ const renderTemplate = async ({
     },
   });
 
+  const tempFileName = `./.muil/temp/${uuid()}.js`;
+  await fs.promises.mkdir('./.muil/temp', { recursive: true });
+  await fs.promises.copyFile(templatePath, tempFileName);
+
   const ReactElement = reactElementVm.run(
     `
         const {createElement} = require('react');
-        const ReactComponent = require('${templatePath}');
+        console.log(createElement);
+
+        const ReactComponent = require('${tempFileName}');
         const ReactElement = createElement(ReactComponent.default, props);
         module.exports = ReactElement;
       `,
     'renderTemplate.js',
   );
 
+  await fs.promises.unlink(tempFileName);
+
+  return ReactElement;
+};
+
+const renderToStaticMarkup = (ReactElement: ReactNode): string => {
   const contentVm = new NodeVM({
     timeout: 5000,
     sandbox: {
@@ -52,12 +55,30 @@ const renderTemplate = async ({
   const content = contentVm.run(
     `
         const { renderToStaticMarkup } = require('react-dom/server');
-
+        
         const content = renderToStaticMarkup(ReactElement);
         module.exports = content;
       `,
     'renderTemplate.js',
   );
+
+  return content;
+};
+
+const renderTemplate = async ({
+  type = 'html',
+  templatePath,
+  templateCssPath = null,
+  props = {},
+  styleCollectors = [styledComponentsStyleCollector],
+  shadowSupport = false,
+  inlineCss = true,
+  minifyHtml = true,
+}: RenderOptions): Promise<string | Buffer> => {
+  if (!templatePath) return '';
+
+  const ReactElement = await createReactElement(templatePath, props);
+  const content = renderToStaticMarkup(ReactElement);
 
   const templateCss = templateCssPath ? fs.readFileSync(templateCssPath, 'utf-8') : null;
 

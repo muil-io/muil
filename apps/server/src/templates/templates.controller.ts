@@ -5,6 +5,7 @@ import {
   Req,
   Param,
   Get,
+  Post,
   Put,
   Delete,
   UploadedFiles,
@@ -43,5 +44,15 @@ export class TemplatesController {
     @Param('templateId') templateId: string,
   ) {
     this.templatesService.delete(projectId, branch, templateId);
+  }
+
+  @Post('/:branch?/:templateId')
+  @UseGuards(JwtAuthGuard)
+  async render(
+    @Req() { user: { projectId } },
+    @Param('branch') branch: string = 'master',
+    @Param('templateId') templateId: string,
+  ) {
+    return this.templatesService.render(projectId, branch, templateId);
   }
 }
