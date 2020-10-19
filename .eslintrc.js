@@ -23,7 +23,7 @@ module.exports = {
       {
         packageDir: [
           __dirname,
-          path.join(__dirname, '/apps/server'),
+          path.join(__dirname, '/apps/api'),
           path.join(__dirname, '/libs/templates-renderer'),
         ],
       },

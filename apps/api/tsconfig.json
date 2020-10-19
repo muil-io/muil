@@ -4,7 +4,7 @@
     "declaration": false,
     "baseUrl": "./src",
     "outDir": "../../dist",
-    // "outDir": "../../dist/apps/server",
+    // "outDir": "../../dist/apps/api",
     "paths": {
       "@muil/*": [
         "../../../libs/*/src"

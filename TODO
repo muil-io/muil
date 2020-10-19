@@ -1,4 +1,12 @@
 TODO
 ----
-1. Move nest dependencies
-2. Protect db with pass
+1. Project logs
+2. Templates email + email with attachments
+3. Api Key Guard
+4. Template generation limitation Guard
+5. AirTable
+6. Assets 
+7. Dockerize
+8. Lerna
+9. Move nest dependencies
+10. Protect db with pass
