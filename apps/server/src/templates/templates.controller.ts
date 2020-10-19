@@ -4,11 +4,13 @@ import {
   UseInterceptors,
   Req,
   Param,
+  Body,
   Get,
   Post,
   Put,
   Delete,
   UploadedFiles,
+  Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'shared/guards';
@@ -48,11 +50,32 @@ export class TemplatesController {
 
   @Post('/:branch?/:templateId')
   @UseGuards(JwtAuthGuard)
-  async render(
+  async postRender(
     @Req() { user: { projectId } },
     @Param('branch') branch: string = 'master',
     @Param('templateId') templateId: string,
+    @Query() { type, inlineCss, minifyHtml },
+    @Body() { props },
   ) {
-    return this.templatesService.render(projectId, branch, templateId);
+    return this.templatesService.render(projectId, branch, templateId, props, {
+      type,
+      inlineCss: inlineCss !== 'false',
+      minifyHtml: minifyHtml !== 'false',
+    });
+  }
+
+  @Get('/:branch?/:templateId')
+  @UseGuards(JwtAuthGuard)
+  async getRender(
+    @Req() { user: { projectId } },
+    @Param('branch') branch: string = 'master',
+    @Param('templateId') templateId: string,
+    @Query() { type, inlineCss, minifyHtml, props },
+  ) {
+    return this.templatesService.render(projectId, branch, templateId, props, {
+      type,
+      inlineCss: inlineCss !== 'false',
+      minifyHtml: minifyHtml !== 'false',
+    });
   }
 }

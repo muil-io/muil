@@ -8,12 +8,11 @@ datasource db {
 }
 
 model Users {
-  id          String  @id
-  email       String  @unique
-  password    String
-  name        String?
-  projectId   String  @unique
-  projectName String
+  id        String  @id
+  email     String  @unique
+  password  String
+  name      String?
+  projectId String  @unique
 }
 
 model ApiKeys {
@@ -23,4 +22,16 @@ model ApiKeys {
   createdAt  String
   projectId  String
   enabled    Int
+}
+
+model Projects {
+  id              String  @id
+  name            String
+  plan            String
+  smtpDefaultFrom String?
+  smtpHost        String?
+  smtpPass        String?
+  smtpPort        Int?
+  smtpSecure      Int?
+  smtpUser        String?
 }

@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TemplatesRendererService } from '@muil/templates-renderer';
 import { NotFoundError } from 'shared/exceptions';
-import { File } from './types';
+import { File, RenderOptions } from './types';
 
 const glob = promisify(g);
 
@@ -69,7 +69,13 @@ export class TemplatesService {
     ]);
   }
 
-  async render(projectId: string, branch: string, templateId: string) {
+  async render(
+    projectId: string,
+    branch: string,
+    templateId: string,
+    props = {},
+    { type, inlineCss, minifyHtml }: RenderOptions,
+  ) {
     const templatePath = path.join(
       this.configService.get<string>('TEMPLATES_DIRECTORY'),
       projectId,
@@ -88,8 +94,12 @@ export class TemplatesService {
     );
 
     return this.templatesRendererService.render({
+      type,
       templatePath,
       templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
+      props,
+      inlineCss,
+      minifyHtml,
     });
   }
 }
