@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import * as fs from 'fs';
 import { NodeVM } from 'vm2';
-import * as juice from 'juice';
+import juice from 'juice';
 import { v4 as uuid } from 'uuid';
 import { minify } from 'html-minifier';
 import emailTemplate from './emailTemplate';
@@ -27,7 +27,6 @@ const createReactElement = async (templatePath: string, props): Promise<ReactNod
   const ReactElement = reactElementVm.run(
     `
         const {createElement} = require('react');
-        console.log(createElement);
 
         const ReactComponent = require('${tempFileName}');
         const ReactElement = createElement(ReactComponent.default, props);

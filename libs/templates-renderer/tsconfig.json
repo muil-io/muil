@@ -3,7 +3,6 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "../../dist"
-    // "outDir": "../../dist/libs/templates-renderer"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

@@ -1,11 +1,13 @@
 import { promisify } from 'util';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as g from 'glob';
+import g from 'glob';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TemplatesRendererService } from '@muil/templates-renderer';
 import { NotFoundError } from 'shared/exceptions';
+import { MailerService, EmailOptions } from 'shared/modules/mailer';
+import { ProjectsService } from 'projects';
 import { File, RenderOptions } from './types';
 
 const glob = promisify(g);
@@ -14,7 +16,9 @@ const glob = promisify(g);
 export class TemplatesService {
   constructor(
     private configService: ConfigService,
+    private projectsService: ProjectsService,
     private templatesRendererService: TemplatesRendererService,
+    private mailerService: MailerService,
   ) {}
 
   async findAll(projectId: string) {
@@ -37,7 +41,7 @@ export class TemplatesService {
     );
   }
 
-  async upload(projectId: string, branch: string, files: File[]) {
+  async upload(projectId: string, branch: string = 'master', files: File[]) {
     const templatesDirectory = path.join(
       this.configService.get<string>('TEMPLATES_DIRECTORY'),
       projectId,
@@ -55,7 +59,7 @@ export class TemplatesService {
     await Promise.all(files);
   }
 
-  async delete(projectId: string, branch: string, templateId: string) {
+  async delete(projectId: string, branch: string = 'master', templateId: string) {
     const templatesDirectory = path.join(
       this.configService.get<string>('TEMPLATES_DIRECTORY'),
       projectId,
@@ -71,10 +75,10 @@ export class TemplatesService {
 
   async render(
     projectId: string,
-    branch: string,
+    branch: string = 'master',
     templateId: string,
     props = {},
-    { type, inlineCss, minifyHtml }: RenderOptions,
+    { type = 'html', inlineCss, minifyHtml }: RenderOptions,
   ) {
     const templatePath = path.join(
       this.configService.get<string>('TEMPLATES_DIRECTORY'),
@@ -101,5 +105,47 @@ export class TemplatesService {
       inlineCss,
       minifyHtml,
     });
+  }
+
+  async email(
+    projectId: string,
+    branch: string = 'master',
+    templateId: string,
+    props = {},
+    attachments: any[],
+    renderOptions: RenderOptions,
+    emailOptions: EmailOptions,
+  ) {
+    const smtpOptions = await this.projectsService.getSmtp(projectId);
+
+    const html = (await this.render(projectId, branch, templateId, props, renderOptions)) as string;
+
+    const muilAttachments = attachments.filter((a) => a.templateId);
+    const regularAttachments = attachments.filter((a) => !a.templateId);
+    const muilAttachmentsPromises = muilAttachments.map(async (attachment) => {
+      const content = (await this.render(
+        projectId,
+        branch,
+        attachment.templateId,
+        attachment.props,
+        {
+          type: attachment.type,
+          inlineCss: renderOptions.inlineCss,
+          minifyHtml: renderOptions.minifyHtml,
+        },
+      )) as string;
+
+      return {
+        filename: attachment.filename,
+        content,
+      };
+    });
+
+    const attachmentsContent = [
+      ...(await Promise.all(muilAttachmentsPromises)),
+      ...regularAttachments,
+    ];
+
+    await this.mailerService.send(html, attachmentsContent, emailOptions, smtpOptions);
   }
 }

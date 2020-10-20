@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'shared/guards';
+import { EmailOptionsDto } from './templates.dto';
 import { TemplatesService } from './templates.service';
 import { File } from './types';
 
@@ -33,7 +34,7 @@ export class TemplatesController {
   async upload(
     @UploadedFiles() files: File[],
     @Req() { user: { projectId } },
-    @Param('branch') branch: string = 'master',
+    @Param('branch') branch: string,
   ) {
     this.templatesService.upload(projectId, branch, files);
   }
@@ -42,17 +43,42 @@ export class TemplatesController {
   @UseGuards(JwtAuthGuard)
   async delete(
     @Req() { user: { projectId } },
-    @Param('branch') branch: string = 'master',
+    @Param('branch') branch: string,
     @Param('templateId') templateId: string,
   ) {
     this.templatesService.delete(projectId, branch, templateId);
   }
 
+  @Post('/:branch?/:templateId/email')
+  @UseGuards(JwtAuthGuard)
+  async emailTemplate(
+    @Req() { user: { projectId } },
+    @Param('branch') branch: string,
+    @Param('templateId') templateId: string,
+    @Query() { inlineCss, minifyHtml },
+    @Body('props') props: any,
+    @Body('attachments') attachments: any[],
+    @Body() emailOptionsDto: EmailOptionsDto,
+  ) {
+    return this.templatesService.email(
+      projectId,
+      branch,
+      templateId,
+      props,
+      attachments,
+      {
+        inlineCss: inlineCss !== 'false',
+        minifyHtml: minifyHtml !== 'false',
+      },
+      emailOptionsDto,
+    );
+  }
+
   @Post('/:branch?/:templateId')
   @UseGuards(JwtAuthGuard)
-  async postRender(
+  async renderTemplate(
     @Req() { user: { projectId } },
-    @Param('branch') branch: string = 'master',
+    @Param('branch') branch: string,
     @Param('templateId') templateId: string,
     @Query() { type, inlineCss, minifyHtml },
     @Body() { props },
@@ -66,9 +92,9 @@ export class TemplatesController {
 
   @Get('/:branch?/:templateId')
   @UseGuards(JwtAuthGuard)
-  async getRender(
+  async renderTemplateGet(
     @Req() { user: { projectId } },
-    @Param('branch') branch: string = 'master',
+    @Param('branch') branch: string,
     @Param('templateId') templateId: string,
     @Query() { type, inlineCss, minifyHtml, props },
   ) {

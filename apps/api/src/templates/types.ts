@@ -4,7 +4,7 @@ export type File = {
 };
 
 export type RenderOptions = {
-  type: 'html' | 'png' | 'pdf';
+  type?: 'html' | 'png' | 'pdf';
   inlineCss: boolean;
   minifyHtml: boolean;
 };

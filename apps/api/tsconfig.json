@@ -4,12 +4,11 @@
     "declaration": false,
     "baseUrl": "./src",
     "outDir": "../../dist",
-    // "outDir": "../../dist/apps/api",
     "paths": {
       "@muil/*": [
         "../../../libs/*/src"
       ]
-    }
+    },
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

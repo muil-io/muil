@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import CryptoJS from 'crypto-js';
 import { v4 as uuid } from 'uuid';
 import { PrismaService } from 'shared/modules/prisma';
-import { Project, Smtp } from './types';
+import { SmtpOptions } from 'shared/modules/mailer';
+import { Project } from './types';
 
 @Injectable()
 export class ProjectsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private configService: ConfigService) {}
 
-  async get(projectId: string): Promise<Project> {
+  async get(projectId: string, { withSmtpPass = false } = {}): Promise<Project> {
     const project = await this.prisma.projects.findOne({ where: { id: projectId } });
     return project
       ? {
@@ -19,7 +22,7 @@ export class ProjectsService {
                 defaultFrom: project.smtpDefaultFrom,
                 host: project.smtpHost,
                 user: project.smtpUser,
-                pass: project.smtpPass,
+                pass: withSmtpPass ? project.smtpPass : undefined,
                 port: project.smtpPort,
                 secure: project.smtpSecure === 1,
               }
@@ -43,28 +46,51 @@ export class ProjectsService {
         smtpDefaultFrom: project.smtp?.defaultFrom,
         smtpHost: project.smtp?.host,
         smtpUser: project.smtp?.user,
-        smtpPass: project.smtp?.pass,
+        smtpPass: CryptoJS.AES.encrypt(
+          project.smtp?.pass,
+          this.configService.get<string>('ENCRYPTION_KEY'),
+        ).toString(),
         smtpPort: project.smtp?.port,
         smtpSecure: project.smtp?.secure ? 1 : 0,
       },
     });
 
-    return { id, ...project };
+    const { pass, ...smtpWithoutPass } = project.smtp;
+    return { id, ...project, smtp: smtpWithoutPass };
   }
 
   async getSmtp(projectId: string) {
-    const project = await this.get(projectId);
-    return project.smtp;
+    const { smtp } = await this.get(projectId, { withSmtpPass: true });
+    if (smtp?.host)
+      return {
+        ...smtp,
+        pass: CryptoJS.AES.decrypt(
+          smtp.pass,
+          this.configService.get<string>('ENCRYPTION_KEY'),
+        ).toString(CryptoJS.enc.Utf8),
+      };
+
+    return {
+      defaultFrom: this.configService.get<string>('SMTP_DEFAULT_FROM'),
+      host: this.configService.get<string>('SMTP_HOST'),
+      port: parseInt(this.configService.get<string>('SMTP_PORT')),
+      secure: this.configService.get<string>('SMTP_SECURE') === 'true',
+      user: this.configService.get<string>('SMTP_USER'),
+      pass: this.configService.get<string>('SMTP_PASS'),
+    };
   }
 
-  async setSmtp(projectId: string, smtp: Smtp) {
+  async setSmtp(projectId: string, smtp: SmtpOptions) {
     await this.prisma.projects.update({
       where: { id: projectId },
       data: {
         smtpDefaultFrom: smtp.defaultFrom,
         smtpHost: smtp.host,
         smtpUser: smtp.user,
-        smtpPass: smtp.pass,
+        smtpPass: CryptoJS.AES.encrypt(
+          smtp.pass,
+          this.configService.get<string>('ENCRYPTION_KEY'),
+        ).toString(),
         smtpPort: smtp.port,
         smtpSecure: smtp.secure ? 1 : 0,
       },

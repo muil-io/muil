@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { ProjectsService } from 'projects/projects.service';
@@ -12,7 +13,7 @@ export class AuthService {
 
   async getUser(query: any): Promise<User> {
     try {
-      const { password, projectId, ...user } = await this.prisma.users.findOne({
+      const { password, ...user } = await this.prisma.users.findOne({
         where: { ...query },
       });
       return user;
@@ -32,10 +33,12 @@ export class AuthService {
       if (!projectExists) {
         throw new NotFoundError(`Project '${projectId}' doesn't exists`);
       }
-    } else {
+    } else if (!projectId && projectName) {
       const { id } = await this.projectsService.create({ name: projectName });
-      // eslint-disable-next-line no-param-reassign
       projectId = id;
+    } else {
+      projectId = 'default';
+      projectName = 'default';
     }
 
     const userId = uuid();

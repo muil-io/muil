@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import * as sha512 from 'crypto-js/sha512';
+import sha512 from 'crypto-js/sha512';
 import { NotFoundError } from 'shared/exceptions';
 import { PrismaService } from 'shared/modules/prisma';
 import { ApiKey } from './types';
