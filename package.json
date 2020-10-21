@@ -82,7 +82,9 @@
     ],
     "moduleNameMapper": {
       "@muil/templates-renderer/(.*)": "<rootDir>/libs/templates-renderer/src/$1",
-      "@muil/templates-renderer": "<rootDir>/libs/templates-renderer/src"
+      "@muil/templates-renderer": "<rootDir>/libs/templates-renderer/src",
+      "@muil/cloud-storage/(.*)": "<rootDir>/libs/cloud-storage/src/$1",
+      "@muil/cloud-storage": "<rootDir>/libs/cloud-storage/src"
     }
   }
 }
