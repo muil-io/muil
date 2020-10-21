@@ -6,7 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'shared/modules/prisma/prisma.service';
 import { comparePassword } from 'shared/utils/password';
 
@@ -43,10 +42,7 @@ export class LocalAuthGuard implements CanActivate {
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(
-    @Inject('JwtService') private readonly jwtService: JwtService,
-    @Inject('ConfigService') private configService: ConfigService,
-  ) {}
+  constructor(@Inject('JwtService') private readonly jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {

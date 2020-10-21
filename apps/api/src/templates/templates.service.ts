@@ -7,7 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import { TemplatesRendererService } from '@muil/templates-renderer';
 import { NotFoundError } from 'shared/exceptions';
 import { MailerService, EmailOptions } from 'shared/modules/mailer';
-import { ProjectsService } from 'projects';
+import { LogsService } from 'logs';
+import { SmtpService } from 'smtp';
 import { File, RenderOptions } from './types';
 
 const glob = promisify(g);
@@ -16,7 +17,8 @@ const glob = promisify(g);
 export class TemplatesService {
   constructor(
     private configService: ConfigService,
-    private projectsService: ProjectsService,
+    private logsService: LogsService,
+    private smtpService: SmtpService,
     private templatesRendererService: TemplatesRendererService,
     private mailerService: MailerService,
   ) {}
@@ -80,31 +82,53 @@ export class TemplatesService {
     props = {},
     { type = 'html', inlineCss, minifyHtml }: RenderOptions,
   ) {
-    const templatePath = path.join(
-      this.configService.get<string>('TEMPLATES_DIRECTORY'),
-      projectId,
-      branch,
-      `${templateId}.js`,
-    );
-    if (!fs.existsSync(templatePath)) {
-      throw new NotFoundError(`Template '${templateId}' doesn't exists`);
+    try {
+      const templatePath = path.join(
+        this.configService.get<string>('TEMPLATES_DIRECTORY'),
+        projectId,
+        branch,
+        `${templateId}.js`,
+      );
+      if (!fs.existsSync(templatePath)) {
+        throw new NotFoundError(`Template '${templateId}' doesn't exists`);
+      }
+
+      const templateCssPath = path.join(
+        this.configService.get<string>('TEMPLATES_DIRECTORY'),
+        projectId,
+        branch,
+        `${templateId}.css`,
+      );
+
+      const html = this.templatesRendererService.render({
+        type,
+        templatePath,
+        templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
+        props,
+        inlineCss,
+        minifyHtml,
+      });
+
+      await this.logsService.write({
+        projectId,
+        branch,
+        templateId,
+        type,
+        status: 'success',
+      });
+
+      return html;
+    } catch (err) {
+      await this.logsService.write({
+        projectId,
+        branch,
+        templateId,
+        type,
+        status: 'error',
+        errorMessage: err.message,
+      });
+      throw err;
     }
-
-    const templateCssPath = path.join(
-      this.configService.get<string>('TEMPLATES_DIRECTORY'),
-      projectId,
-      branch,
-      `${templateId}.css`,
-    );
-
-    return this.templatesRendererService.render({
-      type,
-      templatePath,
-      templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
-      props,
-      inlineCss,
-      minifyHtml,
-    });
   }
 
   async email(
@@ -112,11 +136,11 @@ export class TemplatesService {
     branch: string = 'master',
     templateId: string,
     props = {},
-    attachments: any[],
+    attachments: any[] = [],
     renderOptions: RenderOptions,
     emailOptions: EmailOptions,
   ) {
-    const smtpOptions = await this.projectsService.getSmtp(projectId);
+    const smtpOptions = await this.smtpService.getConfiguration(projectId);
 
     const html = (await this.render(projectId, branch, templateId, props, renderOptions)) as string;
 
@@ -146,6 +170,36 @@ export class TemplatesService {
       ...regularAttachments,
     ];
 
-    await this.mailerService.send(html, attachmentsContent, emailOptions, smtpOptions);
+    try {
+      await this.mailerService.send(html, attachmentsContent, emailOptions, smtpOptions);
+
+      await this.logsService.write({
+        projectId,
+        branch,
+        templateId,
+        type: 'email',
+        status: 'success',
+        from: emailOptions.from,
+        to: emailOptions.to?.toString(),
+        cc: emailOptions.cc?.toString(),
+        bcc: emailOptions.bcc?.toString(),
+        subject: emailOptions.subject,
+      });
+    } catch (err) {
+      this.logsService.write({
+        projectId,
+        branch,
+        templateId,
+        type: 'email',
+        status: 'error',
+        errorMessage: err.message,
+        from: emailOptions.from,
+        to: emailOptions.to?.toString(),
+        cc: emailOptions.cc?.toString(),
+        bcc: emailOptions.bcc?.toString(),
+        subject: emailOptions.subject,
+      });
+      throw err;
+    }
   }
 }
