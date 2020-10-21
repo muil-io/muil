@@ -25,15 +25,9 @@ model ApiKeys {
 }
 
 model Projects {
-  id              String  @id
-  name            String
-  plan            String
-  smtpDefaultFrom String?
-  smtpHost        String?
-  smtpPass        String?
-  smtpPort        Int?
-  smtpSecure      Int?
-  smtpUser        String?
+  id   String @id
+  name String
+  plan String
 }
 
 model Logs {
@@ -50,4 +44,14 @@ model Logs {
   bcc          String?
   subject      String?
   errorMessage String?
+}
+
+model Smtp {
+  projectId   String  @id
+  defaultFrom String?
+  host        String
+  user        String
+  pass        String
+  port        Int
+  secure      Int
 }

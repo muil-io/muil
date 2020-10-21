@@ -1,12 +1,10 @@
 TODO
 ----
-1. Project logs
-2. Templates email + email with attachments - Check SMTP
-3. Api Key Guard
-4. Template generation limitation Guard
-5. AirTable
-6. Assets 
-7. Dockerize
-8. Lerna
-9. Move nest dependencies
-10. Protect db with pass
+1. Api Key Guard
+2. Template generation limitation Guard
+3. AirTable
+4. Assets 
+5. Dockerize
+6. Lerna
+7. Move nest dependencies
+8. Protect db with pass

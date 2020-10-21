@@ -1,13 +1,8 @@
-export type NewUser = {
+export type User = {
+  id?: string;
   email: string;
   name: string;
-  password: string;
+  password?: string;
   projectId?: string;
   projectName?: string;
-};
-
-export type User = {
-  id: string;
-  email: string;
-  name: string;
 };

@@ -5,7 +5,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'shared/modules/prisma';
 import { ApiKeysModule } from 'apiKeys';
 import { AuthModule } from 'auth';
+import { LogsModule } from 'logs';
+import { ProjectsModule } from 'projects';
 import { TemplatesModule } from 'templates';
+import { SmtpModule } from 'smtp';
 
 @Module({
   imports: [
@@ -26,8 +29,11 @@ import { TemplatesModule } from 'templates';
       global: true,
     },
     PrismaModule,
-    AuthModule,
     ApiKeysModule,
+    AuthModule,
+    LogsModule,
+    ProjectsModule,
+    SmtpModule,
     TemplatesModule,
   ],
 })

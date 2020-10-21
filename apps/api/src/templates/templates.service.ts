@@ -7,7 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import { TemplatesRendererService } from '@muil/templates-renderer';
 import { NotFoundError } from 'shared/exceptions';
 import { MailerService, EmailOptions } from 'shared/modules/mailer';
-import { ProjectsService } from 'projects';
+import { LogsService } from 'logs';
+import { SmtpService } from 'smtp';
 import { File, RenderOptions } from './types';
 
 const glob = promisify(g);
@@ -16,7 +17,8 @@ const glob = promisify(g);
 export class TemplatesService {
   constructor(
     private configService: ConfigService,
-    private projectsService: ProjectsService,
+    private logsService: LogsService,
+    private smtpService: SmtpService,
     private templatesRendererService: TemplatesRendererService,
     private mailerService: MailerService,
   ) {}
@@ -107,7 +109,7 @@ export class TemplatesService {
         minifyHtml,
       });
 
-      await this.projectsService.writeLog({
+      await this.logsService.write({
         projectId,
         branch,
         templateId,
@@ -117,7 +119,7 @@ export class TemplatesService {
 
       return html;
     } catch (err) {
-      await this.projectsService.writeLog({
+      await this.logsService.write({
         projectId,
         branch,
         templateId,
@@ -134,11 +136,11 @@ export class TemplatesService {
     branch: string = 'master',
     templateId: string,
     props = {},
-    attachments: any[],
+    attachments: any[] = [],
     renderOptions: RenderOptions,
     emailOptions: EmailOptions,
   ) {
-    const smtpOptions = await this.projectsService.getSmtp(projectId);
+    const smtpOptions = await this.smtpService.getConfiguration(projectId);
 
     const html = (await this.render(projectId, branch, templateId, props, renderOptions)) as string;
 
@@ -171,20 +173,20 @@ export class TemplatesService {
     try {
       await this.mailerService.send(html, attachmentsContent, emailOptions, smtpOptions);
 
-      await this.projectsService.writeLog({
+      await this.logsService.write({
         projectId,
         branch,
         templateId,
         type: 'email',
         status: 'success',
         from: emailOptions.from,
-        to: emailOptions.to.toString(),
-        cc: emailOptions.to.toString(),
-        bcc: emailOptions.to.toString(),
+        to: emailOptions.to?.toString(),
+        cc: emailOptions.cc?.toString(),
+        bcc: emailOptions.bcc?.toString(),
         subject: emailOptions.subject,
       });
     } catch (err) {
-      this.projectsService.writeLog({
+      this.logsService.write({
         projectId,
         branch,
         templateId,
@@ -192,9 +194,9 @@ export class TemplatesService {
         status: 'error',
         errorMessage: err.message,
         from: emailOptions.from,
-        to: emailOptions.to.toString(),
-        cc: emailOptions.to.toString(),
-        bcc: emailOptions.to.toString(),
+        to: emailOptions.to?.toString(),
+        cc: emailOptions.cc?.toString(),
+        bcc: emailOptions.bcc?.toString(),
         subject: emailOptions.subject,
       });
       throw err;
