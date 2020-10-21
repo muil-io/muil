@@ -80,31 +80,53 @@ export class TemplatesService {
     props = {},
     { type = 'html', inlineCss, minifyHtml }: RenderOptions,
   ) {
-    const templatePath = path.join(
-      this.configService.get<string>('TEMPLATES_DIRECTORY'),
-      projectId,
-      branch,
-      `${templateId}.js`,
-    );
-    if (!fs.existsSync(templatePath)) {
-      throw new NotFoundError(`Template '${templateId}' doesn't exists`);
+    try {
+      const templatePath = path.join(
+        this.configService.get<string>('TEMPLATES_DIRECTORY'),
+        projectId,
+        branch,
+        `${templateId}.js`,
+      );
+      if (!fs.existsSync(templatePath)) {
+        throw new NotFoundError(`Template '${templateId}' doesn't exists`);
+      }
+
+      const templateCssPath = path.join(
+        this.configService.get<string>('TEMPLATES_DIRECTORY'),
+        projectId,
+        branch,
+        `${templateId}.css`,
+      );
+
+      const html = this.templatesRendererService.render({
+        type,
+        templatePath,
+        templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
+        props,
+        inlineCss,
+        minifyHtml,
+      });
+
+      await this.projectsService.writeLog({
+        projectId,
+        branch,
+        templateId,
+        type,
+        status: 'success',
+      });
+
+      return html;
+    } catch (err) {
+      await this.projectsService.writeLog({
+        projectId,
+        branch,
+        templateId,
+        type,
+        status: 'error',
+        errorMessage: err.message,
+      });
+      throw err;
     }
-
-    const templateCssPath = path.join(
-      this.configService.get<string>('TEMPLATES_DIRECTORY'),
-      projectId,
-      branch,
-      `${templateId}.css`,
-    );
-
-    return this.templatesRendererService.render({
-      type,
-      templatePath,
-      templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
-      props,
-      inlineCss,
-      minifyHtml,
-    });
   }
 
   async email(
@@ -146,6 +168,36 @@ export class TemplatesService {
       ...regularAttachments,
     ];
 
-    await this.mailerService.send(html, attachmentsContent, emailOptions, smtpOptions);
+    try {
+      await this.mailerService.send(html, attachmentsContent, emailOptions, smtpOptions);
+
+      await this.projectsService.writeLog({
+        projectId,
+        branch,
+        templateId,
+        type: 'email',
+        status: 'success',
+        from: emailOptions.from,
+        to: emailOptions.to.toString(),
+        cc: emailOptions.to.toString(),
+        bcc: emailOptions.to.toString(),
+        subject: emailOptions.subject,
+      });
+    } catch (err) {
+      this.projectsService.writeLog({
+        projectId,
+        branch,
+        templateId,
+        type: 'email',
+        status: 'error',
+        errorMessage: err.message,
+        from: emailOptions.from,
+        to: emailOptions.to.toString(),
+        cc: emailOptions.to.toString(),
+        bcc: emailOptions.to.toString(),
+        subject: emailOptions.subject,
+      });
+      throw err;
+    }
   }
 }

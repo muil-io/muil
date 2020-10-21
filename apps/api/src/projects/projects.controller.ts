@@ -17,6 +17,12 @@ export class ProjectsController {
     return this.projectService.get(projectId);
   }
 
+  @Get('/logs')
+  @UseGuards(JwtAuthGuard)
+  async getProjectLogs(@Req() { user: { projectId } }) {
+    return this.projectService.getAllLogs(projectId);
+  }
+
   @Get('/smtp')
   @UseGuards(JwtAuthGuard)
   async getProjectSmtp(@Req() { user: { projectId } }) {

@@ -4,7 +4,7 @@ import CryptoJS from 'crypto-js';
 import { v4 as uuid } from 'uuid';
 import { PrismaService } from 'shared/modules/prisma';
 import { SmtpOptions } from 'shared/modules/mailer';
-import { Project } from './types';
+import { Project, Log } from './types';
 
 @Injectable()
 export class ProjectsService {
@@ -111,5 +111,15 @@ export class ProjectsService {
         smtpSecure: 1,
       },
     });
+  }
+
+  async writeLog(log: Log) {
+    await this.prisma.logs.create({
+      data: { ...log, datetime: new Date().toISOString() },
+    });
+  }
+
+  async getAllLogs(projectId: string) {
+    return this.prisma.logs.findMany({ where: { projectId } });
   }
 }
