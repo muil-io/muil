@@ -5,7 +5,7 @@ import { ProjectsService } from 'projects/projects.service';
 import { PrismaService } from 'shared/modules/prisma';
 import { ConflictError, NotFoundError } from 'shared/exceptions';
 import { encryptPassword } from 'shared/utils/password';
-import { User, NewUser } from './types';
+import { User } from './types';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
     }
   }
 
-  async createUser({ password, email, name, projectId, projectName }: NewUser): Promise<User> {
+  async createUser({ password, email, name, projectId, projectName }: User): Promise<User> {
     const userExists = await this.getUser({ email });
     if (userExists) {
       throw new ConflictError(`User with email '${email}' already exists`);
@@ -54,6 +54,6 @@ export class AuthService {
       },
     });
 
-    return { id: userId, email, name };
+    return { id: userId, email, name, projectId };
   }
 }
