@@ -15,12 +15,10 @@
     "types": ["react", "jest"],
     "jsx": "react",
     "paths": {
-      "@muil/templates-renderer": [
-        "libs/templates-renderer/src"
-      ],
-      "@muil/templates-renderer/*": [
-        "libs/templates-renderer/src/*"
-      ]
+      "@muil/templates-renderer": ["libs/templates-renderer/src"],
+      "@muil/templates-renderer/*": ["libs/templates-renderer/src/*"],
+      "@muil/cloud-storage": ["libs/cloud-storage/src"],
+      "@muil/cloud-storage/*": ["libs/cloud-storage/src/*"]
     }
   }
 }
