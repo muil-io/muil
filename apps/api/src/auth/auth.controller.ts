@@ -2,7 +2,7 @@ import { Res, Req, Body, Controller, Post, Get, UseGuards, HttpStatus } from '@n
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { LocalAuthGuard, JwtAuthGuard } from 'shared/guards';
+import { LocalAuthGuard, AuthGuard } from 'shared/guards';
 import { CreateUserDto } from './auth.dto';
 import { AuthService } from './auth.service';
 
@@ -46,7 +46,7 @@ export class AuthController {
   }
 
   @Get('me')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   async me(@Req() { user }) {
     return this.authService.getUser({ id: user.id });
   }

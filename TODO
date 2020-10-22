@@ -1,11 +1,13 @@
 TODO
 ----
-0. email logs 
-1. Api Key Guard
-2. Template generation limitation Guard
-3. AirTable
-4. Assets 
-5. Dockerize
-6. Lerna
+1. Email logs 
+2. AirTable
+3. Assets 
+4. Dockerize
+5. Lerna
+
+
+Later
+-----
 7. Move nest dependencies
 8. Protect db with pass

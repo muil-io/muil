@@ -1,5 +1,5 @@
 import { Controller, UseGuards, Get, Req, Param } from '@nestjs/common';
-import { JwtAuthGuard } from 'shared/guards';
+import { AuthGuard } from 'shared/guards';
 import { ProjectsService } from './projects.service';
 
 @Controller('projects')
@@ -7,7 +7,7 @@ export class ProjectsController {
   constructor(private readonly projectService: ProjectsService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   async getProject(@Req() { user: { projectId } }) {
     return this.projectService.get(projectId);
   }
