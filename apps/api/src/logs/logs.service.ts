@@ -7,7 +7,9 @@ export class LogsService {
   constructor(private prisma: PrismaService) {}
 
   async getAll(projectId: string) {
-    return this.prisma.logs.findMany({ where: { projectId } });
+    return (await this.prisma.logs.findMany({ where: { projectId } })).map(
+      ({ projectId: pId, ...log }) => log,
+    );
   }
 
   async write(log: Log) {
