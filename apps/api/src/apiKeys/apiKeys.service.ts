@@ -20,7 +20,7 @@ export class ApiKeysService {
     );
   }
 
-  async create(projectId: string, name: string): Promise<ApiKey[]> {
+  async create(projectId: string, name: string) {
     const apiKeyRaw = uuid().replace(/-/g, '');
     const id = apiKeyRaw.slice(0, 8);
     const apiKey = `${id}.${apiKeyRaw.slice(8)}.${projectId}`;
@@ -38,7 +38,13 @@ export class ApiKeysService {
       },
     });
 
-    return this.findAll(projectId);
+    return {
+      id,
+      apiKey,
+      name,
+      createdAt,
+      enabled: true,
+    };
   }
 
   async setEnabled(projectId: string, id: string, enabled: boolean): Promise<ApiKey[]> {

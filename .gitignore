@@ -35,3 +35,5 @@ lerna-debug.log*
 .env
 
 .muil
+
+.npmrc
