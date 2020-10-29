@@ -24,6 +24,7 @@ module.exports = {
         packageDir: [
           __dirname,
           path.join(__dirname, '/apps/api'),
+          path.join(__dirname, '/libs/cloud-storage'),
           path.join(__dirname, '/libs/templates-renderer'),
         ],
       },
@@ -31,6 +32,7 @@ module.exports = {
     radix: 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    'import/no-named-as-default': 'off',
     'class-methods-use-this': 'off',
     'max-classes-per-file': 'off',
   },
