@@ -17,8 +17,8 @@
     "nestjs-pino": "^1.2.0",
     "nodemailer": "^6.4.14",
     "pino-pretty": "^4.3.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "styled-components": "^5.2.0",
     "uuid": "^8.3.1"
   },
