@@ -55,3 +55,19 @@ model Smtp {
   port        Int
   secure      Int
 }
+
+model CloudStorage {
+  projectId           String  @id
+  type                String
+  awsBucketName       String?
+  awsAccessKeyId      String?
+  awsSecretAccessKey  String?
+  azureAccountName    String?
+  azureAccountKey     String?
+  azureContainerName  String?
+  azureFolder         String?
+  cloudinaryFolder    String?
+  cloudinaryCloudName String?
+  cloudinaryApiKey    String?
+  cloudinaryApiSecert String?
+}

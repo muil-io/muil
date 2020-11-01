@@ -1,5 +1,5 @@
 {
-  "name": "cloud-storage",
+  "name": "@muil/cloud-storage",
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/libs/cloud-storage/src/index.js",

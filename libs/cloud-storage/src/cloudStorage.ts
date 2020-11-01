@@ -37,7 +37,13 @@ export async function s3Upload(
   });
 
   const Body = typeof file === 'string' ? await fs.promises.readFile(file) : file;
-  const { Location: url } = await s3.upload({ Bucket: bucketName, Body, Key: filename }).promise();
+  const { Location: url } = await s3
+    .upload({
+      Bucket: bucketName,
+      Body,
+      Key: options.folder ? `${options.folder}/${filename}` : filename,
+    })
+    .promise();
 
   return url;
 }
@@ -90,7 +96,7 @@ export async function azureUpload(
 
   const f = typeof file === 'string' ? await fs.promises.readFile(file) : file;
 
-  const fileURL = FileURL.fromDirectoryURL(directoryURL, filename);
+  const fileURL = FileURL.fromDirectoryURL(directoryURL, `${filename}`);
 
   await fileURL.create(Aborter.none, f.length);
   await fileURL.uploadRange(Aborter.none, f, 0, f.length);

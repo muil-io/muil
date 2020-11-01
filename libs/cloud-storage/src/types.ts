@@ -2,6 +2,7 @@ export type AWSOptions = {
   bucketName: string;
   accessKeyId?: string;
   secretAccessKey?: string;
+  folder?: string;
 };
 
 export type AzureOptions = {
