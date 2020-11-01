@@ -53,6 +53,33 @@ export class AuthGuard implements CanActivate {
       const request = context.switchToHttp().getRequest();
       const {
         cookies: { jwt },
+      } = request;
+
+      if (jwt) {
+        const decodedToken = this.jwtService.verify(jwt);
+        request.user = decodedToken;
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      throw new UnauthorizedException();
+    }
+  }
+}
+
+@Injectable()
+export class AuthGuardWithApiKey implements CanActivate {
+  constructor(
+    @Inject('JwtService') private readonly jwtService: JwtService,
+    @Inject('PrismaService') private prisma: PrismaService,
+  ) {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    try {
+      const request = context.switchToHttp().getRequest();
+      const {
+        cookies: { jwt },
         headers,
       } = request;
 
