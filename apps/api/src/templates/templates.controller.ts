@@ -13,7 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { AuthGuard, RenderLimitGuard } from 'shared/guards';
+import { AuthGuard, AuthGuardWithApiKey, RenderLimitGuard } from 'shared/guards';
 import { EmailOptionsDto } from './templates.dto';
 import { TemplatesService } from './templates.service';
 import { File } from './types';
@@ -29,7 +29,7 @@ export class TemplatesController {
   }
 
   @Put('/:branch?')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuardWithApiKey)
   @UseInterceptors(FilesInterceptor('file'))
   async upload(
     @UploadedFiles() files: File[],
@@ -50,7 +50,7 @@ export class TemplatesController {
   }
 
   @Post('/:branch?/:templateId/email')
-  @UseGuards(AuthGuard, RenderLimitGuard)
+  @UseGuards(AuthGuardWithApiKey, RenderLimitGuard)
   async emailTemplate(
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
@@ -75,7 +75,7 @@ export class TemplatesController {
   }
 
   @Post('/:branch?/:templateId')
-  @UseGuards(AuthGuard, RenderLimitGuard)
+  @UseGuards(AuthGuardWithApiKey, RenderLimitGuard)
   async renderTemplate(
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
@@ -91,7 +91,7 @@ export class TemplatesController {
   }
 
   @Get('/:branch?/:templateId')
-  @UseGuards(AuthGuard, RenderLimitGuard)
+  @UseGuards(AuthGuardWithApiKey, RenderLimitGuard)
   async renderTemplateGet(
     @Req() { user: { projectId } },
     @Param('branch') branch: string,

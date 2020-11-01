@@ -45,6 +45,13 @@ export class AuthController {
     return res.status(HttpStatus.OK).send(user);
   }
 
+  @Post('logout')
+  @UseGuards(AuthGuard)
+  async logout(@Res() res: Response) {
+    res.cookie('jwt', '', { maxAge: 0 });
+    return res.status(HttpStatus.OK).send();
+  }
+
   @Get('me')
   @UseGuards(AuthGuard)
   async me(@Req() { user }) {
