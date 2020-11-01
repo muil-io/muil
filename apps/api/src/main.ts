@@ -16,9 +16,12 @@ async function bootstrap() {
     app.use(cors({ origin: corsOrigin, credentials: true }));
   }
 
+  const nodeEnv = app.get('ConfigService').get('NODE_ENV');
   const sentryDsn = app.get('ConfigService').get('SENTRY_DSN');
-  Sentry.init({ dsn: sentryDsn });
-  app.use(Sentry.Handlers.requestHandler());
+  if (nodeEnv === 'production' && sentryDsn) {
+    Sentry.init({ dsn: sentryDsn });
+    app.use(Sentry.Handlers.requestHandler());
+  }
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ExceptionsInterceptor());
