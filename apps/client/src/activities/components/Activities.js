@@ -77,7 +77,7 @@ const Activities = () => {
         rowHeight={({ rowData: { type, status } }) =>
           type !== 'email' ? 48 : status === 'error' ? 80 : 60
         }
-        defaultSortBy="date"
+        defaultSortBy="datetime"
         defaultSortDirection="DESC"
         noDataTitle="No Activities Found"
         noDataSubTitle={
@@ -97,7 +97,7 @@ const Activities = () => {
         <Column label="" dataKey="status" width={10} cellRenderer={statusRenderer} />
         <Column
           label="Date"
-          dataKey="date"
+          dataKey="datetime"
           flexGrow={1.5}
           width={1}
           maxWidth={170}

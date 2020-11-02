@@ -51,7 +51,7 @@ const Chart = ({ selectedTimeRange, data }) => {
 
     return days.map((day) => {
       const activities = data.filter(
-        (activity) => new Date(activity.date).toDateString() === day.toDateString(),
+        (activity) => new Date(activity.datetime).toDateString() === day.toDateString(),
       );
 
       return Object.entries(ACTIVITIES_MAP).reduce(

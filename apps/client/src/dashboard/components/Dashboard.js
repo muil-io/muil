@@ -78,7 +78,7 @@ const Dashboard = () => {
             columns={[
               {
                 label: 'Time',
-                key: 'date',
+                key: 'datetime',
                 formatter: (value) => dayjs(value).format(SHORT_DATE_AND_TIME_FORMAT),
               },
               { label: 'Template', key: 'displayName', hideOnSmallView: true },
