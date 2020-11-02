@@ -6,10 +6,10 @@ import { Log } from './types';
 export class LogsService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(projectId: string) {
-    return (await this.prisma.logs.findMany({ where: { projectId } })).map(
-      ({ projectId: pId, ...log }) => log,
-    );
+  async getAll(projectId: string, from?: string) {
+    return (
+      await this.prisma.logs.findMany({ where: { projectId, AND: [{ datetime: { gte: from } }] } })
+    ).map(({ projectId: pId, ...log }) => log);
   }
 
   async write(log: Log) {
