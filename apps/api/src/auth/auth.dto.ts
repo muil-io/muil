@@ -18,3 +18,8 @@ export class CreateUserDto {
   @IsString()
   readonly projectName?: string;
 }
+
+export class UpdateUserDto {
+  @IsString()
+  readonly name: string;
+}

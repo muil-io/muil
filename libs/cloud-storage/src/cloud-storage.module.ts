@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CloudStorageService } from './cloud-storage.service';
-import { s3Upload, azureUpload, cloudinaryUpload, upload } from './cloudStorage';
-import { AWSOptions, AzureOptions, CloudinaryOptions, UploadOptions } from './types';
+import { s3Upload, cloudinaryUpload, upload } from './cloudStorage';
+import { AWSOptions, CloudinaryOptions, UploadOptions } from './types';
 
 @Module({
   providers: [CloudStorageService],
@@ -14,18 +14,6 @@ export class CloudStorageModule {
     return typeof file === 'string'
       ? s3Upload(filename, file, options)
       : s3Upload(filename, file, options);
-  }
-
-  async azureUpload(filename: string, data: Buffer, options: AzureOptions): Promise<string>;
-  async azureUpload(filename: string, filePath: string, options: AzureOptions): Promise<string>;
-  async azureUpload(
-    filename: string,
-    file: Buffer | string,
-    options: AzureOptions,
-  ): Promise<string> {
-    return typeof file === 'string'
-      ? azureUpload(filename, file, options)
-      : azureUpload(filename, file, options);
   }
 
   async cloudinaryUpload(

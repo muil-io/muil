@@ -56,4 +56,13 @@ export class AuthService {
 
     return { id: userId, email, name, projectId };
   }
+
+  async updateUser(id: string, name: string) {
+    const { password, ...user } = await this.prisma.users.update({
+      where: { id },
+      data: { name },
+    });
+
+    return user;
+  }
 }

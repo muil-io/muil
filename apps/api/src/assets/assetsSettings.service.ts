@@ -27,15 +27,6 @@ export class AssetsSettingsService {
           folder,
         },
       };
-    } else if (assetsSettings?.type === 'azure') {
-      uploadOptions = {
-        azure: {
-          accountName: assetsSettings.azureAccountName,
-          accountKey: assetsSettings.azureAccountKey,
-          containerName: assetsSettings.azureContainerName,
-          folder,
-        },
-      };
     } else if (assetsSettings?.type === 'cloudinary') {
       uploadOptions = {
         cloudinary: {
@@ -51,15 +42,6 @@ export class AssetsSettingsService {
           bucketName: this.configService.get<string>('AWS_BUCKET_NAME'),
           accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY_ID'),
           secretAccessKey: this.configService.get<string>('AWS_SECRET_ACCESS_KEY'),
-          folder,
-        },
-      };
-    } else if (deafultCloudStorageType === 'azure') {
-      uploadOptions = {
-        azure: {
-          accountName: this.configService.get<string>('AZURE_ACCOUNT_NAME'),
-          accountKey: this.configService.get<string>('AZURE_ACCOUNT_KEY'),
-          containerName: this.configService.get<string>('AZURE_CONTAINER_NAME'),
           folder,
         },
       };
