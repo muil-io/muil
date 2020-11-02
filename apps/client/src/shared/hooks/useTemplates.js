@@ -3,14 +3,13 @@ import useProjects from './useProjects';
 import * as api from '../services/api';
 
 const useTemplates = () => {
-  const { selectedProject } = useProjects();
-  const storeKey = [selectedProject, 'templates'];
-  const { isLoading, data } = useQuery(storeKey, api.fetchTemplates, { enabled: selectedProject });
+  const { project } = useProjects();
+  const storeKey = 'templates';
+  const { isLoading, data } = useQuery(storeKey, api.fetchTemplates, { enabled: project });
 
-  const [deleteBranch] = useMutation(
-    ({ branch }) => api.deleteBranch({ projectId: selectedProject, branch }),
-    { onSuccess: () => queryCache.refetchQueries(storeKey, { exact: true, force: true }) },
-  );
+  const [deleteBranch] = useMutation(api.deleteBranch, {
+    onSuccess: () => queryCache.refetchQueries(storeKey, { exact: true, force: true }),
+  });
 
   return { isLoading, data, deleteBranch };
 };

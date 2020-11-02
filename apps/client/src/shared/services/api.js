@@ -21,19 +21,19 @@ export const register = ({ name, email, password, projectName }) =>
 
 export const fetchUser = () => get('/auth/me');
 
+export const forgotPassword = ({ email }) => post('/auth/forgotPassword', { email });
+
 export const fetchProjects = () => get('/projects');
 
-export const fetchActivities = (selectedProject, from) =>
-  get(`/projects/${selectedProject}/activities`, { from });
+export const fetchActivities = (from) => get('/logs', { from });
 
-export const fetchTemplates = (selectedProject) => get(`/templates/${selectedProject}`);
+export const fetchTemplates = () => get('/templates');
 
-export const deleteBranch = ({ projectId, branch }) =>
-  httpDelete(`/templates/${projectId}/${branch}`);
+export const deleteBranch = ({ branch }) => httpDelete(`/templates/${branch}`);
 
-export const fetchApiKeys = (selectedProject) => get(`/apiKeys/${selectedProject}`);
+export const fetchApiKeys = () => get(`/apiKeys`);
 
-export const fetchSmtp = (selectedProject) => get(`/projects/${selectedProject}/smtp`);
+export const fetchSmtp = () => get('/smtp');
 
 export const updateProfile = (settings) => post('/auth/profile', settings);
 
@@ -41,3 +41,17 @@ export const updatePassword = ({ password }) => post('/auth/password', { passwor
 
 export const createProject = ({ projectName, projectId }) =>
   post(`/projects/${projectId}`, { projectName });
+
+export const enableKey = ({ prefix }) => post(`/apiKeys/${prefix}/enable`);
+
+export const disableKey = ({ prefix }) => post(`/apiKeys/${prefix}/disable`);
+
+export const createKey = ({ name }) => post(`/apiKeys`, { name });
+
+export const deleteKey = ({ prefix }) => httpDelete(`/apiKeys/${prefix}`);
+
+export const updateSmtp = ({ settings }) => post(`/smtp`, settings);
+
+export const deleteSmtp = () => httpDelete(`/smtp`);
+
+export const checkSmtp = ({ settings }) => post(`/smtp/check`, settings);

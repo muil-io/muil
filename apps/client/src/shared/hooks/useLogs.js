@@ -13,13 +13,11 @@ const useLogs = () => {
     selectedTimeRange,
   ]);
 
-  const { selectedProject } = useProjects();
+  const { project } = useProjects();
   const { isLoading: templatesLoading, data: templatesData = [] } = useTemplates();
-  const { isLoading, data = [] } = useQuery(
-    [selectedProject, from, 'activities'],
-    api.fetchActivities,
-    { enabled: selectedProject },
-  );
+  const { isLoading, data = [] } = useQuery([from, 'activities'], api.fetchActivities, {
+    enabled: project,
+  });
 
   const templatesMap = useMemo(
     () =>

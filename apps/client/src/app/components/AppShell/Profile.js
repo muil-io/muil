@@ -6,7 +6,7 @@ import { DropDown } from 'shared/components';
 
 const Profile = () => {
   const {
-    data: { firstName },
+    data: { name },
   } = useUser();
   const { push } = useHistory();
 
@@ -24,7 +24,7 @@ const Profile = () => {
       ]}
       location={{ right: 0 }}
     >
-      {firstName}
+      {name}
     </DropDown>
   );
 };

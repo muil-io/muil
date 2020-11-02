@@ -1,22 +1,18 @@
 import { useQuery } from 'react-query';
 import useOptimisticMutation from 'shared/hooks/useOptimisticMutation';
-import useProjects from 'shared/hooks/useProjects';
 import * as api from 'shared/services/api';
-import * as apiKeysApi from '../services/api';
 
 const apiKeysStore = () => {
-  const { selectedProject } = useProjects();
-  const storeKey = [selectedProject, 'apiKeys'];
-  const { isLoading, data } = useQuery(() => selectedProject && storeKey, api.fetchApiKeys);
+  const storeKey = 'apiKeys';
+  const { isLoading, data } = useQuery(storeKey, api.fetchApiKeys);
 
   const toggleKey = useOptimisticMutation(
     storeKey,
     ({ prefix, isActive }) => {
       if (isActive) {
-        return apiKeysApi.enableKey({ projectId: selectedProject, prefix });
-      } else {
-        return apiKeysApi.disableKey({ projectId: selectedProject, prefix });
+        return api.enableKey({ prefix });
       }
+      return api.disableKey({ prefix });
     },
     ({ previousData, prefix, isActive }) =>
       previousData.map((key) =>
@@ -26,16 +22,13 @@ const apiKeysStore = () => {
 
   const createNewKey = useOptimisticMutation(
     storeKey,
-    ({ name }) => apiKeysApi.createKey({ projectId: selectedProject, name }),
+    api.createKey,
     ({ previousData, name }) => [...previousData, { name }],
     { refetchOnSuccess: true },
   );
 
-  const deleteKey = useOptimisticMutation(
-    storeKey,
-    ({ prefix }) => apiKeysApi.deleteKey({ projectId: selectedProject, prefix }),
-    ({ previousData, prefix }) =>
-      previousData.filter(({ apiKeyPrefix }) => apiKeyPrefix !== prefix),
+  const deleteKey = useOptimisticMutation(storeKey, api.deleteKey, ({ previousData, prefix }) =>
+    previousData.filter(({ apiKeyPrefix }) => apiKeyPrefix !== prefix),
   );
 
   return {

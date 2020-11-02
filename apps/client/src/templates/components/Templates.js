@@ -4,7 +4,6 @@ import { Column } from 'react-virtualized';
 import { Page, DropDown, Table } from 'shared/components';
 import { dateRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
-import useProjects from 'shared/hooks/useProjects';
 import { groupBy } from 'shared/utils/data';
 import useTemplates from 'shared/hooks/useTemplates';
 import actionsRenderer from '../utils/actionsRenderer';
@@ -16,7 +15,6 @@ const BranchDropDown = styled(DropDown)`
 `;
 
 const Templates = () => {
-  const { selectedProject } = useProjects();
   const { isLoading, data, deleteBranch } = useTemplates();
   const [selectedBranch, setSelectedBranch] = useState();
   const [selectedTemplate, setSelectedTemplate] = useState();
@@ -46,7 +44,7 @@ const Templates = () => {
     return (
       <TemplateView
         selectedTemplate={selectedTemplate}
-        baseTemplateUrl={`${process.env.BASE_URL}/templates/${selectedProject}/${selectedBranch}/${selectedTemplate.templateId}`}
+        baseTemplateUrl={`${process.env.BASE_URL}/templates/${selectedBranch}/${selectedTemplate.templateId}`}
         onExit={() => setSelectedTemplate()}
       />
     );

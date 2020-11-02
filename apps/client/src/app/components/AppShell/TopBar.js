@@ -1,13 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import useProjects from 'shared/hooks/useProjects';
-import {
-  FlexMiddle,
-  DropDown,
-  FlexSpace,
-  MenuBurger as BaseMenuBurger,
-  Spinner,
-} from 'shared/components';
+import { FlexMiddle, FlexSpace, MenuBurger as BaseMenuBurger, Spinner } from 'shared/components';
 import media from 'style/media';
 import Profile from './Profile';
 
@@ -34,22 +28,14 @@ const MenuBurger = styled(BaseMenuBurger)`
 `;
 
 const TopBar = ({ setIsOpen }) => {
-  const { isLoading, projects, selectedProject, setSelectedProject } = useProjects();
+  const { isLoading, project } = useProjects();
 
   return (
     <Wrapper>
       <MenuBurger onClick={() => setIsOpen(true)} />
 
       <Container>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <DropDown
-            selectedValue={selectedProject}
-            options={projects || []}
-            onChange={({ value }) => setSelectedProject(value)}
-          />
-        )}
+        {isLoading ? <Spinner /> : <>{project?.name}</>}
 
         <Profile />
       </Container>

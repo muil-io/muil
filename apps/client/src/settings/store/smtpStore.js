@@ -1,43 +1,33 @@
 import { useCallback, useState } from 'react';
 import { useQuery } from 'react-query';
 import useOptimisticMutation from 'shared/hooks/useOptimisticMutation';
-import useProjects from 'shared/hooks/useProjects';
 import * as api from 'shared/services/api';
-import * as smtpApi from '../services/api';
 
 const apiKeysStore = () => {
-  const { selectedProject } = useProjects();
-  const storeKey = [selectedProject, 'smtp'];
-  const { isLoading, data } = useQuery(() => selectedProject && storeKey, api.fetchSmtp);
+  const storeKey = 'smtp';
+  const { isLoading, data } = useQuery(storeKey, api.fetchSmtp);
   const [testingConnecting, setTestingConnecting] = useState(false);
   const [testStatus, setTestStatus] = useState();
 
   const updateSmtp = useOptimisticMutation(
     storeKey,
-    (settings) => smtpApi.updateSmtp({ projectId: selectedProject, settings }),
+    (settings) => api.updateSmtp({ settings }),
     ({ previousData, ...settings }) => settings,
   );
 
-  const deleteSmtp = useOptimisticMutation(
-    storeKey,
-    () => smtpApi.deleteSmtp({ projectId: selectedProject }),
-    () => ({}),
-  );
+  const deleteSmtp = useOptimisticMutation(storeKey, api.deleteSmtp, () => ({}));
 
-  const testConnection = useCallback(
-    async (settings) => {
-      try {
-        setTestingConnecting(true);
-        await smtpApi.checkSmtp({ projectId: selectedProject, settings });
-        setTestStatus('success');
-      } catch (err) {
-        setTestStatus(typeof err?.description === 'string' ? err?.description : err?.message);
-      } finally {
-        setTestingConnecting(false);
-      }
-    },
-    [selectedProject],
-  );
+  const testConnection = useCallback(async (settings) => {
+    try {
+      setTestingConnecting(true);
+      await api.checkSmtp({ settings });
+      setTestStatus('success');
+    } catch (err) {
+      setTestStatus(typeof err?.description === 'string' ? err?.description : err?.message);
+    } finally {
+      setTestingConnecting(false);
+    }
+  }, []);
 
   return {
     isLoading,
