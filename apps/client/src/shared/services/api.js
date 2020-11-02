@@ -31,7 +31,7 @@ export const fetchTemplates = () => get('/templates');
 
 export const deleteBranch = ({ branch }) => httpDelete(`/templates/${branch}`);
 
-export const fetchApiKeys = () => get(`/apiKeys`);
+export const fetchApiKeys = () => get('/apiKeys');
 
 export const fetchSmtp = () => get('/smtp');
 
@@ -46,12 +46,12 @@ export const enableKey = ({ prefix }) => post(`/apiKeys/${prefix}/enable`);
 
 export const disableKey = ({ prefix }) => post(`/apiKeys/${prefix}/disable`);
 
-export const createKey = ({ name }) => post(`/apiKeys`, { name });
+export const createKey = ({ name }) => post('/apiKeys', { name });
 
 export const deleteKey = ({ prefix }) => httpDelete(`/apiKeys/${prefix}`);
 
-export const updateSmtp = ({ settings }) => post(`/smtp`, settings);
+export const updateSmtp = ({ settings }) => post('/smtp', settings);
 
-export const deleteSmtp = () => httpDelete(`/smtp`);
+export const deleteSmtp = () => httpDelete('/smtp');
 
-export const checkSmtp = ({ settings }) => post(`/smtp/check`, settings);
+export const checkSmtp = ({ settings }) => post('/smtp/check', settings);

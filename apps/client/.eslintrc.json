@@ -20,7 +20,7 @@
   "plugins": ["react", "react-hooks"],
   "rules": {
     "no-tabs": ["off"],
-    "indent": ["error", "tab"],
+    "indent": "off",
     "linebreak-style": ["error", "unix"],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "only-multiline"],
