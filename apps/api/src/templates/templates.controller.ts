@@ -37,13 +37,13 @@ export class TemplatesController {
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
   ) {
-    this.templatesService.upload(projectId, branch, files);
+    await this.templatesService.upload(projectId, branch, files);
   }
 
   @Delete('/:branch?')
   @UseGuards(AuthGuard)
   async delete(@Req() { user: { projectId } }, @Param('branch') branch: string) {
-    this.templatesService.delete(projectId, branch);
+    await this.templatesService.delete(projectId, branch);
   }
 
   @Post('/:branch?/:templateId/email')

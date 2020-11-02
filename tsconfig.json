@@ -20,5 +20,6 @@
       "@muil/cloud-storage": ["libs/cloud-storage/src"],
       "@muil/cloud-storage/*": ["libs/cloud-storage/src/*"]
     }
-  }
+  },
+  "exclude": ["apps/client"]
 }

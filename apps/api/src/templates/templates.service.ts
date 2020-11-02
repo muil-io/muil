@@ -68,6 +68,10 @@ export class TemplatesService {
       branch,
     );
 
+    if (!fs.existsSync(templatesDirectory)) {
+      throw new NotFoundError(`Branch '${branch}' not found`);
+    }
+
     await fs.promises.unlink(templatesDirectory);
   }
 
