@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
 export const flex = css`
-	display: flex;
+  display: flex;
 `;
 
 export const Flex = styled.div`
-	${flex};
+  ${flex};
 `;
