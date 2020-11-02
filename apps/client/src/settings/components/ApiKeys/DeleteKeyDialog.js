@@ -11,7 +11,7 @@ const NewApiKeyDialog = ({ onClose, deleteKey, onDeleteKey }) => {
       confirmButtonText="Delete"
       onConfirm={async () => {
         setisLoading(true);
-        await onDeleteKey({ prefix: deleteKey.apiKeyPrefix });
+        await onDeleteKey({ prefix: deleteKey.id });
         onClose();
       }}
       onCancel={onClose}

@@ -66,14 +66,16 @@ const Errors = styled.div`
 
 const ChangeProfile = () => {
   const {
-    data: { firstName, lastName },
+    data: { name },
     updateProfile,
   } = useUser();
 
+  console.log(updateProfile);
+
   const handleSubmit = useCallback(
-    async ({ firstName, lastName }) => {
+    async ({ name }) => {
       try {
-        await updateProfile({ firstName, lastName });
+        await updateProfile({ name });
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
@@ -84,24 +86,15 @@ const ChangeProfile = () => {
   return (
     <Form
       onSubmit={handleSubmit}
-      initialValues={{ firstName, lastName }}
+      initialValues={{ name }}
       render={({ handleSubmit, submitting, submitError }) => (
         <Container onSubmit={handleSubmit}>
           <Field
-            name="firstName"
+            name="name"
             validate={required}
             validateFields={[]}
             render={({ input, meta }) => (
-              <Input {...input} error={meta.error && meta.touched} title="First Name" />
-            )}
-          />
-
-          <Field
-            name="lastName"
-            validate={required}
-            validateFields={[]}
-            render={({ input, meta }) => (
-              <Input {...input} error={meta.error && meta.touched} title="Last Name" />
+              <Input {...input} error={meta.error && meta.touched} title="Name" />
             )}
           />
 

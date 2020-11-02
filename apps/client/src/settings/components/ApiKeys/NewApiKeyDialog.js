@@ -15,8 +15,12 @@ const Result = styled.pre`
   position: relative;
   margin: 0;
   background: ${({ theme }) => theme.colors.gray3};
-  padding: 16px 35px 16px 16px;
+`;
+
+const Text = styled.div`
   overflow: auto;
+  padding: 16px;
+  margin-right: 35px;
 `;
 
 const CopyButton = styled(BaseCopyButton)`
@@ -57,7 +61,7 @@ const NewApiKeyDialog = ({ onClose, onCreateNewKey }) => {
           </Note>
 
           <Result>
-            {key.apiKey}
+            <Text>{key.apiKey}</Text>
             <CopyButton copyText={key.apiKey} />
           </Result>
         </>

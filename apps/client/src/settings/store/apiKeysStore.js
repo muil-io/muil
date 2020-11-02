@@ -15,9 +15,7 @@ const apiKeysStore = () => {
       return api.disableKey({ prefix });
     },
     ({ previousData, prefix, isActive }) =>
-      previousData.map((key) =>
-        key.apiKeyPrefix === prefix ? { ...key, enabled: isActive } : key,
-      ),
+      previousData.map((key) => (key.id === prefix ? { ...key, enabled: isActive } : key)),
   );
 
   const createNewKey = useOptimisticMutation(
@@ -28,7 +26,7 @@ const apiKeysStore = () => {
   );
 
   const deleteKey = useOptimisticMutation(storeKey, api.deleteKey, ({ previousData, prefix }) =>
-    previousData.filter(({ apiKeyPrefix }) => apiKeyPrefix !== prefix),
+    previousData.filter(({ id }) => id !== prefix),
   );
 
   return {

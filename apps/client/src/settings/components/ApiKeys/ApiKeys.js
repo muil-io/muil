@@ -69,8 +69,8 @@ const ApiKeys = () => {
           flexGrow={1}
           width={1}
           cellRenderer={booleanRenderer}
-          cellDataGetter={({ rowData: { apiKeyPrefix } }) => ({
-            onChange: (isActive) => toggleKey({ prefix: apiKeyPrefix, isActive }),
+          cellDataGetter={({ rowData: { id } }) => ({
+            onChange: (isActive) => toggleKey({ prefix: id, isActive }),
           })}
         />
 

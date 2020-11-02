@@ -129,7 +129,11 @@ const SMTP = () => {
   const handleSubmit = useCallback(
     async (settings) => {
       try {
-        await updateSmtp(settings);
+        await updateSmtp({
+          ...settings,
+          port: parseInt(settings.port, 10),
+          secure: !!settings.secure,
+        });
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
