@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Req } from '@nestjs/common';
+import { Controller, UseGuards, Get, Req, Query } from '@nestjs/common';
 import { AuthGuard } from 'shared/guards';
 import { LogsService } from './logs.service';
 
@@ -8,7 +8,7 @@ export class LogsController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async getProjectLogs(@Req() { user: { projectId } }) {
-    return this.logsService.getAll(projectId);
+  async getProjectLogs(@Req() { user: { projectId } }, @Query('from') from?: string) {
+    return this.logsService.getAll(projectId, from);
   }
 }
