@@ -8,7 +8,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AuthGuardWithApiKey } from 'shared/guards';
+import { AuthGuard, AllowApiKey } from 'shared/guards';
 import { AssetsService } from './assets.service';
 
 @Controller('assets')
@@ -16,7 +16,8 @@ export class AssetsController {
   constructor(private readonly assetsService: AssetsService) {}
 
   @Post('/:branch?')
-  @UseGuards(AuthGuardWithApiKey)
+  @AllowApiKey()
+  @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async upload(
     @UploadedFile() file,
