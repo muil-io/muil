@@ -13,7 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { AuthGuard, RenderLimitGuard } from 'shared/guards';
+import { AuthGuard, RenderLimitGuard, AllowApiKey } from 'shared/guards';
 import { EmailOptionsDto } from './templates.dto';
 import { TemplatesService } from './templates.service';
 import { File } from './types';
@@ -29,6 +29,7 @@ export class TemplatesController {
   }
 
   @Put('/:branch?')
+  @AllowApiKey()
   @UseGuards(AuthGuard)
   @UseInterceptors(FilesInterceptor('file'))
   async upload(
@@ -39,17 +40,14 @@ export class TemplatesController {
     this.templatesService.upload(projectId, branch, files);
   }
 
-  @Delete('/:branch?/:templateId')
+  @Delete('/:branch?')
   @UseGuards(AuthGuard)
-  async delete(
-    @Req() { user: { projectId } },
-    @Param('branch') branch: string,
-    @Param('templateId') templateId: string,
-  ) {
-    this.templatesService.delete(projectId, branch, templateId);
+  async delete(@Req() { user: { projectId } }, @Param('branch') branch: string) {
+    this.templatesService.delete(projectId, branch);
   }
 
   @Post('/:branch?/:templateId/email')
+  @AllowApiKey()
   @UseGuards(AuthGuard, RenderLimitGuard)
   async emailTemplate(
     @Req() { user: { projectId } },
@@ -75,6 +73,7 @@ export class TemplatesController {
   }
 
   @Post('/:branch?/:templateId')
+  @AllowApiKey()
   @UseGuards(AuthGuard, RenderLimitGuard)
   async renderTemplate(
     @Req() { user: { projectId } },
@@ -91,12 +90,13 @@ export class TemplatesController {
   }
 
   @Get('/:branch?/:templateId')
+  @AllowApiKey()
   @UseGuards(AuthGuard, RenderLimitGuard)
   async renderTemplateGet(
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
-    @Query() { type, inlineCss, minifyHtml, props },
+    @Query() { type, inlineCss, minifyHtml, ...props },
   ) {
     return this.templatesService.render(projectId, branch, templateId, props, {
       type,

@@ -61,18 +61,14 @@ export class TemplatesService {
     await Promise.all(files);
   }
 
-  async delete(projectId: string, branch: string = 'master', templateId: string) {
+  async delete(projectId: string, branch: string = 'master') {
     const templatesDirectory = path.join(
       this.configService.get<string>('TEMPLATES_DIRECTORY'),
       projectId,
       branch,
     );
 
-    await Promise.all([
-      fs.promises.unlink(path.join(templatesDirectory, `${templateId}.js`)),
-      fs.promises.unlink(path.join(templatesDirectory, `${templateId}.css`)),
-      fs.promises.unlink(path.join(templatesDirectory, `${templateId}.json`)),
-    ]);
+    await fs.promises.unlink(templatesDirectory);
   }
 
   async render(
