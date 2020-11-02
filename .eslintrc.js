@@ -29,12 +29,6 @@ module.exports = {
         ],
       },
     ],
-    'import/no-unresolved': [
-      'error',
-      {
-        packageDir: [__dirname, path.join(__dirname, '/apps/client')],
-      },
-    ],
     radix: 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',

@@ -7,7 +7,6 @@ export { default as Logo } from './Logo';
 export { default as Spinner } from './Spinner';
 export { default as Page } from './Page';
 export { default as MenuBurger } from './MenuBurger';
-export { default as PrivateRoute } from './PrivateRoute';
 export { default as Table } from './Table';
 export { default as Toggle } from './Toggle';
 export { default as FloatingButton } from './FloatingButton';

@@ -3,7 +3,8 @@ import { get as _get, post as _post, put as _put, _delete } from 'shared/utils/h
 const httpOptions = {
   baseURL: process.env.BASE_URL,
   responseType: 'json',
-  withCredential: true,
+  withCredentials: true,
+  withHeaders: false,
 };
 
 export const get = (url, params = {}, options = {}) =>
@@ -12,6 +13,11 @@ export const post = (url, body = '', config) => _post(url, body, { ...httpOption
 export const put = (url, body = '') => _put(url, body, { ...httpOptions });
 export const httpDelete = (url, body, params = {}) =>
   _delete(url, { ...httpOptions, ...body, params });
+
+export const login = ({ email, password }) => post('/auth/login', { email, password });
+
+export const register = ({ name, email, password, projectName }) =>
+  post('/auth/signup', { name, email, password, projectName });
 
 export const fetchUser = () => get('/auth/me');
 

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
+import createDecorator from 'final-form-calculate';
 import {
-  FlexSpace,
   Button as BaseButton,
   Input as BaseInput,
   flexColumn,
@@ -12,19 +12,13 @@ import {
   header3,
   Header4,
 } from 'shared/components';
-import { composeValidators, required, validPassword } from '../utils/form';
-import * as api from '../services/api';
+import useUser from 'shared/hooks/useUser';
+import { composeValidators, required, validPassword, convertToValidName } from '../utils/form';
 import Auth from './Auth';
 
 const Wrapper = styled.form`
   ${flexColumn};
   margin: 0;
-`;
-
-const OneRow = styled(FlexSpace)`
-  > div {
-    width: 48%;
-  }
 `;
 
 const Input = styled(BaseInput)`
@@ -54,17 +48,26 @@ const Errors = styled.ul`
   }
 `;
 
+const calculator = createDecorator({
+  field: 'projectName',
+  updates: {
+    projectName: convertToValidName,
+  },
+});
+
 const Register = () => {
+  const { register } = useUser();
   const { push } = useHistory();
 
   const handleSubmitForm = useCallback(
-    async ({ firstName, lastName, email, password }) => {
+    async ({ name, email, password, projectName }) => {
       try {
-        await api.register({ firstName, lastName, email, password });
-        push('/create-project');
+        await register({ name, email, password, projectName });
+        push('/dashboard');
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
+      return {};
     },
     [push],
   );
@@ -78,36 +81,17 @@ const Register = () => {
     >
       <Form
         onSubmit={handleSubmitForm}
-        render={({
-          handleSubmit,
-          submitting,
-          pristine,
-          errors,
-          submitError,
-          validating,
-          values,
-          dirtyFields,
-        }) => (
+        decorators={[calculator]}
+        render={({ handleSubmit, submitting, pristine, errors, submitError }) => (
           <Wrapper onSubmit={handleSubmit}>
-            <OneRow>
-              <Field
-                name="firstName"
-                validate={required}
-                validateFields={[]}
-                render={({ input, meta }) => (
-                  <Input {...input} error={meta.error && meta.touched} placeholder="First Name" />
-                )}
-              />
-
-              <Field
-                name="lastName"
-                validate={required}
-                validateFields={[]}
-                render={({ input, meta }) => (
-                  <Input {...input} error={meta.error && meta.touched} placeholder="Last Name" />
-                )}
-              />
-            </OneRow>
+            <Field
+              name="name"
+              validate={required}
+              validateFields={[]}
+              render={({ input, meta }) => (
+                <Input {...input} error={meta.error && meta.touched} placeholder="First Name" />
+              )}
+            />
 
             <Field
               name="email"
@@ -125,6 +109,15 @@ const Register = () => {
               type="password"
               render={({ input, meta }) => (
                 <Input {...input} error={meta.error && meta.touched} placeholder="Password" />
+              )}
+            />
+
+            <Field
+              name="projectName"
+              validate={required}
+              validateFields={[]}
+              render={({ input, meta }) => (
+                <Input {...input} error={meta.error && meta.touched} placeholder="Project Name" />
               )}
             />
 

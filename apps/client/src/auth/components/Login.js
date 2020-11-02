@@ -10,8 +10,8 @@ import {
   Spinner,
   header3,
 } from 'shared/components';
+import useUser from 'shared/hooks/useUser';
 import { required } from '../utils/form';
-import * as api from '../services/api';
 import Auth from './Auth';
 
 const Wrapper = styled.form`
@@ -36,18 +36,20 @@ const Errors = styled.div`
 `;
 
 const Login = () => {
+  const { login } = useUser();
   const { push } = useHistory();
 
   const handleSubmitForm = useCallback(
     async ({ email, password }) => {
       try {
-        await api.login({ email, password });
+        await login({ email, password });
         push('/dashboard');
       } catch (err) {
         return { [FORM_ERROR]: 'The email or password is incorrect' };
       }
+      return {};
     },
-    [push],
+    [push, login],
   );
 
   return (
