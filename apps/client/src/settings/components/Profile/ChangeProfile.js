@@ -70,8 +70,6 @@ const ChangeProfile = () => {
     updateProfile,
   } = useUser();
 
-  console.log(updateProfile);
-
   const handleSubmit = useCallback(
     async ({ name }) => {
       try {
