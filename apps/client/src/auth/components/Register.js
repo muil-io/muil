@@ -69,7 +69,7 @@ const Register = () => {
       }
       return {};
     },
-    [push],
+    [push, register],
   );
 
   return (

@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import useUser from 'shared/hooks/useUser';
 import { FlexCenter, Spinner } from 'shared/components';
 import BaseAppShell from './AppShell/AppShell';
-import { Register, CreateProject, Login, ForgotPassword, SuccessfulForgotPassword } from 'auth';
+import { Register, Login, ForgotPassword, SuccessfulForgotPassword } from 'auth';
 
 const LoaderWrapper = styled(FlexCenter)`
   height: 100vh;

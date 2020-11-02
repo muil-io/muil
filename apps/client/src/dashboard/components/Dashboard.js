@@ -4,9 +4,9 @@ import dayjs from 'dayjs';
 import { Page, FlexColumn, DropDown } from 'shared/components';
 import media from 'style/media';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
-import { TIME_RANGE_OPTIONS, SHORT_DATE_AND_TIME_FORMAT } from 'shared/constants';
+import { TIME_RANGE_OPTIONS, SHORT_DATE_AND_TIME_FORMAT, ACTIVITIES_MAP } from 'shared/constants';
 import useLogs from 'shared/hooks/useLogs';
-import { ACTIVITIES_MAP } from 'shared/constants';
+
 import Counter from './Counter';
 import Chart from './Chart';
 import CountTable from './CountTable';

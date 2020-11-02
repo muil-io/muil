@@ -3,9 +3,9 @@ import styled, { useTheme } from 'styled-components';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { AutoSizer } from 'react-virtualized';
 import dayjs from 'dayjs';
-import { SHORT_DATE_FORMAT, LONG_DATE_FORMAT } from 'shared/constants';
+import { SHORT_DATE_FORMAT, LONG_DATE_FORMAT, ACTIVITIES_MAP } from 'shared/constants';
 import { header4, header4SemiBold } from 'shared/components';
-import { ACTIVITIES_MAP } from 'shared/constants';
+
 import BaseCard from './BaseCard';
 
 const Wrapper = styled(BaseCard)`
