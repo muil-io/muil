@@ -4,26 +4,26 @@ import { FlexSpace } from 'shared/components';
 import ViewIcon from 'shared/assets/icons/eye.svg';
 
 const common = css`
-	cursor: pointer;
-	path {
-		transition: 300ms;
-	}
+  cursor: pointer;
+  path {
+    transition: 300ms;
+  }
 
-	&:hover {
-		path {
-			fill: ${({ theme }) => theme.colors.primary};
-		}
-	}
+  &:hover {
+    path {
+      fill: ${({ theme }) => theme.colors.primary};
+    }
+  }
 `;
 
 const ViewButton = styled(ViewIcon)`
-	${common};
+  ${common};
 `;
 
 const actionsRenderer = ({ cellData: { onViewTemplate } }) => (
-	<FlexSpace>
-		<ViewButton onClick={onViewTemplate} />
-	</FlexSpace>
+  <FlexSpace>
+    <ViewButton onClick={onViewTemplate} />
+  </FlexSpace>
 );
 
 export default actionsRenderer;

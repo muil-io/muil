@@ -6,32 +6,32 @@ import ChangeProfile from './ChangeProfile';
 import ChangePassword from './ChangePassword';
 
 const Wrapper = styled.div`
-	margin: 0 auto;
+  margin: 0 auto;
 
-	${media.tablet`width: 80%;`}
-	${media.desktop`width: 60%;`}
+  ${media.tablet`width: 80%;`}
+  ${media.desktop`width: 60%;`}
 `;
 
 const Title = styled(Header3)`
-	margin: 50px 0 10px;
+  margin: 50px 0 10px;
 `;
 
 const Container = styled(Card).attrs(() => ({ level: 3 }))`
-	margin: 0 auto 50px auto;
+  margin: 0 auto 50px auto;
 `;
 
 const Profile = () => (
-	<Wrapper>
-		<Title>Profile</Title>
-		<Container>
-			<ChangeProfile />
-		</Container>
+  <Wrapper>
+    <Title>Profile</Title>
+    <Container>
+      <ChangeProfile />
+    </Container>
 
-		<Title>Change Password</Title>
-		<Container>
-			<ChangePassword />
-		</Container>
-	</Wrapper>
+    <Title>Change Password</Title>
+    <Container>
+      <ChangePassword />
+    </Container>
+  </Wrapper>
 );
 
 export default Profile;
