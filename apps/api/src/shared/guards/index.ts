@@ -1,10 +1,12 @@
 import {
   Inject,
   Injectable,
+  SetMetadata,
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import sha512 from 'crypto-js/sha512';
 import { PrismaService } from 'shared/modules/prisma/prisma.service';
@@ -41,41 +43,19 @@ export class LocalAuthGuard implements CanActivate {
   }
 }
 
+export const AllowApiKey = () => SetMetadata('allowApiKey', true);
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     @Inject('JwtService') private readonly jwtService: JwtService,
     @Inject('PrismaService') private prisma: PrismaService,
+    @Inject('Reflector') private readonly reflector: Reflector,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    try {
-      const request = context.switchToHttp().getRequest();
-      const {
-        cookies: { jwt },
-      } = request;
+    const allowApiKey = this.reflector.get<boolean>('allowApiKey', context.getHandler()) ?? false;
 
-      if (jwt) {
-        const decodedToken = this.jwtService.verify(jwt);
-        request.user = decodedToken;
-        return true;
-      }
-
-      return false;
-    } catch (err) {
-      throw new UnauthorizedException();
-    }
-  }
-}
-
-@Injectable()
-export class AuthGuardWithApiKey implements CanActivate {
-  constructor(
-    @Inject('JwtService') private readonly jwtService: JwtService,
-    @Inject('PrismaService') private prisma: PrismaService,
-  ) {}
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
       const {
@@ -90,7 +70,7 @@ export class AuthGuardWithApiKey implements CanActivate {
       }
 
       const apiKey = headers['x-api-key'];
-      if (apiKey) {
+      if (allowApiKey && apiKey) {
         const [id, , projectId] = apiKey.split('.');
 
         const { apiKeyHash, enabled } = await this.prisma.apiKeys.findOne({ where: { id } });
