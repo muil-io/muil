@@ -67,10 +67,7 @@ const Iframe = ({ debouncedProps, baseTemplateUrl, selectedSize }) => {
   return (
     <Wrapper selectedSize={selectedSize}>
       <IframeContainer isisLoading={isLoading}>
-        <BaseIframe
-          src={`${baseTemplateUrl}/portal?${qsProps}`}
-          onLoad={() => setisLoading(false)}
-        />
+        <BaseIframe src={`${baseTemplateUrl}?${qsProps}`} onLoad={() => setisLoading(false)} />
       </IframeContainer>
     </Wrapper>
   );
