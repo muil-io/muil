@@ -30,7 +30,7 @@ export class LocalAuthGuard implements CanActivate {
         throw new UnauthorizedException();
       }
 
-      if (!comparePassword(password, storedPassword)) {
+      if (!(await comparePassword(password, storedPassword))) {
         throw new UnauthorizedException();
       }
 

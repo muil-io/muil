@@ -23,3 +23,11 @@ export class UpdateUserDto {
   @IsString()
   readonly name: string;
 }
+
+export class UpdatePasswordDto {
+  @IsString()
+  readonly oldPassword: string;
+
+  @IsString()
+  readonly newPassword: string;
+}

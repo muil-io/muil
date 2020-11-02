@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { LocalAuthGuard, AuthGuard } from 'shared/guards';
-import { CreateUserDto, UpdateUserDto } from './auth.dto';
+import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -60,7 +60,17 @@ export class AuthController {
 
   @Post('me')
   @UseGuards(AuthGuard)
-  async post(@Req() { user }, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Req() { user }, @Body() updateUserDto: UpdateUserDto) {
     return this.authService.updateUser(user.id, updateUserDto.name);
+  }
+
+  @Post('password')
+  @UseGuards(AuthGuard)
+  async password(@Req() { user }, @Body() updatePasswordDto: UpdatePasswordDto) {
+    return this.authService.updatePassword(
+      user.id,
+      updatePasswordDto.oldPassword,
+      updatePasswordDto.newPassword,
+    );
   }
 }
