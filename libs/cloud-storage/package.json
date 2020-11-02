@@ -7,7 +7,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@azure/storage-file": "^10.3.0",
     "aws-sdk": "^2.781.0",
     "cloudinary": "^1.23.0",
     "file-type": "^16.0.0",

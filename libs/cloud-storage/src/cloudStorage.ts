@@ -1,11 +1,10 @@
 import * as fs from 'fs';
 import AWS from 'aws-sdk';
-import * as Azure from '@azure/storage-file';
 import { v2 as cloudinary } from 'cloudinary';
 import { v4 as uuid } from 'uuid';
 import FileType from 'file-type';
 import streamifier from 'streamifier';
-import { AWSOptions, AzureOptions, CloudinaryOptions, UploadOptions } from './types';
+import { AWSOptions, CloudinaryOptions, UploadOptions } from './types';
 
 export async function s3Upload(
   filename: string,
@@ -46,62 +45,6 @@ export async function s3Upload(
     .promise();
 
   return url;
-}
-
-export async function azureUpload(
-  filename: string,
-  data: Buffer,
-  options: AzureOptions,
-): Promise<string>;
-export async function azureUpload(
-  filename: string,
-  filePath: string,
-  options: AzureOptions,
-): Promise<string>;
-export async function azureUpload(
-  filename: string,
-  file: Buffer | string,
-  options: AzureOptions,
-): Promise<string> {
-  const {
-    SharedKeyCredential,
-    FileURL,
-    Aborter,
-    DirectoryURL,
-    ShareURL,
-    StorageURL,
-    ServiceURL,
-  } = Azure;
-
-  if (!filename) {
-    const { ext } =
-      typeof file === 'string' ? await FileType.fromFile(file) : await FileType.fromBuffer(file);
-    // eslint-disable-next-line no-param-reassign
-    filename = `${uuid()}.${ext}`;
-  }
-
-  const { accountName, accountKey, containerName, folder = '' } = options;
-
-  if (!accountName || !accountKey || !containerName)
-    throw new Error('accountName, accountKey, containerName are required');
-
-  const sharedKeyCredential = new SharedKeyCredential(accountName, accountKey);
-
-  const pipeline = StorageURL.newPipeline(sharedKeyCredential);
-  const serviceURL = new ServiceURL(`https://${accountName}.file.core.windows.net`, pipeline);
-
-  const shareURL = ShareURL.fromServiceURL(serviceURL, containerName);
-
-  const directoryURL = DirectoryURL.fromShareURL(shareURL, folder);
-
-  const f = typeof file === 'string' ? await fs.promises.readFile(file) : file;
-
-  const fileURL = FileURL.fromDirectoryURL(directoryURL, `${filename}`);
-
-  await fileURL.create(Aborter.none, f.length);
-  await fileURL.uploadRange(Aborter.none, f, 0, f.length);
-
-  return fileURL.url;
 }
 
 export async function cloudinaryUpload(
@@ -174,12 +117,6 @@ export async function upload(
     return typeof file === 'string'
       ? s3Upload(filename, file, options.aws)
       : s3Upload(filename, file, options.aws);
-  }
-
-  if (options.azure) {
-    return typeof file === 'string'
-      ? azureUpload(filename, file, options.azure)
-      : azureUpload(filename, file, options.azure);
   }
 
   if (options.cloudinary) {

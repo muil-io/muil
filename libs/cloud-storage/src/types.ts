@@ -5,13 +5,6 @@ export type AWSOptions = {
   folder?: string;
 };
 
-export type AzureOptions = {
-  accountName: string;
-  accountKey: string;
-  containerName: string;
-  folder?: string;
-};
-
 export type CloudinaryOptions = {
   folder?: string;
   cloudName: string;
@@ -21,6 +14,5 @@ export type CloudinaryOptions = {
 
 export type UploadOptions = {
   aws?: AWSOptions;
-  azure?: AzureOptions;
   cloudinary?: CloudinaryOptions;
 };
