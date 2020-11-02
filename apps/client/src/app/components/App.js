@@ -16,7 +16,7 @@ const AppShell = () => {
   if (isLoading) {
     return (
       <LoaderWrapper>
-        <Spinner />
+        <Spinner size={50} />
       </LoaderWrapper>
     );
   }
