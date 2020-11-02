@@ -13,78 +13,82 @@ import { ACTIVITIES_MAP } from '../constants';
 import useDashboardData from '../hooks/useDashboardData';
 
 const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 } }))`
-	display: flex;
-	justify-content: flex-end;
-	margin: -20px 20px 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin: -20px 20px 20px;
 `;
 
 const Row = styled(FlexColumn)`
-	flex-wrap: wrap;
-	${media.tablet`flex-direction: row;`}
+  flex-wrap: wrap;
+  ${media.tablet`flex-direction: row;`}
 `;
 
 const Dashboard = () => {
-	const theme = useTheme();
-	const { loading, data = [], selectedTimeRange, setSelectedTimeRange } = dashboardStore();
+  const theme = useTheme();
+  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = dashboardStore();
 
-	const { groups, formattedData, topTemplates, lastErrors } = useDashboardData({ data });
+  const { groups, formattedData, topTemplates, lastErrors } = useDashboardData({ data });
 
-	if (loading) {
-		return <SpinnerArea />;
-	}
+  if (isLoading) {
+    return <SpinnerArea />;
+  }
 
-	return (
-		<Page>
-			<TimeRangeDropDown
-				selectedValue={selectedTimeRange}
-				onChange={({ value }) => setSelectedTimeRange(value)}
-				options={TIME_RANGE_OPTIONS}
-			/>
+  return (
+    <Page>
+      <TimeRangeDropDown
+        selectedValue={selectedTimeRange}
+        onChange={({ value }) => setSelectedTimeRange(value)}
+        options={TIME_RANGE_OPTIONS}
+      />
 
-			<Row>
-				{Object.entries(ACTIVITIES_MAP).map(([key, { title, color, icon: Icon }]) => (
-					<Counter
-						key={key}
-						title={title}
-						navigate={`/activities/${key}`}
-						count={groups[key]?.length}
-						renderIcon={() => <Icon />}
-						color={theme.colors[color]}
-					/>
-				))}
-			</Row>
+      <Row>
+        {Object.entries(ACTIVITIES_MAP).map(([key, { title, color, icon: Icon }]) => (
+          <Counter
+            key={key}
+            title={title}
+            navigate={`/activities/${key}`}
+            count={groups[key]?.length}
+            renderIcon={() => <Icon />}
+            color={theme.colors[color]}
+          />
+        ))}
+      </Row>
 
-			<Row>
-				<Chart selectedTimeRange={selectedTimeRange} data={formattedData} />
-			</Row>
+      <Row>
+        <Chart selectedTimeRange={selectedTimeRange} data={formattedData} />
+      </Row>
 
-			<Row>
-				{topTemplates.length > 0 && (
-					<CountTable
-						title="Top 10 Templates"
-						data={topTemplates}
-						columns={[
-							{ label: 'Template', key: 'displayName', flex: 2 },
-							{ label: 'Branch', key: 'branch', hideOnSmallView: true },
-							{ label: 'Renderers', key: 'value' },
-						]}
-					/>
-				)}
+      <Row>
+        {topTemplates.length > 0 && (
+          <CountTable
+            title="Top 10 Templates"
+            data={topTemplates}
+            columns={[
+              { label: 'Template', key: 'displayName', flex: 2 },
+              { label: 'Branch', key: 'branch', hideOnSmallView: true },
+              { label: 'Renderers', key: 'value' },
+            ]}
+          />
+        )}
 
-				{lastErrors.length > 0 && (
-					<CountTable
-						title="Last 10 Errors"
-						data={lastErrors}
-						columns={[
-							{ label: 'Time', key: 'date', formatter: (value) => dayjs(value).format(SHORT_DATE_AND_TIME_FORMAT) },
-							{ label: 'Template', key: 'displayName', hideOnSmallView: true },
-							{ label: 'Error', key: 'error', flex: 3 },
-						]}
-					/>
-				)}
-			</Row>
-		</Page>
-	);
+        {lastErrors.length > 0 && (
+          <CountTable
+            title="Last 10 Errors"
+            data={lastErrors}
+            columns={[
+              {
+                label: 'Time',
+                key: 'date',
+                formatter: (value) => dayjs(value).format(SHORT_DATE_AND_TIME_FORMAT),
+              },
+              { label: 'Template', key: 'displayName', hideOnSmallView: true },
+              { label: 'Error', key: 'error', flex: 3 },
+            ]}
+          />
+        )}
+      </Row>
+    </Page>
+  );
 };
 
 export default Dashboard;

@@ -7,12 +7,12 @@ import media from 'style/media';
 import { SCREEN_SIZES } from '../../constants';
 
 const Wrapper = styled(FlexColumn)`
-	flex: 1;
-	margin: 20px;
-	transition: 200ms;
-	max-height: 60vh;
+  flex: 1;
+  margin: 20px;
+  transition: 200ms;
+  max-height: 60vh;
 
-	${media.tablet`
+  ${media.tablet`
 		flex: unset;
 		max-height: unset;
 		margin: 20px auto;
@@ -22,55 +22,58 @@ const Wrapper = styled(FlexColumn)`
 	`}
 `;
 
-const loadingAnimation = css`
-	animation: ${easeSlideIn} 15s ease-out forwards;
+const isLoadingAnimation = css`
+  animation: ${easeSlideIn} 15s ease-out forwards;
 `;
 
 const loadedAnimation = css`
-	animation: ${fadeOut} 200ms forwards;
-	width: 100%;
+  animation: ${fadeOut} 200ms forwards;
+  width: 100%;
 `;
 
 const IframeContainer = styled(FlexColumn)`
-	flex: 1;
-	position: relative;
+  flex: 1;
+  position: relative;
 
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 0;
-		height: 2px;
-		border-radius: 4px 4px 0 0;
-		background: ${({ theme }) => theme.colors.primary};
-		${({ isLoading }) => (isLoading ? loadingAnimation : loadedAnimation)}
-	}
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 4px 4px 0 0;
+    background: ${({ theme }) => theme.colors.primary};
+    ${({ isisLoading }) => (isisLoading ? isLoadingAnimation : loadedAnimation)}
+  }
 `;
 
 const BaseIframe = styled.iframe`
-	${card};
-	padding: 0;
-	border: none;
-	background: ${({ theme }) => theme.colors.white};
-	flex: 1;
+  ${card};
+  padding: 0;
+  border: none;
+  background: ${({ theme }) => theme.colors.white};
+  flex: 1;
 `;
 
 const Iframe = ({ debouncedProps, baseTemplateUrl, selectedSize }) => {
-	const [loading, setLoading] = useState(true);
-	const qsProps = useMemo(() => queryString.stringify(debouncedProps), [debouncedProps]);
+  const [isLoading, setisLoading] = useState(true);
+  const qsProps = useMemo(() => queryString.stringify(debouncedProps), [debouncedProps]);
 
-	useEffect(() => {
-		setLoading(true);
-	}, [qsProps]);
+  useEffect(() => {
+    setisLoading(true);
+  }, [qsProps]);
 
-	return (
-		<Wrapper selectedSize={selectedSize}>
-			<IframeContainer isLoading={loading}>
-				<BaseIframe src={`${baseTemplateUrl}/portal?${qsProps}`} onLoad={() => setLoading(false)} />
-			</IframeContainer>
-		</Wrapper>
-	);
+  return (
+    <Wrapper selectedSize={selectedSize}>
+      <IframeContainer isisLoading={isLoading}>
+        <BaseIframe
+          src={`${baseTemplateUrl}/portal?${qsProps}`}
+          onLoad={() => setisLoading(false)}
+        />
+      </IframeContainer>
+    </Wrapper>
+  );
 };
 
 export default Iframe;

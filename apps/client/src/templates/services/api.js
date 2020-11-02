@@ -1,3 +1,4 @@
-import { deleteWithToken } from 'shared/services/api';
+import { httpDelete } from 'shared/services/api';
 
-export const deleteBranch = ({ projectId, branch }) => deleteWithToken(`/templates/${projectId}/${branch}`);
+export const deleteBranch = ({ projectId, branch }) =>
+  httpDelete(`/templates/${projectId}/${branch}`);

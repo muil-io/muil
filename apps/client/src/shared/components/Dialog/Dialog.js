@@ -9,83 +9,83 @@ import Button from '../Button';
 import Spinner from '../Spinner';
 
 const Layout = styled(FlexCenter)`
-	position: fixed;
-	background: ${({ theme }) => theme.colors.dark}60;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 2;
-	padding: 20px 0;
+  position: fixed;
+  background: ${({ theme }) => theme.colors.dark}60;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 20px 0;
 `;
 
 const Wrapper = styled(Card).attrs(() => ({ level: 4 }))`
-	${flexColumn};
-	border-radius: 4px;
-	width: 80%;
-	max-width: 500px;
-	padding: 16px 25px;
-	box-sizing: border-box;
-	animation: ${fadeIn} 200ms;
-	max-height: 100%;
-	overflow: auto;
+  ${flexColumn};
+  border-radius: 4px;
+  width: 80%;
+  max-width: 500px;
+  padding: 16px 25px;
+  box-sizing: border-box;
+  animation: ${fadeIn} 200ms;
+  max-height: 100%;
+  overflow: auto;
 `;
 
 const Title = styled(Header2)`
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 `;
 
 const Buttons = styled(Flex)`
-	flex-direction: row-reverse;
-	margin-top: 16px;
+  flex-direction: row-reverse;
+  margin-top: 16px;
 
-	${Button} {
-		margin-left: 10px;
-		padding: 13px 36px;
-		font-size: 15px;
-	}
+  ${Button} {
+    margin-left: 10px;
+    padding: 13px 36px;
+    font-size: 15px;
+  }
 `;
 
 const Dialog = ({
-	onClose,
-	title,
-	children,
-	showConfirm = true,
-	confirmButtonText = 'Confirm',
-	onConfirm,
-	showCancel = true,
-	cancelButtonText = 'Cancel',
-	onCancel,
-	loading,
+  onClose,
+  title,
+  children,
+  showConfirm = true,
+  confirmButtonText = 'Confirm',
+  onConfirm,
+  showCancel = true,
+  cancelButtonText = 'Cancel',
+  onCancel,
+  isLoading,
 }) => {
-	const ref = useRef();
-	useOnClickOutside(ref, onClose);
+  const ref = useRef();
+  useOnClickOutside(ref, onClose);
 
-	return (
-		<Layout>
-			<Wrapper ref={ref}>
-				{title && <Title>{title}</Title>}
+  return (
+    <Layout>
+      <Wrapper ref={ref}>
+        {title && <Title>{title}</Title>}
 
-				{children}
+        {children}
 
-				{(showConfirm || showCancel) && (
-					<Buttons>
-						{showConfirm && (
-							<Button disabled={loading} onClick={onConfirm}>
-								{loading ? <Spinner /> : confirmButtonText}
-							</Button>
-						)}
+        {(showConfirm || showCancel) && (
+          <Buttons>
+            {showConfirm && (
+              <Button disabled={isLoading} onClick={onConfirm}>
+                {isLoading ? <Spinner /> : confirmButtonText}
+              </Button>
+            )}
 
-						{showCancel && (
-							<Button buttonType="tertiary" disabled={loading} onClick={onCancel}>
-								{cancelButtonText}
-							</Button>
-						)}
-					</Buttons>
-				)}
-			</Wrapper>
-		</Layout>
-	);
+            {showCancel && (
+              <Button buttonType="tertiary" disabled={isLoading} onClick={onCancel}>
+                {cancelButtonText}
+              </Button>
+            )}
+          </Buttons>
+        )}
+      </Wrapper>
+    </Layout>
+  );
 };
 
 export default Dialog;

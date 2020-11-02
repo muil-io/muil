@@ -24,8 +24,15 @@ module.exports = {
         packageDir: [
           __dirname,
           path.join(__dirname, '/apps/api'),
+          path.join(__dirname, '/apps/client'),
           path.join(__dirname, '/libs/templates-renderer'),
         ],
+      },
+    ],
+    'import/no-unresolved': [
+      'error',
+      {
+        packageDir: [__dirname, path.join(__dirname, '/apps/client')],
       },
     ],
     radix: 'off',
