@@ -2,7 +2,7 @@ import { IsString, IsOptional } from 'class-validator';
 
 export class CloudStorageSetDto {
   @IsString()
-  readonly type: 'aws' | 'azure' | 'cloudinary';
+  readonly type: 'aws' | 'cloudinary';
 
   @IsString()
   @IsOptional()
@@ -15,26 +15,6 @@ export class CloudStorageSetDto {
   @IsString()
   @IsOptional()
   readonly awsSecretAccessKey?: string | null;
-
-  @IsString()
-  @IsOptional()
-  readonly azureAccountName?: string | null;
-
-  @IsString()
-  @IsOptional()
-  readonly azureAccountKey?: string | null;
-
-  @IsString()
-  @IsOptional()
-  readonly azureContainerName?: string | null;
-
-  @IsString()
-  @IsOptional()
-  readonly azureFolder?: string | null;
-
-  @IsString()
-  @IsOptional()
-  readonly cloudinaryFolder?: string | null;
 
   @IsString()
   @IsOptional()
