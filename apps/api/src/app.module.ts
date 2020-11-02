@@ -4,6 +4,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'shared/modules/prisma';
 import { ApiKeysModule } from 'apiKeys';
+import { AssetsModule } from 'assets';
 import { AuthModule } from 'auth';
 import { LogsModule } from 'logs';
 import { ProjectsModule } from 'projects';
@@ -30,6 +31,7 @@ import { SmtpModule } from 'smtp';
     },
     PrismaModule,
     ApiKeysModule,
+    AssetsModule,
     AuthModule,
     LogsModule,
     ProjectsModule,

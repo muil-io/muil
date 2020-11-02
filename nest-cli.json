@@ -25,6 +25,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/templates-renderer/tsconfig.json"
       }
+    },
+    "cloud-storage": {
+      "type": "library",
+      "root": "libs/cloud-storage",
+      "entryFile": "index",
+      "sourceRoot": "libs/cloud-storage/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cloud-storage/tsconfig.json"
+      }
     }
   }
 }

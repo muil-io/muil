@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { ProjectsService } from 'projects/projects.service';
 import { PrismaService } from 'shared/modules/prisma';
 import { ConflictError, NotFoundError } from 'shared/exceptions';
-import { encryptPassword } from 'shared/utils/password';
+import { encryptPassword, comparePassword } from 'shared/utils/password';
 import { User } from './types';
 
 @Injectable()
@@ -55,5 +55,31 @@ export class AuthService {
     });
 
     return { id: userId, email, name, projectId };
+  }
+
+  async updateUser(id: string, name: string) {
+    const { password, ...user } = await this.prisma.users.update({
+      where: { id },
+      data: { name },
+    });
+
+    return user;
+  }
+
+  async updatePassword(id: string, oldPassword: string, newPassword: string) {
+    const { password: storedPassword } = await this.prisma.users.findOne({
+      where: { id },
+    });
+    if (!storedPassword || !(await comparePassword(oldPassword, storedPassword))) {
+      throw new UnauthorizedException();
+    }
+
+    const hash = await encryptPassword(newPassword);
+    const { password, ...user } = await this.prisma.users.update({
+      where: { id },
+      data: { password: hash },
+    });
+
+    return user;
   }
 }

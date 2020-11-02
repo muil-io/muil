@@ -1,1 +1,1 @@
-export { AssetssModule } from './assets.module';
+export { AssetsModule } from './assets.module';
