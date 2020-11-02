@@ -83,16 +83,8 @@ const Templates = () => {
       >
         <Column label="Name" dataKey="displayName" flexGrow={1.5} width={1} />
         <Column
-          label="Created"
+          label="Date"
           dataKey="created"
-          flexGrow={1}
-          width={1}
-          cellRenderer={dateRenderer}
-          showOnSize="mobile"
-        />
-        <Column
-          label="Updated"
-          dataKey="updated"
           flexGrow={1}
           width={1}
           cellRenderer={dateRenderer}

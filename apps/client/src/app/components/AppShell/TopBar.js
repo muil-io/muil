@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import useProjects from 'shared/hooks/useProjects';
-import { FlexMiddle, FlexSpace, MenuBurger as BaseMenuBurger, Spinner } from 'shared/components';
+import { FlexMiddle, FlexSpace, MenuBurger as BaseMenuBurger } from 'shared/components';
 import media from 'style/media';
 import Profile from './Profile';
 
@@ -27,20 +26,15 @@ const MenuBurger = styled(BaseMenuBurger)`
   ${media.tablet`display: none;`}
 `;
 
-const TopBar = ({ setIsOpen }) => {
-  const { isLoading, project } = useProjects();
+const TopBar = ({ setIsOpen }) => (
+  <Wrapper>
+    <MenuBurger onClick={() => setIsOpen(true)} />
 
-  return (
-    <Wrapper>
-      <MenuBurger onClick={() => setIsOpen(true)} />
-
-      <Container>
-        {isLoading ? <Spinner /> : <>{project?.name}</>}
-
-        <Profile />
-      </Container>
-    </Wrapper>
-  );
-};
+    <Container>
+      <div />
+      <Profile />
+    </Container>
+  </Wrapper>
+);
 
 export default TopBar;
