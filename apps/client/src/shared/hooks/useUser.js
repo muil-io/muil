@@ -18,7 +18,19 @@ const useUser = ({ enabled = false } = {}) => {
     onSuccess: (newData) => queryCache.setQueryData(storeKey, newData),
   });
 
-  return { isLoading: isLoading || isFetching, isAuth: isSuccess, data, login, register };
+  const updateProfile = useMutation(api.updateProfile);
+
+  const updatePassword = useMutation(api.updatePassword);
+
+  return {
+    isLoading: isLoading || isFetching,
+    isAuth: isSuccess,
+    data,
+    login,
+    register,
+    updateProfile,
+    updatePassword,
+  };
 };
 
 export default useUser;

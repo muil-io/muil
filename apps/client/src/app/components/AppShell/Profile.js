@@ -1,13 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { queryCache } from 'react-query';
-import userStore from 'shared/store/userStore';
+import useUser from 'shared/hooks/useUser';
 import { DropDown } from 'shared/components';
 
 const Profile = () => {
   const {
     data: { firstName },
-  } = userStore();
+  } = useUser();
   const { push } = useHistory();
 
   return (

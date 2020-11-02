@@ -1,23 +1,24 @@
 import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
-import projectStore from 'shared/store/projectStore';
-import templatesStore from 'templates/store/templatesStore';
-import * as api from 'shared/services/api';
-import usePersistedState from 'shared/hooks/usePersistedState';
+import * as api from '../services/api';
+import usePersistedState from './usePersistedState';
+import useProjects from './useProjects';
+import useTemplates from './useTemplates';
 import { ACTIVITIES_MAP } from '../constants';
 
-const dashboardStore = () => {
+const useLogs = () => {
   const [selectedTimeRange, setSelectedTimeRange] = usePersistedState('timeRange', 7);
   const from = useMemo(() => dayjs().startOf('day').subtract(parseInt(selectedTimeRange), 'days'), [
     selectedTimeRange,
   ]);
 
-  const { selectedProject } = projectStore();
-  const { isLoading: templatesisLoading, data: templatesData = [] } = templatesStore();
+  const { selectedProject } = useProjects();
+  const { isLoading: templatesLoading, data: templatesData = [] } = useTemplates();
   const { isLoading, data = [] } = useQuery(
-    () => selectedProject && [selectedProject, from, 'activities'],
+    [selectedProject, from, 'activities'],
     api.fetchActivities,
+    { enabled: selectedProject },
   );
 
   const templatesMap = useMemo(
@@ -45,11 +46,11 @@ const dashboardStore = () => {
   );
 
   return {
-    isLoading: isLoading || templatesisLoading,
+    isLoading: isLoading || templatesLoading,
     data: formattedData,
     selectedTimeRange: parseInt(selectedTimeRange),
     setSelectedTimeRange,
   };
 };
 
-export default dashboardStore;
+export default useLogs;

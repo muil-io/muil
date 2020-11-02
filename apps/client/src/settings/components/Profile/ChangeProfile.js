@@ -2,20 +2,27 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
-import { flexColumn, FlexColumn, Button, Input as BaseInput, Spinner, header3 } from 'shared/components';
+import {
+  flexColumn,
+  FlexColumn,
+  Button,
+  Input as BaseInput,
+  Spinner,
+  header3,
+} from 'shared/components';
 import media from 'style/media';
 import { required } from 'auth/utils/form';
-import userStore from 'shared/store/userStore';
+import useUser from 'shared/hooks/useUser';
 
 const Container = styled.form`
-	${flexColumn};
-	margin: 0;
+  ${flexColumn};
+  margin: 0;
 
-	> div {
-		width: 100%;
-	}
+  > div {
+    width: 100%;
+  }
 
-	${media.tablet`
+  ${media.tablet`
 		flex-direction: row;
 		flex-wrap: wrap;
 		> div {
@@ -27,14 +34,14 @@ const Container = styled.form`
 `;
 
 const Input = styled(BaseInput)`
-	width: 100%;
-	margin: 8px 0;
+  width: 100%;
+  margin: 8px 0;
 `;
 
 const Buttons = styled(FlexColumn)`
-	width: 100% !important;
+  width: 100% !important;
 
-	${media.tablet`
+  ${media.tablet`
 		flex-direction: row;
 		align-items: center;
 		margin-top: 20px;
@@ -47,62 +54,66 @@ const Buttons = styled(FlexColumn)`
 `;
 
 const Errors = styled.div`
-	${header3};
-	color: ${({ theme }) => theme.colors.error};
-	text-align: left;
-	margin-top: 10px;
+  ${header3};
+  color: ${({ theme }) => theme.colors.error};
+  text-align: left;
+  margin-top: 10px;
 
-	${media.tablet`
+  ${media.tablet`
 		margin-top: 0;
 	`}
 `;
 
 const ChangeProfile = () => {
-	const {
-		data: { firstName, lastName },
-		updateProfile,
-	} = userStore();
+  const {
+    data: { firstName, lastName },
+    updateProfile,
+  } = useUser();
 
-	const handleSubmit = useCallback(
-		async ({ firstName, lastName }) => {
-			try {
-				await updateProfile({ firstName, lastName });
-			} catch (err) {
-				return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
-			}
-		},
-		[updateProfile],
-	);
+  const handleSubmit = useCallback(
+    async ({ firstName, lastName }) => {
+      try {
+        await updateProfile({ firstName, lastName });
+      } catch (err) {
+        return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
+      }
+    },
+    [updateProfile],
+  );
 
-	return (
-		<Form
-			onSubmit={handleSubmit}
-			initialValues={{ firstName, lastName }}
-			render={({ handleSubmit, submitting, submitError }) => (
-				<Container onSubmit={handleSubmit}>
-					<Field
-						name="firstName"
-						validate={required}
-						validateFields={[]}
-						render={({ input, meta }) => <Input {...input} error={meta.error && meta.touched} title="First Name" />}
-					/>
+  return (
+    <Form
+      onSubmit={handleSubmit}
+      initialValues={{ firstName, lastName }}
+      render={({ handleSubmit, submitting, submitError }) => (
+        <Container onSubmit={handleSubmit}>
+          <Field
+            name="firstName"
+            validate={required}
+            validateFields={[]}
+            render={({ input, meta }) => (
+              <Input {...input} error={meta.error && meta.touched} title="First Name" />
+            )}
+          />
 
-					<Field
-						name="lastName"
-						validate={required}
-						validateFields={[]}
-						render={({ input, meta }) => <Input {...input} error={meta.error && meta.touched} title="Last Name" />}
-					/>
+          <Field
+            name="lastName"
+            validate={required}
+            validateFields={[]}
+            render={({ input, meta }) => (
+              <Input {...input} error={meta.error && meta.touched} title="Last Name" />
+            )}
+          />
 
-					<Buttons>
-						<Button disabled={submitting}>{submitting ? <Spinner /> : 'Update'}</Button>
+          <Buttons>
+            <Button disabled={submitting}>{submitting ? <Spinner /> : 'Update'}</Button>
 
-						{submitError && <Errors>{submitError}</Errors>}
-					</Buttons>
-				</Container>
-			)}
-		/>
-	);
+            {submitError && <Errors>{submitError}</Errors>}
+          </Buttons>
+        </Container>
+      )}
+    />
+  );
 };
 
 export default ChangeProfile;

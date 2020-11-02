@@ -5,11 +5,11 @@ import { Page, FlexColumn, DropDown } from 'shared/components';
 import media from 'style/media';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import { TIME_RANGE_OPTIONS, SHORT_DATE_AND_TIME_FORMAT } from 'shared/constants';
+import useLogs from 'shared/hooks/useLogs';
+import { ACTIVITIES_MAP } from 'shared/constants';
 import Counter from './Counter';
 import Chart from './Chart';
 import CountTable from './CountTable';
-import dashboardStore from '../store/dashboardStore';
-import { ACTIVITIES_MAP } from '../constants';
 import useDashboardData from '../hooks/useDashboardData';
 
 const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 } }))`
@@ -25,7 +25,7 @@ const Row = styled(FlexColumn)`
 
 const Dashboard = () => {
   const theme = useTheme();
-  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = dashboardStore();
+  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = useLogs();
 
   const { groups, formattedData, topTemplates, lastErrors } = useDashboardData({ data });
 

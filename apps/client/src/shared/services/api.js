@@ -28,6 +28,9 @@ export const fetchActivities = (selectedProject, from) =>
 
 export const fetchTemplates = (selectedProject) => get(`/templates/${selectedProject}`);
 
+export const deleteBranch = ({ projectId, branch }) =>
+  httpDelete(`/templates/${projectId}/${branch}`);
+
 export const fetchApiKeys = (selectedProject) => get(`/apiKeys/${selectedProject}`);
 
 export const fetchSmtp = (selectedProject) => get(`/projects/${selectedProject}/smtp`);

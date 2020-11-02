@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import projectStore from 'shared/store/projectStore';
+import useProjects from 'shared/hooks/useProjects';
 import {
   FlexMiddle,
   DropDown,
@@ -34,7 +34,7 @@ const MenuBurger = styled(BaseMenuBurger)`
 `;
 
 const TopBar = ({ setIsOpen }) => {
-  const { isLoading, projects, selectedProject, setSelectedProject } = projectStore();
+  const { isLoading, projects, selectedProject, setSelectedProject } = useProjects();
 
   return (
     <Wrapper>

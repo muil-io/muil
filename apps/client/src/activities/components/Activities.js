@@ -5,9 +5,8 @@ import { Column } from 'react-virtualized';
 import { Page, DropDown, Table, FlexSpace } from 'shared/components';
 import { dateRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
-import dashboardStore from 'dashboard/store/dashboardStore';
-import { ACTIVITIES_MAP } from 'dashboard/constants';
-import { TIME_RANGE_OPTIONS } from 'shared/constants';
+import useLogs from 'shared/hooks/useLogs';
+import { ACTIVITIES_MAP, TIME_RANGE_OPTIONS } from 'shared/constants';
 import typeRenderer from '../utils/typeRenderer';
 import infoRenderer from '../utils/infoRenderer';
 import statusRenderer from '../utils/statusRenderer';
@@ -26,7 +25,7 @@ const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 }
 const Activities = () => {
   const theme = useTheme();
   const { filter } = useParams();
-  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = dashboardStore();
+  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = useLogs();
   const [selectedFilter, setSelectedFilter] = useState(filter || 'all');
 
   const filters = useMemo(
