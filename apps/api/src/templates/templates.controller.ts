@@ -96,7 +96,7 @@ export class TemplatesController {
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
-    @Query() { type, inlineCss, minifyHtml, props },
+    @Query() { type, inlineCss, minifyHtml, ...props },
   ) {
     return this.templatesService.render(projectId, branch, templateId, props, {
       type,

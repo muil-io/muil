@@ -62,10 +62,6 @@ model CloudStorage {
   awsBucketName       String?
   awsAccessKeyId      String?
   awsSecretAccessKey  String?
-  azureAccountName    String?
-  azureAccountKey     String?
-  azureContainerName  String?
-  azureFolder         String?
   cloudinaryFolder    String?
   cloudinaryCloudName String?
   cloudinaryApiKey    String?
