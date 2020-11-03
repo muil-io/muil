@@ -79,13 +79,14 @@ export class TemplatesController {
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
-    @Query() { type, inlineCss, minifyHtml },
+    @Query() { type, inlineCss, minifyHtml, pdfFormat },
     @Body() { props },
   ) {
     return this.templatesService.render(projectId, branch, templateId, props, {
       type,
       inlineCss: inlineCss !== 'false',
       minifyHtml: minifyHtml !== 'false',
+      pdfFormat,
     });
   }
 

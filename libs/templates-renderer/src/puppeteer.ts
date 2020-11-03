@@ -10,9 +10,9 @@ const getPage = async (html: string) => {
   return page;
 };
 
-export const generatePdf = async (html: string) => {
+export const generatePdf = async (html: string, format: puppeteer.PDFFormat = 'A4') => {
   const page = await getPage(html);
-  return page.pdf({ format: 'Letter' });
+  return page.pdf({ format });
 };
 
 export const generatePng = async (html: string) => {

@@ -73,6 +73,7 @@ const renderTemplate = async ({
   shadowSupport = false,
   inlineCss = true,
   minifyHtml = true,
+  pdfFormat = 'A4',
 }: RenderOptions): Promise<string | Buffer> => {
   if (!templatePath) return '';
 
@@ -109,7 +110,7 @@ const renderTemplate = async ({
       return generatePng(html);
     }
     case 'pdf': {
-      return generatePdf(html);
+      return generatePdf(html, pdfFormat);
     }
     default: {
       return html;
