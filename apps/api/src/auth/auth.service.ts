@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { ProjectsService } from 'projects/projects.service';
 import { PrismaService } from 'shared/modules/prisma';
-import { ConflictError, NotFoundError } from 'shared/exceptions';
+import { ConflictError } from 'shared/exceptions';
 import { encryptPassword, comparePassword } from 'shared/utils/password';
 import { User } from './types';
 
@@ -28,12 +28,7 @@ export class AuthService {
       throw new ConflictError(`User with email '${email}' already exists`);
     }
 
-    if (projectId) {
-      const projectExists = await this.projectsService.exists(projectId);
-      if (!projectExists) {
-        throw new NotFoundError(`Project '${projectId}' doesn't exists`);
-      }
-    } else if (!projectId && projectName) {
+    if (projectName) {
       const { id } = await this.projectsService.create({ name: projectName });
       projectId = id;
     } else {
