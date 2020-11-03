@@ -8,7 +8,7 @@ import {
   actionRenderer,
 } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
-import apiKeysStore from '../../store/apiKeysStore';
+import useApiKeys from '../../hooks/useApiKeys';
 import NewApiKeyDialog from './NewApiKeyDialog';
 import DeleteKeyDialog from './DeleteKeyDialog';
 
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 `;
 
 const ApiKeys = () => {
-  const { isLoading, data, toggleKey, createNewKey, deleteKey } = apiKeysStore();
+  const { isLoading, data, toggleKey, createNewKey, deleteKey } = useApiKeys();
   const [showNewModal, setShowNewModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState();
 

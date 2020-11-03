@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import useOptimisticMutation from 'shared/hooks/useOptimisticMutation';
 import * as api from 'shared/services/api';
 
-const apiKeysStore = () => {
+const useApiKeys = () => {
   const storeKey = 'apiKeys';
   const { isLoading, data } = useQuery(storeKey, api.fetchApiKeys);
 
@@ -38,4 +38,4 @@ const apiKeysStore = () => {
   };
 };
 
-export default apiKeysStore;
+export default useApiKeys;

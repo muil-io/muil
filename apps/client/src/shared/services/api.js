@@ -21,6 +21,8 @@ export const register = ({ name, email, password, projectName }) =>
 
 export const fetchUser = () => get('/auth/me');
 
+export const logout = () => post('/auth/logout');
+
 export const forgotPassword = ({ email }) => post('/auth/forgotPassword', { email });
 
 export const fetchProjects = () => get('/projects');

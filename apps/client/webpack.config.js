@@ -60,6 +60,9 @@ module.exports = (env) => ({
       },
     ],
   },
+  devServer: {
+    open: true,
+  },
   plugins: [
     isDevelopment && new webpack.HotModuleReplacementPlugin(),
     isDevelopment && new ReactRefreshWebpackPlugin(),

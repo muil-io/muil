@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { queryCache } from 'react-query';
 import useUser from 'shared/hooks/useUser';
 import { DropDown } from 'shared/components';
 
 const Profile = () => {
   const {
     data: { name },
+    logout,
   } = useUser();
   const { push } = useHistory();
 
@@ -16,8 +16,8 @@ const Profile = () => {
         {
           label: 'Logout',
           value: 'logout',
-          onClick: () => {
-            queryCache.clear();
+          onClick: async () => {
+            await logout();
             push('/login');
           },
         },

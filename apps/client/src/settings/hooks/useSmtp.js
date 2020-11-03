@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import useOptimisticMutation from 'shared/hooks/useOptimisticMutation';
 import * as api from 'shared/services/api';
 
-const apiKeysStore = () => {
+const useSmtp = () => {
   const storeKey = 'smtp';
   const { isLoading, data } = useQuery(storeKey, api.fetchSmtp);
   const [testingConnecting, setTestingConnecting] = useState(false);
@@ -40,4 +40,4 @@ const apiKeysStore = () => {
   };
 };
 
-export default apiKeysStore;
+export default useSmtp;
