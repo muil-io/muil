@@ -69,9 +69,11 @@ module.exports = (env) => ({
     new HtmlWebPackPlugin({
       template: paths.html,
       favicon: env === 'dev' ? paths.faviconDev : paths.favicon,
+      IS_CLOUD: Boolean(process.env.IS_CLOUD),
     }),
     new webpack.DefinePlugin({
       'process.env.BASE_URL': JSON.stringify(isDevelopment ? 'http://localhost:3000' : ''),
+      'process.env.IS_CLOUD': process.env.IS_CLOUD,
     }),
   ].filter(Boolean),
 });

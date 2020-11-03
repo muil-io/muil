@@ -112,14 +112,16 @@ const Register = () => {
               )}
             />
 
-            <Field
-              name="projectName"
-              validate={required}
-              validateFields={[]}
-              render={({ input, meta }) => (
-                <Input {...input} error={meta.error && meta.touched} placeholder="Project Name" />
-              )}
-            />
+            {process.env.IS_CLOUD && (
+              <Field
+                name="projectName"
+                validate={required}
+                validateFields={[]}
+                render={({ input, meta }) => (
+                  <Input {...input} error={meta.error && meta.touched} placeholder="Project Name" />
+                )}
+              />
+            )}
 
             <SmallTitle>
               By creating an account, you agree to the{' '}
