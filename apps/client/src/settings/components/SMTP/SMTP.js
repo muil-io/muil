@@ -17,7 +17,7 @@ import {
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import media from 'style/media';
 import { required } from 'auth/utils/form';
-import smtpStore from '../../store/smtpStore';
+import useSmtp from '../../hooks/useSmtp';
 import DeleteSMTPDialog from './DeleteSMTPDialog';
 
 const Wrapper = styled.div`
@@ -123,7 +123,7 @@ const SMTP = () => {
     testConnection,
     testingConnecting,
     testStatus,
-  } = smtpStore();
+  } = useSmtp();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleSubmit = useCallback(
