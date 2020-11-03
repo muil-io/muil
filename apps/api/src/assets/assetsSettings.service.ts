@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { NotFoundError } from 'shared/exceptions';
 import { PrismaService } from 'shared/modules/prisma';
 import { CloudStorageCreateInput } from '@prisma/client';
 import { UploadOptions } from '@muil/cloud-storage';
@@ -54,6 +55,8 @@ export class AssetsSettingsService {
           folder,
         },
       };
+    } else {
+      throw new NotFoundError('Cloud storage provider is not defined');
     }
 
     return uploadOptions;
