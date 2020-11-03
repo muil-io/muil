@@ -80,7 +80,7 @@ export class TemplatesService {
     branch: string = 'master',
     templateId: string,
     props = {},
-    { type = 'html', inlineCss, minifyHtml }: RenderOptions,
+    { type = 'html', inlineCss, minifyHtml, pdfFormat }: RenderOptions,
   ) {
     try {
       const templatePath = path.join(
@@ -107,6 +107,7 @@ export class TemplatesService {
         props,
         inlineCss,
         minifyHtml,
+        pdfFormat,
       });
 
       await this.logsService.write({

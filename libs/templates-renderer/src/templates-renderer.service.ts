@@ -12,6 +12,7 @@ export class TemplatesRendererService {
     shadowSupport = false,
     inlineCss = true,
     minifyHtml = true,
+    pdfFormat = 'A4',
   }: RenderOptions): Promise<string | Buffer> {
     return renderTemplate({
       type,
@@ -21,6 +22,7 @@ export class TemplatesRendererService {
       shadowSupport,
       inlineCss,
       minifyHtml,
+      pdfFormat,
     });
   }
 }
