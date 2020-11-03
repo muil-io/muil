@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import CryptoJS from 'crypto-js';
+import { NotFoundError } from 'shared/exceptions';
 import { PrismaService } from 'shared/modules/prisma';
 import { SmtpOptions } from 'shared/modules/mailer';
 
@@ -42,6 +43,10 @@ export class SmtpService {
         ).toString(CryptoJS.enc.Utf8),
         secure: smtp.secure === 1,
       };
+    }
+
+    if (!this.configService.get<string>('SMTP_HOST')) {
+      throw new NotFoundError('SMTP settings is not defined');
     }
 
     return {
