@@ -3,30 +3,36 @@
 <head>
 	<title>Muil - Portal</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script>const isCloud =<%= JSON.stringify(htmlWebpackPlugin.options.IS_CLOUD) %></script>
+
 	<!--Start of Tawk.to Script-->
 	<script type="text/javascript">
 		var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-		(function () {
+		const tawkScript = (function () {
 			var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
 			s1.async = true;
 			s1.src = 'https://embed.tawk.to/5eb50c81a1bad90e54a2d697/default';
 			s1.charset = 'UTF-8';
 			s1.setAttribute('crossorigin', '*');
 			s0.parentNode.insertBefore(s1, s0);
-		})();
+		})
+		isCloud && tawkScript();
 	</script>
 	<!--End of Tawk.to Script-->
 
 	<!-- Hotjar Tracking Code for https://portal.muil.io/ -->
 	<script>
-		(function (h, o, t, j, a, r) {
+		const hotJarScript = (function (h, o, t, j, a, r) {
 			h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
 			h._hjSettings = { hjid: 1815479, hjsv: 6 };
 			a = o.getElementsByTagName('head')[0];
 			r = o.createElement('script'); r.async = 1;
 			r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
 			a.appendChild(r);
-		})(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+		});
+
+		isCloud && hotJarScript(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')
 	</script>
 </head>
 
