@@ -13,9 +13,9 @@ const Text = styled.div`
   }
 `;
 
-const detailsRenderer = ({ rowData: { type, from, to, cc, bcc, error, subject } }) => {
+const detailsRenderer = ({ rowData: { type, from, to, cc, bcc, errorMessage, subject } }) => {
   if (type !== 'email') {
-    return null;
+    return <Text isError>{errorMessage}</Text>;
   }
 
   return (
@@ -24,7 +24,7 @@ const detailsRenderer = ({ rowData: { type, from, to, cc, bcc, error, subject } 
         <span>To:</span> {to}
       </Text>
       <Text>{subject}</Text>
-      <Text isError>{error}</Text>
+      <Text isError>{errorMessage}</Text>
     </>
   );
 };
