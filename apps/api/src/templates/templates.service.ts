@@ -2,6 +2,7 @@ import { promisify } from 'util';
 import * as fs from 'fs';
 import * as path from 'path';
 import g from 'glob';
+import rimraf from 'rimraf';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TemplatesRendererService } from '@muil/templates-renderer';
@@ -72,7 +73,7 @@ export class TemplatesService {
       throw new NotFoundError(`Branch '${branch}' not found`);
     }
 
-    await fs.promises.unlink(templatesDirectory);
+    rimraf.sync(templatesDirectory);
   }
 
   async render(
