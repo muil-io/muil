@@ -23,7 +23,7 @@ export class AuthController {
     res.cookie('jwt', token, {
       httpOnly: true,
       secure: this.configService.get<string>('NODE_ENV') !== 'development',
-      sameSite: 'none',
+      sameSite: this.configService.get<string>('NODE_ENV') !== 'development' ? 'none' : undefined,
       maxAge: 3600000,
     });
 
@@ -38,7 +38,7 @@ export class AuthController {
     res.cookie('jwt', token, {
       httpOnly: true,
       secure: this.configService.get<string>('NODE_ENV') !== 'development',
-      sameSite: 'none',
+      sameSite: this.configService.get<string>('NODE_ENV') !== 'development' ? 'none' : undefined,
       maxAge: 3600000,
     });
 
