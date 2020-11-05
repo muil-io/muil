@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import CryptoJS from 'crypto-js';
 import { NotFoundError } from 'shared/exceptions';
 import { PrismaService } from 'shared/modules/prisma';
 import { CloudStorageCreateInput } from '@prisma/client';
@@ -10,7 +11,9 @@ export class AssetsSettingsService {
   constructor(private prisma: PrismaService, private configService: ConfigService) {}
 
   async get(projectId: string) {
-    return (await this.prisma.cloudStorage.findOne({ where: { projectId } })) ?? {};
+    const { awsSecretAccessKey, cloudinaryApiSecert, ...cloudStorage } =
+      (await this.prisma.cloudStorage.findOne({ where: { projectId } })) ?? {};
+    return cloudStorage;
   }
 
   async getUploadOptions(projectId: string, folder?: string) {
@@ -24,7 +27,10 @@ export class AssetsSettingsService {
         aws: {
           bucketName: assetsSettings.awsBucketName,
           accessKeyId: assetsSettings.awsAccessKeyId,
-          secretAccessKey: assetsSettings.awsSecretAccessKey,
+          secretAccessKey: CryptoJS.AES.decrypt(
+            assetsSettings.awsSecretAccessKey,
+            this.configService.get<string>('ENCRYPTION_KEY'),
+          ).toString(CryptoJS.enc.Utf8),
           folder,
         },
       };
@@ -33,7 +39,10 @@ export class AssetsSettingsService {
         cloudinary: {
           cloudName: assetsSettings.cloudinaryCloudName,
           apiKey: assetsSettings.cloudinaryApiKey,
-          apiSecret: assetsSettings.cloudinaryApiKey,
+          apiSecret: CryptoJS.AES.decrypt(
+            assetsSettings.cloudinaryApiSecert,
+            this.configService.get<string>('ENCRYPTION_KEY'),
+          ).toString(CryptoJS.enc.Utf8),
           folder,
         },
       };
@@ -63,11 +72,30 @@ export class AssetsSettingsService {
   }
 
   async set(data: CloudStorageCreateInput) {
-    return this.prisma.cloudStorage.upsert({
+    const {
+      awsSecretAccessKey,
+      cloudinaryApiSecert,
+      ...cloudStorage
+    } = await this.prisma.cloudStorage.upsert({
       where: { projectId: data.projectId },
-      update: data,
+      update: {
+        ...data,
+        awsSecretAccessKey: data.awsSecretAccessKey
+          ? CryptoJS.AES.encrypt(
+              data.awsSecretAccessKey,
+              this.configService.get<string>('ENCRYPTION_KEY'),
+            ).toString()
+          : undefined,
+        cloudinaryApiSecert: data.cloudinaryApiSecert
+          ? CryptoJS.AES.encrypt(
+              data.cloudinaryApiSecert,
+              this.configService.get<string>('ENCRYPTION_KEY'),
+            ).toString()
+          : undefined,
+      },
       create: data,
     });
+    return cloudStorage;
   }
 
   async delete(projectId: string) {
