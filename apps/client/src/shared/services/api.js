@@ -39,7 +39,8 @@ export const fetchSmtp = () => get('/smtp');
 
 export const updateProfile = (settings) => post('/auth/profile', settings);
 
-export const updatePassword = ({ password }) => post('/auth/password', { password });
+export const updatePassword = ({ oldPassword, newPassword }) =>
+  post('/auth/password', { oldPassword, newPassword });
 
 export const createProject = ({ projectName, projectId }) =>
   post(`/projects/${projectId}`, { projectName });
@@ -57,3 +58,9 @@ export const updateSmtp = ({ settings }) => post('/smtp', settings);
 export const deleteSmtp = () => httpDelete('/smtp');
 
 export const checkSmtp = ({ settings }) => post('/smtp/check', settings);
+
+export const fetchCloudStorage = () => get('/assetsSettings');
+
+export const updateCloudStorage = (settings) => post('/assetsSettings', settings);
+
+export const deleteCloudStorage = () => httpDelete('/assetsSettings');

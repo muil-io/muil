@@ -98,34 +98,24 @@ const Activities = () => {
         <Column
           label="Date"
           dataKey="datetime"
-          flexGrow={1.5}
-          width={1}
-          maxWidth={170}
+          width={170}
           cellRenderer={dateRenderer}
           columnType="date"
         />
         <Column
           label="Type"
           dataKey="type"
-          flexGrow={1}
-          width={1}
+          width={70}
           cellRenderer={typeRenderer}
           cellDataGetter={() => ({ theme })}
-          maxWidth={150}
           showOnSize="mobile"
         />
-        <Column
-          label="Template"
-          dataKey="displayName"
-          flexGrow={1.5}
-          width={1}
-          showOnSize="mobile"
-        />
+        <Column label="Template" dataKey="displayName" flexGrow={1} width={1} showOnSize="mobile" />
         <Column label="Branch" dataKey="branch" flexGrow={1} width={1} showOnSize="tablet" />
         <Column
           label="Details"
           dataKey="details"
-          flexGrow={1}
+          flexGrow={3}
           width={1}
           cellRenderer={detailsRenderer}
           showOnSize="tablet"
