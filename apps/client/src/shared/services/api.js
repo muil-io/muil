@@ -39,7 +39,8 @@ export const fetchSmtp = () => get('/smtp');
 
 export const updateProfile = (settings) => post('/auth/profile', settings);
 
-export const updatePassword = ({ password }) => post('/auth/password', { password });
+export const updatePassword = ({ oldPassword, newPassword }) =>
+  post('/auth/password', { oldPassword, newPassword });
 
 export const createProject = ({ projectName, projectId }) =>
   post(`/projects/${projectId}`, { projectName });
