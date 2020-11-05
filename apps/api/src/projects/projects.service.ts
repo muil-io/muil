@@ -17,7 +17,7 @@ export class ProjectsService {
     return (await this.get(projectId)) !== null;
   }
 
-  async create(project: Project): Promise<Projects> {
+  async create(project: Project) {
     const data = {
       id: uuid(),
       name: project.name ?? uuid(),
