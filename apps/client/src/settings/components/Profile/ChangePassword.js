@@ -67,9 +67,9 @@ const ChangePassword = () => {
   const { updatePassword } = useUser();
 
   const handleSubmit = useCallback(
-    async ({ password }) => {
+    async ({ oldPassword, password }) => {
       try {
-        await updatePassword({ password });
+        await updatePassword({ oldPassword, newPassword: password });
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
@@ -82,6 +82,21 @@ const ChangePassword = () => {
       onSubmit={handleSubmit}
       render={({ handleSubmit, submitting, submitError, pristine, errors }) => (
         <Container onSubmit={handleSubmit}>
+          <Field
+            name="oldPassword"
+            validate={required}
+            validateFields={[]}
+            type="password"
+            render={({ input, meta }) => (
+              <Input
+                {...input}
+                error={meta.error && meta.touched}
+                placeholder="Old Password"
+                title="Old Password"
+              />
+            )}
+          />
+
           <Field
             name="password"
             validate={composeValidators(required, validPassword)}

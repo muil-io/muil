@@ -18,9 +18,9 @@ const useUser = ({ enabled = false } = {}) => {
     onSuccess: (newData) => queryCache.setQueryData(storeKey, newData),
   });
 
-  const [updateProfile] = useMutation(api.updateProfile);
+  const [updateProfile] = useMutation(api.updateProfile, { throwOnError: true });
 
-  const [updatePassword] = useMutation(api.updatePassword);
+  const [updatePassword] = useMutation(api.updatePassword, { throwOnError: true });
 
   const [logout] = useMutation(api.logout, { onSuccess: () => queryCache.clear() });
 
