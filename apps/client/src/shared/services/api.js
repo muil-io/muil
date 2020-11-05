@@ -57,3 +57,9 @@ export const updateSmtp = ({ settings }) => post('/smtp', settings);
 export const deleteSmtp = () => httpDelete('/smtp');
 
 export const checkSmtp = ({ settings }) => post('/smtp/check', settings);
+
+export const fetchCloudStorage = () => get('/assetsSettings');
+
+export const updateCloudStorage = (settings) => post('/assetsSettings', settings);
+
+export const deleteCloudStorage = () => httpDelete('/assetsSettings');
