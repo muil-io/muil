@@ -25,9 +25,10 @@ model ApiKeys {
 }
 
 model Projects {
-  id   String @id
-  name String
-  plan String
+  id       String  @id
+  name     String
+  plan     String
+  hostname String?
 }
 
 model Logs {
