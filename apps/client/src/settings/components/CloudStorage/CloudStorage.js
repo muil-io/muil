@@ -176,12 +176,13 @@ const CloudStorage = () => {
                     name="awsSecretAccessKey"
                     validate={required}
                     validateFields={[]}
+                    type="password"
                     render={({ input, meta }) => (
                       <Input
                         {...input}
                         error={meta.error && meta.touched}
                         title="Secret Access Key"
-                        placeholder="Secret Access Key"
+                        placeholder={initialValues.type ? '********' : 'Secret Access Key'}
                       />
                     )}
                   />
@@ -222,12 +223,13 @@ const CloudStorage = () => {
                     name="cloudinaryApiSecert"
                     validate={required}
                     validateFields={[]}
+                    type="password"
                     render={({ input, meta }) => (
                       <Input
                         {...input}
                         error={meta.error && meta.touched}
                         title="Api Secert"
-                        placeholder="Api Secert"
+                        placeholder={initialValues.type ? '********' : 'Api Secert'}
                       />
                     )}
                   />
