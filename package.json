@@ -9,14 +9,13 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"apps/**/*.{ts,tsx,js,jsx}\" \"libs/**/*.ts\"",
+    "format": "prettier --write \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/api/src/main",
     "start:client": "yarn workspace @muil/client start",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\" --fix",
-    "lint-staged": "prettier --config .prettierrc --write \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\" && git add . && eslint \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\"",
     "lerna:publish": "lerna publish",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -50,17 +49,18 @@
     "eslint": "^7.11.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.20.1",
     "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "eslint-plugin-standard": "^4.0.1",
-    "husky": "^4.3.0",
+    "husky": ">=4",
     "jest": "^26.5.2",
     "jest-config": "^26.5.3",
     "lerna": "^3.22.1",
+    "lint-staged": ">=10",
     "prettier": "^2.1.2",
     "supertest": "^5.0.0",
     "ts-jest": "^26.4.1",
@@ -68,11 +68,6 @@
     "ts-node": "9.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.0.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
-    }
   },
   "jest": {
     "moduleFileExtensions": [
@@ -97,5 +92,14 @@
       "@muil/cloud-storage/(.*)": "<rootDir>/libs/cloud-storage/src/$1",
       "@muil/cloud-storage": "<rootDir>/libs/cloud-storage/src"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache",
+    "*.{ts,tsx,js,jsx}": "prettier --write"
   }
 }
