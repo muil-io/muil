@@ -64,3 +64,7 @@ export const fetchCloudStorage = () => get('/assetsSettings');
 export const updateCloudStorage = (settings) => post('/assetsSettings', settings);
 
 export const deleteCloudStorage = () => httpDelete('/assetsSettings');
+
+export const fetchHostname = () => get('/hostname');
+
+export const updateHostname = (settings) => post('/hostname', settings);
