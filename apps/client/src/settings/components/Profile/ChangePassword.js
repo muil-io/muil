@@ -1,66 +1,15 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { FORM_ERROR } from 'final-form';
-import { Form, Field } from 'react-final-form';
-import {
-  flexColumn,
-  FlexColumn,
-  Button,
-  Input as BaseInput,
-  Spinner,
-  header3,
-} from 'shared/components';
-import media from 'style/media';
+import { Field } from 'react-final-form';
+import { Input as BaseInput } from 'shared/components';
 import { composeValidators, required, validPassword, confirmPassword } from 'auth/utils/form';
 import useUser from 'shared/hooks/useUser';
-
-const Container = styled.form`
-  ${flexColumn};
-  margin: 0;
-
-  > div {
-    width: 100%;
-  }
-
-  ${media.tablet`
-		> div {
-			width: 50%;
-			padding: 0 10px 10px 0;
-			box-sizing: border-box;
-		}
-	`}
-`;
+import Layout from '../Layout';
 
 const Input = styled(BaseInput)`
   width: 100%;
   margin: 8px 0;
-`;
-
-const Buttons = styled(FlexColumn)`
-  width: 100% !important;
-
-  ${media.tablet`
-		flex-direction: row;
-		align-items: center;
-		margin-top: 20px;
-
-		${Button} {
-			width: 140px;
-			margin-right: 12px;
-		}
-	`}
-`;
-
-const Errors = styled.div`
-  ${header3};
-  color: ${({ theme }) => theme.colors.error};
-  text-align: left;
-  margin-top: 10px;
-  width: 100% !important;
-
-  ${media.tablet`
-		margin-top: 0;
-	`}
 `;
 
 const ChangePassword = () => {
@@ -78,10 +27,9 @@ const ChangePassword = () => {
   );
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      render={({ handleSubmit, submitting, submitError, pristine, errors }) => (
-        <Container onSubmit={handleSubmit}>
+    <Layout title="Change Password" onSubmit={handleSubmit} showErrorsList>
+      {() => (
+        <>
           <Field
             name="oldPassword"
             validate={required}
@@ -126,18 +74,9 @@ const ChangePassword = () => {
               />
             )}
           />
-
-          <Buttons>
-            <Button disabled={submitting}>{submitting ? <Spinner /> : 'Update'}</Button>
-          </Buttons>
-
-          <Errors>
-            {submitError && <div>{submitError}</div>}
-            {!pristine && Object.entries(errors).map(([key, error]) => <li key={key}>{error}</li>)}
-          </Errors>
-        </Container>
+        </>
       )}
-    />
+    </Layout>
   );
 };
 
