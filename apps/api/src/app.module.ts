@@ -32,7 +32,7 @@ import { SmtpModule } from 'smtp';
       global: true,
     },
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client'),
+      rootPath: join(__dirname, '..', '..', 'client'),
     }),
     PrismaModule,
     ApiKeysModule,
