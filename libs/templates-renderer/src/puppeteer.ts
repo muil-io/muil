@@ -1,4 +1,4 @@
-import * as puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer-core';
 
 const pageSize = {
   A0: { height: '118.9cm', width: '84.1cm' },
