@@ -22,8 +22,8 @@ export class AuthController {
 
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: this.configService.get<string>('NODE_ENV') !== 'development',
-      sameSite: this.configService.get<string>('NODE_ENV') !== 'development' ? 'none' : undefined,
+      secure: this.configService.get<string>('HTTP_SECURE') === 'true',
+      sameSite: this.configService.get<string>('HTTP_SECURE') === 'true' ? 'none' : undefined,
       maxAge: 3600000,
     });
 
@@ -37,8 +37,8 @@ export class AuthController {
 
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: this.configService.get<string>('NODE_ENV') !== 'development',
-      sameSite: this.configService.get<string>('NODE_ENV') !== 'development' ? 'none' : undefined,
+      secure: this.configService.get<string>('HTTP_SECURE') === 'true',
+      sameSite: this.configService.get<string>('HTTP_SECURE') === 'true' ? 'none' : undefined,
       maxAge: 3600000,
     });
 
@@ -50,8 +50,8 @@ export class AuthController {
   async logout(@Res() res: Response) {
     res.cookie('jwt', '', {
       httpOnly: true,
-      secure: this.configService.get<string>('NODE_ENV') !== 'development',
-      sameSite: this.configService.get<string>('NODE_ENV') !== 'development' ? 'none' : undefined,
+      secure: this.configService.get<string>('HTTP_SECURE') === 'true',
+      sameSite: this.configService.get<string>('HTTP_SECURE') === 'true' ? 'none' : undefined,
       maxAge: 0,
     });
     return res.status(HttpStatus.OK).send();
