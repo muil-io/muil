@@ -25,5 +25,6 @@ RUN yarn install --prod
 COPY --from=builder /app/dist .
 COPY --from=builder /app/prisma ./prisma
 
+RUN yarn prisma:generate
 
 CMD [ "node", "./apps/api/src/main" ]

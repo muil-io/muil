@@ -1,1 +1,1 @@
-export default from './Hostname';
+export default from './HostName';
