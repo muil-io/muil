@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "webpack serve --mode development --env development"
+    "start": "webpack serve --mode development --env development",
+    "build": "cross-env NODE_ENV=production webpack"
   },
   "dependencies": {
     "axios": "^0.21.0",
@@ -37,6 +38,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-transform-imports": "^2.0.0",
+    "cross-env": "^7.0.2",
     "css-loader": "^5.0.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
