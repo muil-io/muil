@@ -1,7 +1,9 @@
+import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { JwtModule } from '@nestjs/jwt';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { PrismaModule } from 'shared/modules/prisma';
 import { ApiKeysModule } from 'apiKeys';
 import { AssetsModule } from 'assets';
@@ -29,6 +31,9 @@ import { SmtpModule } from 'smtp';
       }),
       global: true,
     },
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
     PrismaModule,
     ApiKeysModule,
     AssetsModule,

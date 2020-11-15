@@ -9,6 +9,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "build:client": "yarn workspace @muil/client build",
     "format": "prettier --write \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -22,8 +23,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/api/test/jest-e2e.json",
-    "prisma:generate": "npx prisma introspect && npx prisma generate",
-    "postinstall": "npm run prisma:generate"
+    "prisma:generate": "npx prisma introspect && npx prisma generate"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -99,6 +99,9 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": ["eslint", "prettier --write"]
+    "*.{ts,tsx,js,jsx}": [
+      "eslint",
+      "prettier --write"
+    ]
   }
 }

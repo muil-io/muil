@@ -48,7 +48,12 @@ export class AuthController {
   @Post('logout')
   @UseGuards(AuthGuard)
   async logout(@Res() res: Response) {
-    res.cookie('jwt', '', { maxAge: 0 });
+    res.cookie('jwt', '', {
+      httpOnly: true,
+      secure: this.configService.get<string>('NODE_ENV') !== 'development',
+      sameSite: this.configService.get<string>('NODE_ENV') !== 'development' ? 'none' : undefined,
+      maxAge: 0,
+    });
     return res.status(HttpStatus.OK).send();
   }
 
