@@ -3,6 +3,7 @@ import {
   UseGuards,
   UseInterceptors,
   Req,
+  Res,
   Param,
   Body,
   Get,
@@ -11,8 +12,10 @@ import {
   Delete,
   UploadedFiles,
   Query,
+  HttpStatus,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 import { AuthGuard, RenderLimitGuard, AllowApiKey } from 'shared/guards';
 import { EmailOptionsDto } from './templates.dto';
 import { TemplatesService } from './templates.service';
@@ -77,17 +80,35 @@ export class TemplatesController {
   @UseGuards(AuthGuard, RenderLimitGuard)
   async renderTemplate(
     @Req() { user: { projectId } },
+    @Res() res: Response,
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
     @Query() { type, inlineCss, minifyHtml, pdfFormat },
     @Body() { props },
   ) {
-    return this.templatesService.render(projectId, branch, templateId, props, {
+    const output = await this.templatesService.render(projectId, branch, templateId, props, {
       type,
       inlineCss: inlineCss !== 'false',
       minifyHtml: minifyHtml !== 'false',
       pdfFormat,
     });
+
+    switch (type) {
+      case 'html':
+        res.set('Content-Type', 'text/html');
+        break;
+      case 'png':
+        res.set('Content-Type', 'image/png');
+        break;
+      case 'pdf':
+        res.set('Content-Type', 'application/pdf');
+        break;
+      default:
+        res.set('Content-Type', 'text/html');
+        break;
+    }
+
+    return res.status(HttpStatus.OK).send(output);
   }
 
   @Get('/:branch?/:templateId')
@@ -95,14 +116,32 @@ export class TemplatesController {
   @UseGuards(AuthGuard, RenderLimitGuard)
   async renderTemplateGet(
     @Req() { user: { projectId } },
+    @Res() res: Response,
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
     @Query() { type, inlineCss, minifyHtml, ...props },
   ) {
-    return this.templatesService.render(projectId, branch, templateId, props, {
+    const output = await this.templatesService.render(projectId, branch, templateId, props, {
       type,
       inlineCss: inlineCss !== 'false',
       minifyHtml: minifyHtml !== 'false',
     });
+
+    switch (type) {
+      case 'html':
+        res.set('Content-Type', 'text/html');
+        break;
+      case 'png':
+        res.set('Content-Type', 'image/png');
+        break;
+      case 'pdf':
+        res.set('Content-Type', 'application/pdf');
+        break;
+      default:
+        res.set('Content-Type', 'text/html');
+        break;
+    }
+
+    return res.status(HttpStatus.OK).send(output);
   }
 }
