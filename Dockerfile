@@ -17,7 +17,6 @@ WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
 COPY apps/api/package.json ./apps/api/package.json
-COPY apps/client/package.json ./apps/client/package.json
 COPY libs/cloud-storage/package.json ./libs/cloud-storage/package.json
 COPY libs/templates-renderer/package.json ./libs/templates-renderer/package.json
 RUN yarn install --prod
