@@ -25,6 +25,9 @@ export const logout = () => post('/auth/logout');
 
 export const forgotPassword = ({ email }) => post('/auth/forgotPassword', { email });
 
+export const resetPassword = ({ newPassword, token }) =>
+  post('/auth/resetPassword', { newPassword, token });
+
 export const fetchProjects = () => get('/projects');
 
 export const fetchActivities = (from) => get('/logs', { from });
