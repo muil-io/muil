@@ -87,7 +87,7 @@ export class AuthService {
     return user;
   }
 
-  async sendResetPasswordEmail(email: string) {
+  async sendResetPasswordEmail(url: string, email: string) {
     const userExists = await this.getUser({ email });
     if (!userExists) {
       return;
@@ -100,13 +100,14 @@ export class AuthService {
     });
 
     const html = `
-      Hello,
-      Please follow this link to reset your Muil account password
-      ${token}
+      Hello,<br/>
+      Please follow this link to reset your Muil account password<br/>
+
+      <a href='${url}/#/reset/${token}'>Reset your password here</a>.<br/><br/>
     
-      If you didn’t ask to reset your password, you can ignore this email.
+      If you didn’t ask to reset your password, you can ignore this email. <br/>
     
-      Thanks,
+      Thanks,<br/>
       Muil
     `;
 

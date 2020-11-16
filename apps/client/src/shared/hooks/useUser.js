@@ -22,6 +22,8 @@ const useUser = ({ enabled = false } = {}) => {
 
   const [updatePassword] = useMutation(api.updatePassword, { throwOnError: true });
 
+  const [resetPassword] = useMutation(api.resetPassword, { throwOnError: true });
+
   const [logout] = useMutation(api.logout, { onSuccess: () => queryCache.clear() });
 
   return {
@@ -32,6 +34,7 @@ const useUser = ({ enabled = false } = {}) => {
     register,
     updateProfile,
     updatePassword,
+    resetPassword,
     logout,
   };
 };

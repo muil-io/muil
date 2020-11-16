@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import useUser from 'shared/hooks/useUser';
 import { FlexCenter, Spinner } from 'shared/components';
 import BaseAppShell from './AppShell/AppShell';
-import { Register, Login, ForgotPassword, SuccessfulForgotPassword } from 'auth';
+import { Register, Login, ForgotPassword, SuccessfulForgotPassword, ResetPassword } from 'auth';
 
 const LoaderWrapper = styled(FlexCenter)`
   height: 100vh;
@@ -34,6 +34,7 @@ const App = () => (
     <Route path="/login" component={Login} />
     <Route path="/forgot/success" component={SuccessfulForgotPassword} />
     <Route path="/forgot" component={ForgotPassword} />
+    <Route path="/reset/:token" component={ResetPassword} />
 
     <Route path="/">
       <AppShell />
