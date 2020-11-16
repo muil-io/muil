@@ -1,6 +1,6 @@
 export type EmailOptions = {
   subject: string;
-  from: string;
+  from?: string;
   to: string | string[];
   cc?: string | string[];
   bcc?: string | string[];
