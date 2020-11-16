@@ -3,7 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { LocalAuthGuard, AuthGuard } from 'shared/guards';
-import { CreateUserDto, UpdateUserDto, UpdatePasswordDto } from './auth.dto';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UpdatePasswordDto,
+  ResetPasswordDto,
+  ForgotPasswordDto,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -77,5 +83,15 @@ export class AuthController {
       updatePasswordDto.oldPassword,
       updatePasswordDto.newPassword,
     );
+  }
+
+  @Post('resetPassword')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.authService.resetPassword(resetPasswordDto.token, resetPasswordDto.newPassword);
+  }
+
+  @Post('forgotPassword')
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.sendResetPasswordEmail(forgotPasswordDto.email);
   }
 }

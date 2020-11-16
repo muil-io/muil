@@ -31,3 +31,16 @@ export class UpdatePasswordDto {
   @IsString()
   readonly newPassword: string;
 }
+
+export class ResetPasswordDto {
+  @IsString()
+  readonly token: string;
+
+  @IsString()
+  readonly newPassword: string;
+}
+
+export class ForgotPasswordDto {
+  @IsString()
+  readonly email: string;
+}

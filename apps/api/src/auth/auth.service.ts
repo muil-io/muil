@@ -1,15 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { v4 as uuid } from 'uuid';
 import { ProjectsService } from 'projects/projects.service';
 import { PrismaService } from 'shared/modules/prisma';
 import { ConflictError } from 'shared/exceptions';
+import { MailerService } from 'shared/modules/mailer';
 import { encryptPassword, comparePassword } from 'shared/utils/password';
+import { SmtpService } from 'smtp';
 import { User } from './types';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private projectsService: ProjectsService) {}
+  constructor(
+    private prisma: PrismaService,
+    private projectsService: ProjectsService,
+    private jwtService: JwtService,
+    private mailerService: MailerService,
+    private smtpService: SmtpService,
+  ) {}
 
   async getUser(query: any): Promise<User> {
     try {
@@ -68,6 +77,54 @@ export class AuthService {
     if (!storedPassword || !(await comparePassword(oldPassword, storedPassword))) {
       throw new UnauthorizedException();
     }
+
+    const hash = await encryptPassword(newPassword);
+    const { password, ...user } = await this.prisma.users.update({
+      where: { id },
+      data: { password: hash },
+    });
+
+    return user;
+  }
+
+  async sendResetPasswordEmail(email: string) {
+    const userExists = await this.getUser({ email });
+    if (!userExists) {
+      return;
+    }
+
+    const token = this.jwtService.sign({
+      id: userExists.id,
+      email: userExists.email,
+      projectId: userExists.projectId,
+    });
+
+    const html = `
+      Hello,
+      Please follow this link to reset your Muil account password
+      ${token}
+    
+      If you didn’t ask to reset your password, you can ignore this email.
+    
+      Thanks,
+      Muil
+    `;
+
+    const smtpOptions = await this.smtpService.getConfiguration(userExists.projectId);
+
+    this.mailerService.send(
+      html,
+      null,
+      {
+        to: userExists.email,
+        subject: 'Reset your password for Muil',
+      },
+      smtpOptions,
+    );
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    const { id } = this.jwtService.verify(token);
 
     const hash = await encryptPassword(newPassword);
     const { password, ...user } = await this.prisma.users.update({
