@@ -4,6 +4,6 @@
     "declaration": true,
     "outDir": "../../dist/libs/templates-renderer/src"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "package.json"],
   "exclude": ["node_modules", "a", "test", "**/*spec.ts"]
 }
