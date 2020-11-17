@@ -91,7 +91,7 @@ const renderTemplate = async ({
     shadowSupport,
   });
 
-  if (inlineCss) {
+  if (type === 'html' && inlineCss) {
     html = juice(html);
   }
 

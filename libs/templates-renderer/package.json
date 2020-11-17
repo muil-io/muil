@@ -1,6 +1,6 @@
 {
   "name": "@muil/templates-renderer",
-  "version": "1.0.0",
+  "version": "1.0.26",
   "license": "MIT",
   "main": "dist/libs/templates-renderer/src/index.js",
   "scripts": {
