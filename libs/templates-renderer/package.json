@@ -1,8 +1,11 @@
 {
   "name": "@muil/templates-renderer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "index.js",
+  "files": [
+    "../../dist/libs/templates-renderer/src/**/*"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublish": "tsc"
