@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "index.js",
   "files": [
-    "../../dist/libs/templates-renderer/src/**/*"
+    "dist/libs/templates-renderer/src/**/*"
   ],
   "scripts": {
     "build": "tsc",
