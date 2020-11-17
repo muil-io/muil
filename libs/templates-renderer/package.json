@@ -1,10 +1,11 @@
 {
   "name": "@muil/templates-renderer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
-  "main": "dist/libs/templates-renderer/src/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "tsc"
   },
   "dependencies": {
     "html-minifier": "^4.0.0",
