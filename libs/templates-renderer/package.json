@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "index.js",
   "files": [
-    "../../test/**/*"
+    "./dist/**/*"
   ],
   "scripts": {
     "build": "tsc",
