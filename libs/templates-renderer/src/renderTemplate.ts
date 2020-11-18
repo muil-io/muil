@@ -80,7 +80,10 @@ const renderTemplate = async ({
   const ReactElement = await createReactElement(templatePath, props);
   const content = renderToStaticMarkup(ReactElement);
 
-  const templateCss = templateCssPath ? fs.readFileSync(templateCssPath, 'utf-8') : null;
+  const templateCss =
+    templateCssPath && fs.existsSync(templateCssPath)
+      ? fs.readFileSync(templateCssPath, 'utf-8')
+      : null;
 
   let html = emailTemplate({
     css: templateCss,
