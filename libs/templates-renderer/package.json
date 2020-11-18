@@ -1,8 +1,8 @@
 {
   "name": "@muil/templates-renderer",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
     "dist/**/*"
   ],
