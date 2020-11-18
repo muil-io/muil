@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/libs/templates-renderer/src"
+    "outDir": "./dist"
   },
   "include": ["src/**/*", "package.json"],
-  "exclude": ["node_modules", "a", "test", "**/*spec.ts"]
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }
