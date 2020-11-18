@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@muil/cloud-storage": "1.0.0",
-    "@muil/templates-renderer": "1.0.0",
+    "@muil/cloud-storage": "1.2.0",
+    "@muil/templates-renderer": "1.2.0",
     "@nestjs/config": "^0.5.0",
     "@nestjs/jwt": "^7.1.0",
     "@nestjs/serve-static": "^2.1.3",
