@@ -14,6 +14,7 @@ module.exports = {
     jest: true,
   },
   rules: {
+    radix: 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -30,7 +31,16 @@ module.exports = {
         ],
       },
     ],
-    radix: 'off',
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'index', 'parent', 'sibling'],
+        pathGroups: [
+          { pattern: '@muil/**', group: 'index' },
+          { pattern: 'shared/**', group: 'object' },
+        ],
+      },
+    ],
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'import/no-named-as-default': 'off',
