@@ -2018,29 +2018,6 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@muil/cloud-storage@1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@muil/cloud-storage/-/cloud-storage-1.1.8.tgz#2fe945bdc571da975b798ae4b223cb3ad237be1b"
-  integrity sha512-5z6tt58IeF7sI/1mF38stFyZWI3w69oo8r17CB8Gh8egwyVOs8AZ2geYADxdc3IMFaZUijvUapDy0VG2QQNkBg==
-  dependencies:
-    aws-sdk "^2.781.0"
-    cloudinary "^1.23.0"
-    file-type "^16.0.0"
-    streamifier "^0.1.1"
-    uuid "^8.3.1"
-
-"@muil/templates-renderer@1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@muil/templates-renderer/-/templates-renderer-1.1.8.tgz#11381f92b3460ea76e580b2a09ef462d4f9f0a59"
-  integrity sha512-zG8RfGVfKSVRph/Rx9feNk4qzN41dOTr5QJaVribvIl9kYzz5eGdySPMQOtG//Dl7DhNAqjlL4HavwNSJhcr+Q==
-  dependencies:
-    html-minifier "^4.0.0"
-    juice "^7.0.0"
-    puppeteer-core "^5.3.1"
-    request "^2.88.2"
-    uuid "^8.3.1"
-    vm2 "^3.9.2"
-
 "@nestjs/cli@^7.0.0":
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-7.5.2.tgz#2a5fd61919ea3bcb7bbf62c0ac8e034ad1b67fe5"
