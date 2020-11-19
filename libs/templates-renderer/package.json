@@ -7,8 +7,9 @@
     "src"
   ],
   "scripts": {
+    "prebuild": "rimraf dist",
     "build": "tsc",
-    "prepublish": "rimraf dist && mv src temp_src && npm run build && cp -r ../../dist/libs/templates-renderer/src src",
+    "prepublish": "npm run build && mv src temp_src && cp -r ../../dist/libs/templates-renderer/dist src",
     "postpublish": "rimraf dist && mv temp_src src"
   },
   "dependencies": {
@@ -31,5 +32,6 @@
     "@types/html-minifier": "^4.0.0",
     "@types/puppeteer-core": "^2.0.0",
     "@types/require-from-string": "^1.2.0"
-  }
+  },
+  "gitHead": "2f45c65219d64c0e98d43e730a7b8a2c4b191903"
 }
