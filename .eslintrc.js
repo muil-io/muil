@@ -34,7 +34,7 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'index', 'parent', 'sibling'],
+        groups: ['builtin', 'external', 'index', 'object', 'parent', 'sibling'],
         pathGroups: [
           { pattern: '@muil/**', group: 'index' },
           { pattern: 'shared/**', group: 'object' },
