@@ -1,6 +1,6 @@
 {
   "name": "@muil/cloud-storage",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublish": "tsc && cp -r ../../dist/libs/cloud-storage/dist dist"
+    "prepublish": "tsc && cp -r ../../dist/libs/cloud-storage/src dist"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.3",
