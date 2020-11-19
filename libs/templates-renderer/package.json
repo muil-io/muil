@@ -1,6 +1,6 @@
 {
   "name": "@muil/templates-renderer",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "license": "MIT",
   "main": "dist/index.js",
   "files": [
@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublish": "cp -r ../../dist/libs/templates-renderer/src dist"
+    "prepublish": "rimraf dist && cp -r ../../dist/libs/templates-renderer/src dist",
+    "postpublish": "rimraf dist"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.3",
