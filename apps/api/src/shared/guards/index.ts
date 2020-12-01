@@ -75,7 +75,7 @@ export class AuthGuard implements CanActivate {
 
         const { apiKeyHash, enabled } = await this.prisma.apiKeys.findOne({ where: { id } });
         if (!enabled || apiKeyHash !== sha512(apiKey).toString()) {
-          return false;
+          throw new UnauthorizedException();
         }
 
         request.user = {
@@ -84,7 +84,7 @@ export class AuthGuard implements CanActivate {
         return true;
       }
 
-      return false;
+      throw new UnauthorizedException();
     } catch (err) {
       throw new UnauthorizedException();
     }
