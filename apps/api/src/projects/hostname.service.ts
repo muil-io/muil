@@ -9,7 +9,7 @@ export class HostnameService {
   async get(projectId: string) {
     return {
       hostname:
-        (await this.prisma.projects.findOne({ where: { id: projectId } })).hostname ||
+        (await this.prisma.projects.findOne({ where: { id: projectId } }))?.hostname ||
         this.configService.get<string>('HOST_NAME'),
     };
   }
