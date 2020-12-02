@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { json } from 'body-parser';
 import { ExceptionsInterceptor } from 'shared/interceptor/ExceptionsInterceptor';
 import { AppModule } from './app.module';
 
@@ -10,6 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(cookieParser());
+  app.use(json({ limit: '10mb' }));
 
   const corsOrigin = app.get('ConfigService').get('CORS_ORIGIN');
   if (corsOrigin) {

@@ -2018,6 +2018,35 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@muil/cloud-storage@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@muil/cloud-storage/-/cloud-storage-1.3.0.tgz#3652a5d8de62f38dd11e9ea375410283fff208ab"
+  integrity sha512-QH68CCfgp3IBcQIwA9JkD1jd+DxIHYHJ1pbJT/vw9ZwhRGcZpUX7PXlhY6NFUDHIO0+mnNXa2hgYi6h4KejpzA==
+  dependencies:
+    "@nestjs/common" "^7.5.3"
+    aws-sdk "^2.781.0"
+    cloudinary "^1.23.0"
+    file-type "^16.0.0"
+    reflect-metadata "^0.1.13"
+    rxjs "^6.5.4"
+    streamifier "^0.1.1"
+    uuid "^8.3.1"
+
+"@muil/templates-renderer@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@muil/templates-renderer/-/templates-renderer-1.3.0.tgz#93fbb7b1cee5e1cc380613132896be164b03a4e7"
+  integrity sha512-UXdCtSDIsIY4WB5NZFsPjK5KCv3xn433mpUQXGpUTbfMJsWLh5Hsco06hlYRpdi6e48K24MrYpMwVBWJXYDrUw==
+  dependencies:
+    "@nestjs/common" "^7.5.3"
+    html-minifier "^4.0.0"
+    juice "^7.0.0"
+    puppeteer-core "^5.3.1"
+    reflect-metadata "^0.1.13"
+    request "^2.88.2"
+    rxjs "^6.5.4"
+    uuid "^8.3.1"
+    vm2 "^3.9.2"
+
 "@nestjs/cli@^7.0.0":
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-7.5.2.tgz#2a5fd61919ea3bcb7bbf62c0ac8e034ad1b67fe5"
@@ -3972,7 +4001,7 @@ bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.5.5:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
-body-parser@1.19.0:
+body-parser@1.19.0, body-parser@^1.19.0:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.19.0.tgz#96b2709e57c9c4e09a6fd66a8fd979844f69f08a"
   integrity sha512-dhEPs72UPbDnAQJ9ZKMNTP6ptJaionhP5cBb541nXPlW60Jepo9RV/a4fX4XWW9CuFNK22krhrj1+rgzifNCsw==
