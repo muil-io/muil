@@ -34,8 +34,11 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'index', 'object', 'parent', 'sibling'],
+        groups: ['builtin', 'external', 'index', 'object', 'internal', 'parent', 'sibling'],
         pathGroups: [
+          { pattern: 'react', group: 'external', position: 'before' },
+          { pattern: 'react-dom', group: 'external', position: 'before' },
+          { pattern: 'styled-components', group: 'external', position: 'before' },
           { pattern: '@muil/**', group: 'index' },
           { pattern: 'shared/**', group: 'object' },
         ],
