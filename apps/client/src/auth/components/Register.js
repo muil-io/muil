@@ -89,7 +89,7 @@ const Register = () => {
               validate={required}
               validateFields={[]}
               render={({ input, meta }) => (
-                <Input {...input} error={meta.error && meta.touched} placeholder="First Name" />
+                <Input {...input} error={meta.error && meta.touched} placeholder="Full Name" />
               )}
             />
 
