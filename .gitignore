@@ -39,4 +39,5 @@ lerna-debug.log*
 
 .npmrc
 
+.dockerignore
 Dockerfile
