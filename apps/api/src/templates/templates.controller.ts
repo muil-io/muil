@@ -26,6 +26,7 @@ export class TemplatesController {
   constructor(private readonly templatesService: TemplatesService) {}
 
   @Get()
+  @AllowApiKey()
   @UseGuards(AuthGuard)
   async get(@Req() { user: { projectId } }) {
     return this.templatesService.findAll(projectId);
@@ -44,6 +45,7 @@ export class TemplatesController {
   }
 
   @Delete('/:branch?')
+  @AllowApiKey()
   @UseGuards(AuthGuard)
   async delete(@Req() { user: { projectId } }, @Param('branch') branch: string) {
     await this.templatesService.delete(projectId, branch);
