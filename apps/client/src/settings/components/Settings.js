@@ -10,7 +10,7 @@ const TABS = [
   { label: 'Api Keys', value: 'apiKeys' },
   { label: 'SMTP', value: 'smtp' },
   { label: 'Cloud Storage', value: 'cloudStorage' },
-  { label: 'Host Name', value: 'hostname' },
+  !process.env.IS_CLOUD ? { label: 'Host Name', value: 'hostname' } : undefined,
   { label: 'Profile', value: 'profile' },
 ];
 
@@ -19,7 +19,7 @@ const Settings = () => (
     <ApiKeys tab="apiKeys" />
     <SMTP tab="smtp" />
     <CloudStorage tab="cloudStorage" />
-    <Hostname tab="hostname" />
+    {!process.env.IS_CLOUD && <Hostname tab="hostname" />}
     <Profile tab="profile" />
   </Page>
 );

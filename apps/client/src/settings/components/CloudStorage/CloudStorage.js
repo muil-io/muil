@@ -48,7 +48,7 @@ const CloudStorage = () => {
             validateFields={[]}
             render={({ input, meta }) => (
               <TypeDropDown
-                placeHolder="Select Type"
+                placeHolder={process.env.IS_CLOUD ? "Muil's service" : 'Select Type'}
                 selectedValue={input.value}
                 onChange={({ value }) => input.onChange(value)}
                 options={[
