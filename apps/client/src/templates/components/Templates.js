@@ -53,14 +53,18 @@ const Templates = () => {
   return (
     <Page
       title="Templates"
-      renderRight={() => (
-        <BranchDropDown
-          placeHolder="Select..."
-          selectedValue={selectedBranch}
-          options={branches}
-          onChange={({ value }) => setSelectedBranch(value)}
-        />
-      )}
+      renderRight={
+        branches.length === 0
+          ? undefined
+          : () => (
+              <BranchDropDown
+                placeHolder="Select..."
+                selectedValue={selectedBranch}
+                options={branches}
+                onChange={({ value }) => setSelectedBranch(value)}
+              />
+            )
+      }
     >
       <DeleteBranch selectedBranch={selectedBranch} onDeleteBranch={deleteBranch} />
       <Table

@@ -53,7 +53,7 @@ const Page = ({ title, tabs, renderRight, children }) => {
 
       {tabs && (
         <Tabs>
-          {tabs.map(({ label, value }) => (
+          {tabs.filter(Boolean).map(({ label, value }) => (
             <Tab key={value} isActive={activeTab === value} onClick={() => setActiveTab(value)}>
               {label}
             </Tab>
