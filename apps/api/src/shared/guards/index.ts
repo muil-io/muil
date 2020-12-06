@@ -1,11 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  SetMetadata,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Inject, Injectable, SetMetadata, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import sha512 from 'crypto-js/sha512';
@@ -27,18 +20,18 @@ export class LocalAuthGuard implements CanActivate {
         where: { email },
       });
       if (!user) {
-        throw new UnauthorizedException();
+        return false;
       }
 
       if (!(await comparePassword(password, storedPassword))) {
-        throw new UnauthorizedException();
+        return false;
       }
 
       request.user = user;
 
       return true;
     } catch (err) {
-      throw new UnauthorizedException();
+      return false;
     }
   }
 }
@@ -75,7 +68,7 @@ export class AuthGuard implements CanActivate {
 
         const { apiKeyHash, enabled } = await this.prisma.apiKeys.findOne({ where: { id } });
         if (!enabled || apiKeyHash !== sha512(apiKey).toString()) {
-          throw new UnauthorizedException();
+          return false;
         }
 
         request.user = {
@@ -84,9 +77,9 @@ export class AuthGuard implements CanActivate {
         return true;
       }
 
-      throw new UnauthorizedException();
+      return false;
     } catch (err) {
-      throw new UnauthorizedException();
+      return false;
     }
   }
 }

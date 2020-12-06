@@ -26,5 +26,5 @@ export class CloudStorageSetDto {
 
   @IsString()
   @IsOptional()
-  readonly cloudinaryApiSecert?: string | null;
+  readonly cloudinaryApiSecret?: string | null;
 }
