@@ -37,10 +37,9 @@ export class SmtpService {
     if (smtp?.host) {
       return {
         ...smtp,
-        pass: CryptoJS.AES.decrypt(
-          smtp.pass,
-          this.configService.get<string>('ENCRYPTION_KEY'),
-        ).toString(CryptoJS.enc.Utf8),
+        pass: CryptoJS.AES.decrypt(smtp.pass, this.configService.get<string>('SECRET')).toString(
+          CryptoJS.enc.Utf8,
+        ),
         secure: smtp.secure === 1,
       };
     }
@@ -65,19 +64,13 @@ export class SmtpService {
       update: {
         projectId,
         ...smtp,
-        pass: CryptoJS.AES.encrypt(
-          smtp.pass,
-          this.configService.get<string>('ENCRYPTION_KEY'),
-        ).toString(),
+        pass: CryptoJS.AES.encrypt(smtp.pass, this.configService.get<string>('SECRET')).toString(),
         secure: smtp.secure ? 1 : 0,
       },
       create: {
         projectId,
         ...smtp,
-        pass: CryptoJS.AES.encrypt(
-          smtp.pass,
-          this.configService.get<string>('ENCRYPTION_KEY'),
-        ).toString(),
+        pass: CryptoJS.AES.encrypt(smtp.pass, this.configService.get<string>('SECRET')).toString(),
         secure: smtp.secure ? 1 : 0,
       },
     });
