@@ -11,7 +11,7 @@ export class AssetsSettingsService {
   constructor(private prisma: PrismaService, private configService: ConfigService) {}
 
   async get(projectId: string) {
-    const { awsSecretAccessKey, cloudinaryApiSecert, ...cloudStorage } =
+    const { awsSecretAccessKey, cloudinaryApiSecret, ...cloudStorage } =
       (await this.prisma.cloudStorage.findOne({ where: { projectId } })) ?? {};
     return cloudStorage;
   }
@@ -29,7 +29,7 @@ export class AssetsSettingsService {
           accessKeyId: assetsSettings.awsAccessKeyId,
           secretAccessKey: CryptoJS.AES.decrypt(
             assetsSettings.awsSecretAccessKey,
-            this.configService.get<string>('ENCRYPTION_KEY'),
+            this.configService.get<string>('SECRET'),
           ).toString(CryptoJS.enc.Utf8),
           folder,
         },
@@ -40,8 +40,8 @@ export class AssetsSettingsService {
           cloudName: assetsSettings.cloudinaryCloudName,
           apiKey: assetsSettings.cloudinaryApiKey,
           apiSecret: CryptoJS.AES.decrypt(
-            assetsSettings.cloudinaryApiSecert,
-            this.configService.get<string>('ENCRYPTION_KEY'),
+            assetsSettings.cloudinaryApiSecret,
+            this.configService.get<string>('SECRET'),
           ).toString(CryptoJS.enc.Utf8),
           folder,
         },
@@ -74,7 +74,7 @@ export class AssetsSettingsService {
   async set(data: CloudStorageCreateInput) {
     const {
       awsSecretAccessKey,
-      cloudinaryApiSecert,
+      cloudinaryApiSecret,
       ...cloudStorage
     } = await this.prisma.cloudStorage.upsert({
       where: { projectId: data.projectId },
@@ -83,13 +83,13 @@ export class AssetsSettingsService {
         awsSecretAccessKey: data.awsSecretAccessKey
           ? CryptoJS.AES.encrypt(
               data.awsSecretAccessKey,
-              this.configService.get<string>('ENCRYPTION_KEY'),
+              this.configService.get<string>('SECRET'),
             ).toString()
           : undefined,
-        cloudinaryApiSecert: data.cloudinaryApiSecert
+        cloudinaryApiSecret: data.cloudinaryApiSecret
           ? CryptoJS.AES.encrypt(
-              data.cloudinaryApiSecert,
-              this.configService.get<string>('ENCRYPTION_KEY'),
+              data.cloudinaryApiSecret,
+              this.configService.get<string>('SECRET'),
             ).toString()
           : undefined,
       },
