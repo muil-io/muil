@@ -137,7 +137,7 @@ const CloudStorage = () => {
               />
 
               <Field
-                name="cloudinaryApiSecert"
+                name="cloudinaryApiSecret"
                 validate={required}
                 validateFields={[]}
                 type="password"
@@ -145,8 +145,8 @@ const CloudStorage = () => {
                   <Input
                     {...input}
                     error={meta.error && meta.touched}
-                    title="Api Secert"
-                    placeholder={initialValues.type ? '********' : 'Api Secert'}
+                    title="Api Secret"
+                    placeholder={initialValues.type ? '********' : 'Api Secret'}
                   />
                 )}
               />
