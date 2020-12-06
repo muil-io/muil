@@ -66,5 +66,5 @@ model CloudStorage {
   cloudinaryFolder    String?
   cloudinaryCloudName String?
   cloudinaryApiKey    String?
-  cloudinaryApiSecert String?
+  cloudinaryApiSecret String?
 }
