@@ -19,7 +19,7 @@ const Settings = () => (
     <ApiKeys tab="apiKeys" />
     <SMTP tab="smtp" />
     <CloudStorage tab="cloudStorage" />
-    {!process.env.IS_CLOUD && <Hostname tab="hostname" />}
+    <Hostname tab="hostname" />
     <Profile tab="profile" />
   </Page>
 );
