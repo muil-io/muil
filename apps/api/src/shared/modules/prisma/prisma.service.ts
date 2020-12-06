@@ -5,6 +5,14 @@ import { PrismaClient } from '@prisma/client';
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     await this.$connect();
+    await this.initDefaultProject();
+  }
+
+  async initDefaultProject() {
+    const defaultProject = await this.projects.findOne({ where: { id: 'default' } });
+    if (!defaultProject) {
+      await this.projects.create({ data: { id: 'default', name: 'default', plan: 'free' } });
+    }
   }
 
   async onModuleDestroy() {
