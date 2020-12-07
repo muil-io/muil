@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { FORM_ERROR } from 'final-form';
 import { Field } from 'react-final-form';
@@ -20,24 +20,30 @@ const Input = styled(BaseInput)`
 const CloudStorage = () => {
   const { isLoading, data, updateCloudStorage, deleteCloudStorage } = useCloudStorage();
 
+  const initialValues = useMemo(() => ({ ...data, type: data?.type ?? 'muil' }), [data]);
+
   const handleSubmit = useCallback(
     async (settings) => {
       try {
-        await updateCloudStorage(settings);
+        if (settings.type === 'muil') {
+          await deleteCloudStorage();
+        } else {
+          await updateCloudStorage(settings);
+        }
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
     },
-    [updateCloudStorage],
+    [deleteCloudStorage, updateCloudStorage],
   );
 
   return (
     <Layout
       title="Cloud storage settings"
       isLoading={isLoading}
-      initialValues={data}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
-      onDelete={deleteCloudStorage}
+      onDelete={!process.env.IS_CLOUD && deleteCloudStorage}
       dialogText="Are you sure you want to delete Cloud Storage settings?"
     >
       {({ initialValues, values }) => (
@@ -48,13 +54,16 @@ const CloudStorage = () => {
             validateFields={[]}
             render={({ input, meta }) => (
               <TypeDropDown
-                placeHolder={process.env.IS_CLOUD ? "Muil's service" : 'Select Type'}
+                placeHolder={'Select Type'}
                 selectedValue={input.value}
                 onChange={({ value }) => input.onChange(value)}
-                options={[
+                options={(process.env.IS_CLOUD
+                  ? [{ label: "Muil's service", value: 'muil' }]
+                  : []
+                ).concat([
                   { label: 'AWS', value: 'aws' },
                   { label: 'Cloudinary', value: 'cloudinary' },
-                ]}
+                ])}
               />
             )}
           />
