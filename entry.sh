@@ -2,9 +2,9 @@
 set -e
 
 mkdir -p templates;
+mkdir -p db;
 
-if [ ! -d db ]; then
-  mkdir db;
+if [ ! -f "/app/db/muil.db" ]; then
   sqlite3 ./db/muil.db "VACUUM;"
   npx prisma db push --preview-feature
 fi
