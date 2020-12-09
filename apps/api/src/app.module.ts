@@ -19,6 +19,16 @@ import { SmtpModule } from 'smtp';
     LoggerModule.forRoot({
       pinoHttp: {
         prettyPrint: { colorize: true, translateTime: true },
+        serializers: {
+          req: (req) => ({
+            ...req,
+            headers: undefined,
+          }),
+          res: (res) => ({
+            ...res,
+            headers: undefined,
+          }),
+        },
       },
     }),
     {
