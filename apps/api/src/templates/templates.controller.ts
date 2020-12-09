@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
-import { AuthGuard, RenderLimitGuard, AllowApiKey } from 'shared/guards';
+import { AuthGuard, AllowApiKey } from 'shared/guards';
 import { EmailOptionsDto } from './templates.dto';
 import { TemplatesService } from './templates.service';
 import { File } from './types';
@@ -53,7 +53,7 @@ export class TemplatesController {
 
   @Post('/:branch?/:templateId/email')
   @AllowApiKey()
-  @UseGuards(AuthGuard, RenderLimitGuard)
+  @UseGuards(AuthGuard)
   async emailTemplate(
     @Req() { user: { projectId } },
     @Param('branch') branch: string,
@@ -79,7 +79,7 @@ export class TemplatesController {
 
   @Post('/:branch?/:templateId')
   @AllowApiKey()
-  @UseGuards(AuthGuard, RenderLimitGuard)
+  @UseGuards(AuthGuard)
   async renderTemplate(
     @Req() { user: { projectId } },
     @Res() res: Response,
@@ -115,7 +115,7 @@ export class TemplatesController {
 
   @Get('/:branch?/:templateId')
   @AllowApiKey()
-  @UseGuards(AuthGuard, RenderLimitGuard)
+  @UseGuards(AuthGuard)
   async renderTemplateGet(
     @Req() { user: { projectId } },
     @Res() res: Response,
