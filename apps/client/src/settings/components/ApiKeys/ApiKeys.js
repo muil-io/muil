@@ -48,13 +48,7 @@ const ApiKeys = () => {
         noDataSubTitle='Click the "+" button to add a new API key'
       >
         <Column label="Name" dataKey="name" flexGrow={1.5} width={1} />
-        <Column
-          label="API key prefix"
-          dataKey="apiKeyPrefix"
-          flexGrow={1}
-          width={1}
-          showOnSize="tablet"
-        />
+        <Column label="API key prefix" dataKey="id" flexGrow={1} width={1} showOnSize="tablet" />
         <Column
           label="Created"
           dataKey="createdAt"
