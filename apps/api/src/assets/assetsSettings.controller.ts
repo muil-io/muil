@@ -1,5 +1,5 @@
 import { Controller, UseGuards, Req, Get, Post, Delete, Body } from '@nestjs/common';
-import { AuthGuard } from 'shared/guards';
+import { AuthGuard, AllowApiKey } from 'shared/guards';
 import { AssetsSettingsService } from './assetsSettings.service';
 import { CloudStorageSetDto } from './assets.dto';
 
@@ -8,6 +8,7 @@ export class AssetsSettingsController {
   constructor(private readonly assetsSettingsService: AssetsSettingsService) {}
 
   @Get()
+  @AllowApiKey()
   @UseGuards(AuthGuard)
   async get(@Req() { user: { projectId } }) {
     return this.assetsSettingsService.get(projectId);
