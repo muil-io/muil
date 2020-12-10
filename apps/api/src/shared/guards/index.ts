@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import sha512 from 'crypto-js/sha512';
 import { PrismaService } from 'shared/modules/prisma/prisma.service';
 import { comparePassword } from 'shared/utils/password';
@@ -93,7 +94,10 @@ export class AuthGuard implements CanActivate {
 
 @Injectable()
 export class RenderLimitGuard implements CanActivate {
-  constructor(@Inject('PrismaService') private prisma: PrismaService) {}
+  constructor(
+    @Inject('PrismaService') private prisma: PrismaService,
+    @Inject('ConfigService') private configService: ConfigService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const {
@@ -105,8 +109,9 @@ export class RenderLimitGuard implements CanActivate {
       where: { projectId, OR: [{ type: 'html' }, { type: 'png' }, { type: 'pdf' }] },
     });
 
-    if (plan === 'free' && renderCount > 1000) {
-      throw new UnauthorizedException();
+    const freePlanRenderLimit = parseInt(this.configService.get<string>('FREE_PLAN_RENDER_LIMIT'));
+    if (freePlanRenderLimit && plan === 'free' && renderCount > freePlanRenderLimit) {
+      throw new UnauthorizedException('Render limit exceeded, please contact support');
     }
 
     return true;

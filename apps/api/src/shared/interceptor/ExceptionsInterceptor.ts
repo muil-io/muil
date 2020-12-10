@@ -5,6 +5,7 @@ import {
   CallHandler,
   NotFoundException,
   ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,7 +21,7 @@ export class ExceptionsInterceptor implements NestInterceptor {
         } else if (error instanceof ConflictError) {
           throw new ConflictException(error.message);
         } else {
-          throw error;
+          throw new InternalServerErrorException(error.message);
         }
       }),
     );
