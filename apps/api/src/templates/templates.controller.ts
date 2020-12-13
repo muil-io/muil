@@ -17,6 +17,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { AuthGuard, AllowApiKey, RenderLimitGuard } from 'shared/guards';
+import { decodeProps } from 'shared/utils/qs';
 import { EmailOptionsDto } from './templates.dto';
 import { TemplatesService } from './templates.service';
 import { File } from './types';
@@ -123,11 +124,17 @@ export class TemplatesController {
     @Param('templateId') templateId: string,
     @Query() { type, inlineCss, minifyHtml, ...props },
   ) {
-    const output = await this.templatesService.render(projectId, branch, templateId, props, {
-      type,
-      inlineCss: inlineCss !== 'false',
-      minifyHtml: minifyHtml !== 'false',
-    });
+    const output = await this.templatesService.render(
+      projectId,
+      branch,
+      templateId,
+      decodeProps(props),
+      {
+        type,
+        inlineCss: inlineCss !== 'false',
+        minifyHtml: minifyHtml !== 'false',
+      },
+    );
 
     switch (type) {
       case 'html':
