@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { CloudStorageCreateInput } from '@prisma/client';
 import CryptoJS from 'crypto-js';
+import { UploadOptions } from '@muil/cloud-storage';
 import { NotFoundError } from 'shared/exceptions';
 import { PrismaService } from 'shared/modules/prisma';
-import { CloudStorageCreateInput } from '@prisma/client';
-import { UploadOptions } from '@muil/cloud-storage';
 
 @Injectable()
 export class AssetsSettingsService {

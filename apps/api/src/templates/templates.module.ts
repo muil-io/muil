@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TemplatesRendererModule } from '@muil/templates-renderer';
-import { LogsModule } from 'logs';
 import { MailerModule } from 'shared/modules/mailer';
+import { LogsModule } from 'logs';
 import { SmtpModule } from 'smtp';
 import { TemplatesController } from './templates.controller';
 import { TemplatesService } from './templates.service';

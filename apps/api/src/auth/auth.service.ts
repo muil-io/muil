@@ -2,11 +2,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuid } from 'uuid';
-import { ProjectsService } from 'projects/projects.service';
-import { PrismaService } from 'shared/modules/prisma';
 import { ConflictError } from 'shared/exceptions';
 import { MailerService } from 'shared/modules/mailer';
+import { PrismaService } from 'shared/modules/prisma';
 import { encryptPassword, comparePassword } from 'shared/utils/password';
+import { ProjectsService } from 'projects/projects.service';
 import { SmtpService } from 'smtp';
 import { User } from './types';
 

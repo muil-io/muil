@@ -1,8 +1,8 @@
 import { Controller, UseGuards, Get, Post, Delete, Req, Body } from '@nestjs/common';
 import { AuthGuard } from 'shared/guards';
 import { MailerService } from 'shared/modules/mailer';
-import { SmtpService } from './smtp.service';
 import { SmtpDto } from './smtp.dto';
+import { SmtpService } from './smtp.service';
 
 @Controller('smtp')
 export class SmtpController {

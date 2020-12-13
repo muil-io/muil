@@ -1,12 +1,12 @@
-import * as fs from 'fs';
 import { ReactNode } from 'react';
-import { NodeVM } from 'vm2';
+import * as fs from 'fs';
+import { minify } from 'html-minifier';
 import juice from 'juice';
 import { v4 as uuid } from 'uuid';
-import { minify } from 'html-minifier';
+import { NodeVM } from 'vm2';
 import emailTemplate from './emailTemplate';
-import { styledComponentsStyleCollector } from './styleCollectors';
 import { generatePdf, generatePng } from './puppeteer';
+import { styledComponentsStyleCollector } from './styleCollectors';
 import { RenderOptions } from './types';
 
 const createReactElement = async (templatePath: string, props): Promise<ReactNode> => {

@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import AWS from 'aws-sdk';
 import { v2 as cloudinary } from 'cloudinary';
-import { v4 as uuid } from 'uuid';
 import FileType from 'file-type';
 import streamifier from 'streamifier';
+import { v4 as uuid } from 'uuid';
 import { AWSOptions, CloudinaryOptions, UploadOptions } from './types';
 
 export async function s3Upload(

@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import * as Sentry from '@sentry/node';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
 import { json } from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import { ExceptionsInterceptor } from 'shared/interceptor/ExceptionsInterceptor';
 import { AppModule } from './app.module';
 

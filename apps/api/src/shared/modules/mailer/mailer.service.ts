@@ -1,6 +1,6 @@
+import { Injectable } from '@nestjs/common';
 import nodemailer from 'nodemailer';
 import SMTPConnection from 'nodemailer/lib/smtp-connection';
-import { Injectable } from '@nestjs/common';
 import { EmailOptions, SmtpOptions } from './types';
 
 @Injectable()

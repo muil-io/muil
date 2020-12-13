@@ -1,10 +1,10 @@
-import { promisify } from 'util';
 import * as fs from 'fs';
 import * as path from 'path';
-import g from 'glob';
-import rimraf from 'rimraf';
+import { promisify } from 'util';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import g from 'glob';
+import rimraf from 'rimraf';
 import { TemplatesRendererService } from '@muil/templates-renderer';
 import { NotFoundError } from 'shared/exceptions';
 import { MailerService, EmailOptions } from 'shared/modules/mailer';

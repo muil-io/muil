@@ -6,9 +6,9 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import sha512 from 'crypto-js/sha512';
 import { PrismaService } from 'shared/modules/prisma/prisma.service';
 import { comparePassword } from 'shared/utils/password';

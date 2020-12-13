@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import { Projects } from '@prisma/client';
+import { v4 as uuid } from 'uuid';
 import { PrismaService } from 'shared/modules/prisma';
 import { Project } from './types';
 

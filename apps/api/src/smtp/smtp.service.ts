@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import CryptoJS from 'crypto-js';
 import { NotFoundError } from 'shared/exceptions';
-import { PrismaService } from 'shared/modules/prisma';
 import { SmtpOptions } from 'shared/modules/mailer';
+import { PrismaService } from 'shared/modules/prisma';
 
 @Injectable()
 export class SmtpService {

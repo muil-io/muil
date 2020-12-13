@@ -13,6 +13,13 @@ module.exports = {
     node: true,
     jest: true,
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        moduleDirectory: ['src', 'node_modules'],
+      },
+    },
+  },
   rules: {
     radix: 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
@@ -34,14 +41,19 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'index', 'object', 'internal', 'parent', 'sibling'],
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
         pathGroups: [
-          { pattern: 'react', group: 'external', position: 'before' },
-          { pattern: 'react-dom', group: 'external', position: 'before' },
-          { pattern: 'styled-components', group: 'external', position: 'before' },
-          { pattern: '@muil/**', group: 'index' },
-          { pattern: 'shared/**', group: 'object' },
+          { pattern: 'react', group: 'builtin', position: 'before' },
+          { pattern: 'react-dom', group: 'builtin', position: 'before' },
+          { pattern: 'styled-components', group: 'builtin', position: 'before' },
+          { pattern: '@muil/**', group: 'external', position: 'after' },
+          { pattern: 'shared/**', group: 'external', position: 'after' },
         ],
+        pathGroupsExcludedImportTypes: ['react', 'react-dom', 'styled-components'],
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
       },
     ],
     'import/extensions': 'off',

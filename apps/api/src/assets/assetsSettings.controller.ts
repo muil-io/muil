@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Req, Get, Post, Delete, Body } from '@nestjs/common';
 import { AuthGuard, AllowApiKey } from 'shared/guards';
-import { AssetsSettingsService } from './assetsSettings.service';
 import { CloudStorageSetDto } from './assets.dto';
+import { AssetsSettingsService } from './assetsSettings.service';
 
 @Controller('assetsSettings')
 export class AssetsSettingsController {
