@@ -12,7 +12,9 @@ export const decodeProps = (props) =>
     try {
       decodedValue = JSON.parse((value as unknown) as string);
     } catch {
-      if (typeof value === 'object' && value !== null) {
+      if (Array.isArray(value)) {
+        decodedValue = value.map((v) => decodeProps(v));
+      } else if (typeof value === 'object' && value !== null) {
         decodedValue = decodeProps(value);
       } else if (/^(\d+|\d*\.\d+)$/.test(value as string)) {
         decodedValue = parseFloat(value as string);
