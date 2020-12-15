@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
-import queryString from 'qs';
+import { useQuery } from 'react-query';
 import { card, FlexColumn } from 'shared/components';
 import { easeSlideIn, fadeOut } from 'style/animations';
+import * as api from 'shared/services/api';
 import media from 'style/media';
 import { SCREEN_SIZES } from '../../constants';
 
@@ -57,17 +58,21 @@ const BaseIframe = styled.iframe`
 `;
 
 const Iframe = ({ debouncedProps, baseTemplateUrl, selectedSize }) => {
-  const [isLoading, setisLoading] = useState(true);
-  const qsProps = useMemo(() => queryString.stringify(debouncedProps), [debouncedProps]);
+  const iframeRef = useRef();
+
+  const { isLoading, data } = useQuery([baseTemplateUrl, debouncedProps], () =>
+    api.post(baseTemplateUrl, { props: debouncedProps }, { responseType: 'text' }),
+  );
 
   useEffect(() => {
-    setisLoading(true);
-  }, [qsProps]);
+    const iframeDoc = iframeRef.current.contentDocument || iframeRef.current.contentWindow.document;
+    iframeDoc.body.innerHTML = data;
+  }, [data]);
 
   return (
     <Wrapper selectedSize={selectedSize}>
       <IframeContainer isisLoading={isLoading}>
-        <BaseIframe src={`${baseTemplateUrl}?${qsProps}`} onLoad={() => setisLoading(false)} />
+        <BaseIframe ref={iframeRef} />
       </IframeContainer>
     </Wrapper>
   );
