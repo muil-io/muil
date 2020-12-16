@@ -10,4 +10,5 @@ export type RenderOptions = {
   inlineCss?: boolean;
   minifyHtml?: boolean;
   pdfFormat?: PDFFormat;
+  pdfOrientation?: 'portrait' | 'landscape';
 };

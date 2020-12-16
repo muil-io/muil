@@ -14,26 +14,49 @@ const pageSize = {
   Ledger: { height: '43.18cm', width: '27.94cm' },
 };
 
-const getPage = async (html: string) => {
+export const generatePdf = async (
+  html: string,
+  format: puppeteer.PDFFormat = 'A4',
+  orientation: 'portrait' | 'landscape' = 'portrait',
+) => {
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     args: ['--no-sandbox'],
   });
-  const page = await browser.newPage();
-  await page.setContent(html);
-  return page;
-};
 
-export const generatePdf = async (html: string, format: puppeteer.PDFFormat = 'A4') => {
-  const page = await getPage(html);
-  return page.pdf({
-    format,
-    height: pageSize[format].height || undefined,
-    width: pageSize[format].width || undefined,
-  });
+  try {
+    const page = await browser.newPage();
+    await page.setContent(html);
+
+    const pdf = await page.pdf({
+      format,
+      landscape: orientation === 'landscape',
+      height: pageSize[format].height || undefined,
+      width: pageSize[format].width || undefined,
+    });
+
+    return pdf;
+  } finally {
+    await browser.close();
+  }
 };
 
 export const generatePng = async (html: string) => {
-  const page = await getPage(html);
-  return page.screenshot({ fullPage: true });
+  const browser = await puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    args: ['--no-sandbox'],
+  });
+
+  try {
+    const page = await browser.newPage();
+    await page.setContent(html);
+
+    const screenshot = await page.screenshot({ fullPage: true });
+
+    await browser.close();
+
+    return screenshot;
+  } finally {
+    await browser.close();
+  }
 };

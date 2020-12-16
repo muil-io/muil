@@ -13,6 +13,7 @@ export class TemplatesRendererService {
     inlineCss = true,
     minifyHtml = true,
     pdfFormat = 'A4',
+    pdfOrientation = 'portrait',
   }: RenderOptions): Promise<string | Buffer> {
     return renderTemplate({
       type,
@@ -23,6 +24,7 @@ export class TemplatesRendererService {
       inlineCss,
       minifyHtml,
       pdfFormat,
+      pdfOrientation,
     });
   }
 }

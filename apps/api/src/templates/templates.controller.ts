@@ -86,7 +86,7 @@ export class TemplatesController {
     @Res() res: Response,
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
-    @Query() { type, inlineCss, minifyHtml, pdfFormat },
+    @Query() { type, inlineCss, minifyHtml, pdfFormat, pdfOrientation },
     @Body() { props },
   ) {
     const output = await this.templatesService.render(projectId, branch, templateId, props, {
@@ -94,6 +94,7 @@ export class TemplatesController {
       inlineCss: inlineCss !== 'false',
       minifyHtml: minifyHtml !== 'false',
       pdfFormat,
+      pdfOrientation,
     });
 
     switch (type) {
@@ -122,7 +123,7 @@ export class TemplatesController {
     @Res() res: Response,
     @Param('branch') branch: string,
     @Param('templateId') templateId: string,
-    @Query() { type, inlineCss, minifyHtml, ...props },
+    @Query() { type, inlineCss, minifyHtml, pdfFormat, pdfOrientation, ...props },
   ) {
     const output = await this.templatesService.render(
       projectId,
@@ -133,6 +134,8 @@ export class TemplatesController {
         type,
         inlineCss: inlineCss !== 'false',
         minifyHtml: minifyHtml !== 'false',
+        pdfFormat,
+        pdfOrientation,
       },
     );
 
