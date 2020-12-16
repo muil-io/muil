@@ -5,26 +5,18 @@ const keywords = {
   undefined,
 };
 
-export const decodeProps = (props) =>
-  Object.entries(props).reduce((prev, [key, value]) => {
-    let decodedValue = value;
+export const decodeProps = (props) => {
+  let decodedValue = props;
 
-    try {
-      decodedValue = JSON.parse((value as unknown) as string);
-    } catch {
-      if (Array.isArray(value)) {
-        decodedValue = value.map((v) => decodeProps(v));
-      } else if (typeof value === 'object' && value !== null) {
-        decodedValue = decodeProps(value);
-      } else if (/^(\d+|\d*\.\d+)$/.test(value as string)) {
-        decodedValue = parseFloat(value as string);
-      } else if ((value as string) in keywords) {
-        decodedValue = keywords[value as string];
-      }
-    }
+  if (Array.isArray(props)) {
+    decodedValue = props.map((v) => decodeProps(v));
+  } else if (typeof props === 'object' && props !== null) {
+    decodedValue = Object.entries(props).reduce((p, [k, v]) => ({ ...p, [k]: decodeProps(v) }), {});
+  } else if (/^(\d+|\d*\.\d+)$/.test(props as string)) {
+    decodedValue = parseFloat(props as string);
+  } else if ((props as string) in keywords) {
+    decodedValue = keywords[props as string];
+  }
 
-    return {
-      ...prev,
-      [key]: decodedValue,
-    };
-  }, {});
+  return decodedValue;
+};
