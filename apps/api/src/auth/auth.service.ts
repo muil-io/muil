@@ -65,7 +65,7 @@ export class AuthService {
       throw new ConflictError(`User with email '${email}' already exists`);
     }
 
-    const token = this.jwtService.sign({ projectId: user.projectId }, { expiresIn: '10m' });
+    const token = this.jwtService.sign({ projectId: user.projectId, email }, { expiresIn: '10m' });
 
     const html = `
       Hello,<br/>

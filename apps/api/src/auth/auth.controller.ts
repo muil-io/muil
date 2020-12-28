@@ -118,9 +118,9 @@ export class AuthController {
 
   @Post('acceptInvite')
   async acceptInvite(@Body() acceptInviteUserDto: AcceptInviteUserDto, @Res() res: Response) {
-    const { projectId } = this.jwtService.verify(acceptInviteUserDto.token);
+    const { projectId, email } = this.jwtService.verify(acceptInviteUserDto.token);
 
-    const user = await this.usersService.create({ ...acceptInviteUserDto, projectId });
+    const user = await this.usersService.create({ ...acceptInviteUserDto, email, projectId });
 
     const token = this.jwtService.sign(user);
 
