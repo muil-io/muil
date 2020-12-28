@@ -10,7 +10,7 @@ export class SmtpService {
   constructor(private prisma: PrismaService, private configService: ConfigService) {}
 
   async get(projectId: string) {
-    const smtp = await this.prisma.smtp.findOne({
+    const smtp = await this.prisma.smtp.findFirst({
       where: { projectId },
     });
 
@@ -30,7 +30,7 @@ export class SmtpService {
   }
 
   async getConfiguration(projectId: string) {
-    const smtp = await this.prisma.smtp.findOne({
+    const smtp = await this.prisma.smtp.findFirst({
       where: { projectId },
     });
 

@@ -3,13 +3,12 @@ import sha512 from 'crypto-js/sha512';
 import { v4 as uuid } from 'uuid';
 import { NotFoundError } from 'shared/exceptions';
 import { PrismaService } from 'shared/modules/prisma';
-import { ApiKey } from './types';
 
 @Injectable()
 export class ApiKeysService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(projectId: string): Promise<ApiKey[]> {
+  async findAll(projectId: string) {
     return (await this.prisma.apiKeys.findMany({ where: { projectId } })).map(
       ({ name, id, createdAt, enabled }) => ({
         name,
@@ -47,8 +46,8 @@ export class ApiKeysService {
     };
   }
 
-  async setEnabled(projectId: string, id: string, enabled: boolean): Promise<ApiKey[]> {
-    const apiKey = await this.prisma.apiKeys.findOne({ where: { id } });
+  async setEnabled(projectId: string, id: string, enabled: boolean) {
+    const apiKey = await this.prisma.apiKeys.findFirst({ where: { id } });
     if (!apiKey || apiKey.projectId !== projectId) {
       throw new NotFoundError(`Api Key '${id}' doesn't exists`);
     }
@@ -63,8 +62,8 @@ export class ApiKeysService {
     return this.findAll(projectId);
   }
 
-  async delete(projectId: string, id: string): Promise<ApiKey[]> {
-    const apiKey = await this.prisma.apiKeys.findOne({ where: { id } });
+  async delete(projectId: string, id: string) {
+    const apiKey = await this.prisma.apiKeys.findFirst({ where: { id } });
     if (!apiKey || apiKey.projectId !== projectId) {
       throw new NotFoundError(`Api Key '${id}' doesn't exists`);
     }

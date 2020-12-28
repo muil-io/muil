@@ -33,7 +33,7 @@ export class MailerService {
   }
 
   async test({ host, port, secure, user, pass }) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       try {
         const connection = new SMTPConnection({
           port,

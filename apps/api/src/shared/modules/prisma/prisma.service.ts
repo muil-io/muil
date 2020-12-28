@@ -9,7 +9,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async initDefaultProject() {
-    const defaultProject = await this.projects.findOne({ where: { id: 'default' } });
+    const defaultProject = await this.projects.findFirst({ where: { id: 'default' } });
     if (!defaultProject) {
       await this.projects.create({ data: { id: 'default', name: 'default', plan: 'free' } });
     }

@@ -104,7 +104,7 @@ export class RenderLimitGuard implements CanActivate {
       user: { projectId },
     } = context.switchToHttp().getRequest();
 
-    const { plan } = await this.prisma.projects.findOne({ where: { id: projectId } });
+    const { plan } = await this.prisma.projects.findFirst({ where: { id: projectId } });
     const renderCount = await this.prisma.logs.count({
       where: { projectId, OR: [{ type: 'html' }, { type: 'png' }, { type: 'pdf' }] },
     });

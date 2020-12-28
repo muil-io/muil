@@ -1,6 +1,4 @@
 export type Log = {
-  id?: number;
-  datetime?: string;
   projectId: string;
   branch: string;
   templateId: string;

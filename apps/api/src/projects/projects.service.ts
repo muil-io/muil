@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Projects } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 import { PrismaService } from 'shared/modules/prisma';
 import { Project } from './types';
@@ -8,8 +7,8 @@ import { Project } from './types';
 export class ProjectsService {
   constructor(private prisma: PrismaService) {}
 
-  async get(projectId: string): Promise<Projects> {
-    return this.prisma.projects.findOne({ where: { id: projectId } });
+  async get(projectId: string) {
+    return this.prisma.projects.findFirst({ where: { id: projectId } });
   }
 
   async exists(projectId: string) {

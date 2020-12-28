@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CloudStorageCreateInput } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import CryptoJS from 'crypto-js';
 import { UploadOptions } from '@muil/cloud-storage';
 import { NotFoundError } from 'shared/exceptions';
@@ -12,14 +12,14 @@ export class AssetsSettingsService {
 
   async get(projectId: string) {
     const { awsSecretAccessKey, cloudinaryApiSecret, ...cloudStorage } =
-      (await this.prisma.cloudStorage.findOne({ where: { projectId } })) ?? {};
+      (await this.prisma.cloudStorage.findFirst({ where: { projectId } })) ?? {};
     return cloudStorage;
   }
 
   async getUploadOptions(projectId: string, folder?: string) {
     let uploadOptions: UploadOptions;
 
-    const assetsSettings = await this.prisma.cloudStorage.findOne({ where: { projectId } });
+    const assetsSettings = await this.prisma.cloudStorage.findFirst({ where: { projectId } });
     const deafultCloudStorageType = this.configService.get<string>('CLOUD_STORAGE_TYPE');
 
     if (assetsSettings?.type === 'aws') {
@@ -71,7 +71,7 @@ export class AssetsSettingsService {
     return uploadOptions;
   }
 
-  async set(data: CloudStorageCreateInput) {
+  async set(data: Prisma.CloudStorageCreateInput) {
     const {
       awsSecretAccessKey,
       cloudinaryApiSecret,
@@ -99,7 +99,7 @@ export class AssetsSettingsService {
   }
 
   async delete(projectId: string) {
-    const cloudStorage = await this.prisma.cloudStorage.findOne({ where: { projectId } });
+    const cloudStorage = await this.prisma.cloudStorage.findFirst({ where: { projectId } });
     if (!cloudStorage) {
       return {};
     }
