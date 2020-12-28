@@ -18,13 +18,10 @@ export class ProjectsService {
 
   async create(project: Project) {
     const data = {
-      id: uuid(),
       name: project.name ?? uuid(),
       plan: project.plan ?? 'free',
     };
 
-    await this.prisma.projects.create({ data });
-
-    return data;
+    return this.prisma.projects.create({ data });
   }
 }

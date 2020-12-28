@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Users {
-  id        String  @id
+  id        String  @id @default(uuid())
   email     String  @unique
   password  String
   name      String?
@@ -25,14 +25,14 @@ model ApiKeys {
 }
 
 model Projects {
-  id       String  @id
+  id       String  @id @default(uuid())
   name     String
   plan     String
   hostname String?
 }
 
 model Logs {
-  id           Int     @id @default(autoincrement())
+  id           String  @id @default(uuid())
   datetime     String
   projectId    String
   branch       String

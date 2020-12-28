@@ -19,11 +19,6 @@ export class CreateUserDto {
   readonly projectName?: string;
 }
 
-export class UpdateUserDto {
-  @IsString()
-  readonly name: string;
-}
-
 export class UpdatePasswordDto {
   @IsString()
   readonly oldPassword: string;
@@ -43,4 +38,23 @@ export class ResetPasswordDto {
 export class ForgotPasswordDto {
   @IsString()
   readonly email: string;
+}
+
+export class InviteUserDto {
+  @IsString()
+  readonly email: string;
+}
+
+export class AcceptInviteUserDto {
+  @IsString()
+  readonly token: string;
+
+  @IsString()
+  readonly name: string;
+
+  @IsString()
+  readonly email: string;
+
+  @IsString()
+  readonly password: string;
 }

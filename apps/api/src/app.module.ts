@@ -12,6 +12,7 @@ import { LogsModule } from 'logs';
 import { ProjectsModule } from 'projects';
 import { SmtpModule } from 'smtp';
 import { TemplatesModule } from 'templates';
+import { UsersModule } from 'users';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { TemplatesModule } from 'templates';
     ProjectsModule,
     SmtpModule,
     TemplatesModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

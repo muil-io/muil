@@ -1,109 +1,40 @@
-/* eslint-disable no-param-reassign */
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { v4 as uuid } from 'uuid';
 import { ConflictError } from 'shared/exceptions';
 import { MailerService } from 'shared/modules/mailer';
-import { PrismaService } from 'shared/modules/prisma';
-import { encryptPassword, comparePassword } from 'shared/utils/password';
-import { ProjectsService } from 'projects/projects.service';
 import { SmtpService } from 'smtp';
+import { UsersService } from 'users';
 import { User } from './types';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
-    private projectsService: ProjectsService,
+    private usersService: UsersService,
     private jwtService: JwtService,
     private mailerService: MailerService,
     private smtpService: SmtpService,
   ) {}
 
-  async getUser(query: any): Promise<User> {
-    try {
-      const { password, ...user } = await this.prisma.users.findOne({
-        where: { ...query },
-      });
-      return user;
-    } catch (err) {
-      return null;
-    }
-  }
-
-  async createUser({ password, email, name, projectId, projectName }: User): Promise<User> {
-    const userExists = await this.getUser({ email });
-    if (userExists) {
-      throw new ConflictError(`User with email '${email}' already exists`);
-    }
-
-    if (projectName) {
-      const { id } = await this.projectsService.create({ name: projectName });
-      projectId = id;
-    } else {
-      projectId = 'default';
-      projectName = 'default';
-    }
-
-    const userId = uuid();
-    const hash = await encryptPassword(password);
-
-    await this.prisma.users.create({
-      data: {
-        email,
-        name,
-        id: userId,
-        password: hash,
-        projectId,
-      },
-    });
-
-    return { id: userId, email, name, projectId };
-  }
-
-  async updateUser(id: string, name: string) {
-    const { password, ...user } = await this.prisma.users.update({
-      where: { id },
-      data: { name },
-    });
-
-    return user;
-  }
-
-  async updatePassword(id: string, oldPassword: string, newPassword: string) {
-    const { password: storedPassword } = await this.prisma.users.findOne({
-      where: { id },
-    });
-    if (!storedPassword || !(await comparePassword(oldPassword, storedPassword))) {
-      throw new UnauthorizedException();
-    }
-
-    const hash = await encryptPassword(newPassword);
-    const { password, ...user } = await this.prisma.users.update({
-      where: { id },
-      data: { password: hash },
-    });
-
-    return user;
-  }
-
   async sendResetPasswordEmail(url: string, email: string) {
-    const userExists = await this.getUser({ email });
+    const userExists = await this.usersService.get(email);
     if (!userExists) {
       return;
     }
 
-    const token = this.jwtService.sign({
-      id: userExists.id,
-      email: userExists.email,
-      projectId: userExists.projectId,
-    });
+    const token = this.jwtService.sign(
+      {
+        id: userExists.id,
+        email: userExists.email,
+        projectId: userExists.projectId,
+      },
+      { expiresIn: '10m' },
+    );
 
     const html = `
       Hello,<br/>
       Please follow this link to reset your Muil account password<br/>
 
-      <a href='${url}/#/reset/${token}'>Reset your password here</a>.<br/><br/>
+      <a href='${url}/#/reset/${token}'>Reset password</a>.<br/><br/>
     
       If you didn’t ask to reset your password, you can ignore this email. <br/>
     
@@ -125,14 +56,38 @@ export class AuthService {
   }
 
   async resetPassword(token: string, newPassword: string) {
-    const { id } = this.jwtService.verify(token);
+    return this.usersService.updatePassword(token, newPassword);
+  }
 
-    const hash = await encryptPassword(newPassword);
-    const { password, ...user } = await this.prisma.users.update({
-      where: { id },
-      data: { password: hash },
-    });
+  async sendInviteUserEmail(user: User, origin: string, email: string) {
+    const userExists = await this.usersService.get(email);
+    if (!userExists) {
+      throw new ConflictError(`User with email '${email}' already exists`);
+    }
 
-    return user;
+    const token = this.jwtService.sign({ projectId: user.projectId }, { expiresIn: '10m' });
+
+    const html = `
+      Hello,<br/>
+      ${user.name} (${user.email}) has invited you to their Muil project.
+      Please follow this link to create a Muil account<br/>
+
+      <a href='${origin}/invite/${token}'>Accept invitation</a>.<br/><br/>
+        
+      Welcome and thanks!,<br/>
+      The Muil Team
+    `;
+
+    const smtpOptions = await this.smtpService.getConfiguration(user.projectId);
+
+    this.mailerService.send(
+      html,
+      null,
+      {
+        to: email,
+        subject: `${user.name} (${user.email}) invited you to Muil`,
+      },
+      smtpOptions,
+    );
   }
 }

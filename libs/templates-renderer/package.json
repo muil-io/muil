@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/html-minifier": "^4.0.0",
-    "@types/puppeteer-core": "^2.0.0",
+    "@types/puppeteer-core": "^5.4.0",
     "@types/require-from-string": "^1.2.0"
   },
   "gitHead": "e929b01dad7dab9d40a60933244c923f0916a4a2"
