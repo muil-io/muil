@@ -55,6 +55,11 @@ export class UsersService {
     return this.getAll(projectId);
   }
 
+  async delete(projectId: string, id: string) {
+    await this.prisma.users.deleteMany({ where: { AND: [{ projectId }, { id }] } });
+    return this.getAll(projectId);
+  }
+
   updatePassword(token: string, newPassword: string): Promise<any>;
   updatePassword(id: string, newPassword: string, oldPassword?: string): Promise<any>;
   async updatePassword(tokenOrId: string, newPassword: string, oldPassword?: string) {

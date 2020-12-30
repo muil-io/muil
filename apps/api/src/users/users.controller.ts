@@ -1,4 +1,14 @@
-import { Controller, UseGuards, Req, Get, Post, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Req,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AuthGuard } from 'shared/guards';
 import { UpdateUserDto } from './users.dto';
 import { UsersService } from './users.service';
@@ -23,5 +33,14 @@ export class UsersController {
   @UseGuards(AuthGuard)
   async update(@Req() { user: { projectId } }, @Param() { id }, @Body() { name }: UpdateUserDto) {
     return this.usersService.update(projectId, id, name);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard)
+  async delete(@Req() { user: { projectId, id: userId } }, @Param() { id }) {
+    if (userId === id) {
+      throw new InternalServerErrorException('Cannot delete myself');
+    }
+    return this.usersService.delete(projectId, id);
   }
 }
