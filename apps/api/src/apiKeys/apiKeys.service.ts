@@ -24,14 +24,12 @@ export class ApiKeysService {
     const id = apiKeyRaw.slice(0, 8);
     const apiKey = `${id}.${apiKeyRaw.slice(8)}.${projectId}`;
     const apiKeyHash = sha512(apiKey).toString();
-    const createdAt = new Date().toISOString();
 
-    await this.prisma.apiKeys.create({
+    const key = await this.prisma.apiKeys.create({
       data: {
         id,
         name,
         apiKeyHash,
-        createdAt,
         projectId,
         enabled: 1,
       },
@@ -41,7 +39,7 @@ export class ApiKeysService {
       id,
       apiKey,
       name,
-      createdAt,
+      createdAt: key.createdAt,
       enabled: true,
     };
   }

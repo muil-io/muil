@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'shared/modules/prisma';
-import { Log } from './types';
 
 @Injectable()
 export class LogsService {
@@ -12,9 +12,9 @@ export class LogsService {
     ).map(({ projectId: pId, ...log }) => log);
   }
 
-  async write(log: Log) {
+  async write(log: Prisma.LogsCreateInput) {
     await this.prisma.logs.create({
-      data: { ...log, datetime: new Date().toISOString() },
+      data: { ...log },
     });
   }
 }
