@@ -24,7 +24,7 @@ export class LocalAuthGuard implements CanActivate {
         body: { email, password },
       } = request;
 
-      const { password: storedPassword, ...user } = await this.prisma.users.findOne({
+      const { password: storedPassword, ...user } = await this.prisma.users.findFirst({
         where: { email },
       });
       if (!user) {
@@ -45,6 +45,7 @@ export class LocalAuthGuard implements CanActivate {
 }
 
 export const AllowApiKey = () => SetMetadata('allowApiKey', true);
+export const MuilAdminOnly = () => SetMetadata('muilAdminOnly', true);
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -56,6 +57,8 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const allowApiKey = this.reflector.get<boolean>('allowApiKey', context.getHandler()) ?? false;
+    const muilAdminOnly =
+      this.reflector.get<boolean>('muilAdminOnly', context.getHandler()) ?? false;
 
     try {
       const request = context.switchToHttp().getRequest();
@@ -66,6 +69,11 @@ export class AuthGuard implements CanActivate {
 
       if (jwt) {
         const decodedToken = this.jwtService.verify(jwt);
+
+        if (muilAdminOnly && decodedToken.role !== 'muilAdmin') {
+          throw new UnauthorizedException();
+        }
+
         request.user = decodedToken;
         return true;
       }
@@ -74,7 +82,7 @@ export class AuthGuard implements CanActivate {
       if (allowApiKey && apiKey) {
         const [id, , projectId] = apiKey.split('.');
 
-        const { apiKeyHash, enabled } = await this.prisma.apiKeys.findOne({ where: { id } });
+        const { apiKeyHash, enabled } = await this.prisma.apiKeys.findFirst({ where: { id } });
         if (!enabled || apiKeyHash !== sha512(apiKey).toString()) {
           throw new UnauthorizedException();
         }

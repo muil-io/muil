@@ -9,8 +9,8 @@ import {
   Delete,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AuthGuard } from 'shared/guards';
-import { UpdateUserDto } from './users.dto';
+import { AuthGuard, MuilAdminOnly } from 'shared/guards';
+import { UpdateUserDto, UpdateUserRoleDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -33,6 +33,17 @@ export class UsersController {
   @UseGuards(AuthGuard)
   async update(@Req() { user: { projectId } }, @Param() { id }, @Body() { name }: UpdateUserDto) {
     return this.usersService.update(projectId, id, name);
+  }
+
+  @Post('/:id/role')
+  @UseGuards(AuthGuard)
+  @MuilAdminOnly()
+  async updateRole(
+    @Req() { user: { projectId } },
+    @Param() { id },
+    @Body() { role }: UpdateUserRoleDto,
+  ) {
+    return this.usersService.updateRole(projectId, id, role);
   }
 
   @Delete('/:id')

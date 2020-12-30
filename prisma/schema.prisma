@@ -14,6 +14,7 @@ model Users {
   password  String
   name      String?
   projectId String
+  role      String @default("admin")
 }
 
 model ApiKeys {
@@ -27,6 +28,7 @@ model ApiKeys {
 
 model Projects {
   id       String  @id @default(uuid())
+  createdAt  DateTime @default(now())
   name     String
   plan     String
   hostname String?
