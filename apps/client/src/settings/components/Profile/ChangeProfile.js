@@ -18,12 +18,12 @@ const ChangeProfile = () => {
   const handleSubmit = useCallback(
     async ({ name }) => {
       try {
-        await updateProfile({ name });
+        await updateProfile({ id: data.id, name });
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
     },
-    [updateProfile],
+    [data.id, updateProfile],
   );
 
   return (

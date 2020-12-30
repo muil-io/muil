@@ -9,7 +9,7 @@ const httpOptions = {
 
 export const get = (url, params = {}, options = {}) =>
   _get(url, { ...httpOptions, ...options, params });
-export const post = (url, body = '', config) => _post(url, body, { ...httpOptions, ...config });
+export const post = (url, body, config) => _post(url, body || '', { ...httpOptions, ...config });
 export const put = (url, body = '') => _put(url, body, { ...httpOptions });
 export const httpDelete = (url, body, params = {}) =>
   _delete(url, { ...httpOptions, ...body, params });
@@ -19,7 +19,7 @@ export const login = ({ email, password }) => post('/auth/login', { email, passw
 export const register = ({ name, email, password, projectName }) =>
   post('/auth/signup', { name, email, password, projectName });
 
-export const fetchUser = () => get('/auth/me');
+export const fetchUser = () => get('/users/me');
 
 export const logout = () => post('/auth/logout');
 
@@ -40,7 +40,7 @@ export const fetchApiKeys = () => get('/apiKeys');
 
 export const fetchSmtp = () => get('/smtp');
 
-export const updateProfile = (settings) => post('/auth/profile', settings);
+export const updateProfile = ({ id, ...settings }) => post(`/users/${id}`, settings);
 
 export const updatePassword = ({ oldPassword, newPassword }) =>
   post('/auth/password', { oldPassword, newPassword });
@@ -71,3 +71,12 @@ export const deleteCloudStorage = () => httpDelete('/assetsSettings');
 export const fetchHostname = () => get('/hostname');
 
 export const updateHostname = (settings) => post('/hostname', settings);
+
+export const fetchUsers = () => get('/users');
+
+export const inviteUser = ({ email }) => post('/auth/invite', { email });
+
+export const deleteUser = ({ id }) => httpDelete('/users/invite', { id });
+
+export const acceptInvite = ({ name, password, token }) =>
+  post('/auth/acceptInvite', { name, password, token });

@@ -18,11 +18,16 @@ const useUser = ({ enabled = false } = {}) => {
     onSuccess: (newData) => queryCache.setQueryData(storeKey, newData),
   });
 
-  const [updateProfile] = useMutation(api.updateProfile, { throwOnError: true });
+  const [updateProfile] = useMutation(api.updateProfile, {
+    throwOnError: true,
+    onSuccess: (data) => queryCache.setQueryData(storeKey, data[0]),
+  });
 
   const [updatePassword] = useMutation(api.updatePassword, { throwOnError: true });
 
   const [resetPassword] = useMutation(api.resetPassword, { throwOnError: true });
+
+  const [acceptInvite] = useMutation(api.acceptInvite, { throwOnError: true });
 
   const [logout] = useMutation(api.logout, { onSuccess: () => queryCache.clear() });
 
@@ -35,6 +40,7 @@ const useUser = ({ enabled = false } = {}) => {
     updateProfile,
     updatePassword,
     resetPassword,
+    acceptInvite,
     logout,
   };
 };

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { FORM_ERROR } from 'final-form';
 import { Form, Field } from 'react-final-form';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   Button as BaseButton,
   Input as BaseInput,
@@ -13,12 +13,6 @@ import {
 import useUser from 'shared/hooks/useUser';
 import { required } from '../utils/form';
 import Auth from './Auth';
-
-let LINKS = {
-  '/forgot': 'Forgot your password?',
-};
-
-LINKS = process.env.IS_CLOUD ? { '/register': "Don't have an account? Sign up", ...LINKS } : LINKS;
 
 const Wrapper = styled.form`
   ${flexColumn};
@@ -41,39 +35,41 @@ const Errors = styled.div`
   margin: 10px 0;
 `;
 
-const Login = () => {
-  const { login } = useUser();
+const InviteUser = () => {
+  const { acceptInvite } = useUser();
+  const { token } = useParams();
   const { push } = useHistory();
 
   const handleSubmitForm = useCallback(
-    async ({ email, password }) => {
+    async ({ name, password }) => {
       try {
-        await login({ email, password });
-        push('/dashboard');
+        await acceptInvite({ name, password, token });
+        push('/login');
       } catch (err) {
-        return { [FORM_ERROR]: 'The email or password is incorrect' };
+        return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
       return {};
     },
-    [push, login],
+    [acceptInvite, push, token],
   );
 
   return (
     <Auth
       title="Welcome to Muil"
-      subtitle="Let’s login to your account"
-      linkText={Object.values(LINKS)}
-      linkUrl={Object.keys(LINKS)}
+      subtitle="Let’s set up your account"
+      linkText={['Already have an account? Login']}
+      linkUrl={['/login']}
     >
       <Form
         onSubmit={handleSubmitForm}
         render={({ handleSubmit, submitting, submitError }) => (
           <Wrapper onSubmit={handleSubmit}>
             <Field
-              name="email"
+              name="name"
               validate={required}
+              validateFields={[]}
               render={({ input, meta }) => (
-                <Input {...input} error={meta.error && meta.touched} placeholder="Email" />
+                <Input {...input} error={meta.error && meta.touched} placeholder="Full Name" />
               )}
             />
 
@@ -96,4 +92,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default InviteUser;
