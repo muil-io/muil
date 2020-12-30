@@ -61,7 +61,7 @@ export class AuthService {
 
   async sendInviteUserEmail(user: User, origin: string, email: string) {
     const userExists = await this.usersService.get(email);
-    if (!userExists) {
+    if (userExists) {
       throw new ConflictError(`User with email '${email}' already exists`);
     }
 
