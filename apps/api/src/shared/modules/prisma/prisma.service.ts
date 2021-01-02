@@ -31,18 +31,20 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
       }
     }
 
-    const adminUser = await this.users.findFirst({ where: { email } });
-    if (!adminUser) {
-      const encryptedPassword = await encryptPassword(password);
-      await this.users.create({
-        data: {
-          email,
-          password: encryptedPassword,
-          projectId: cloudMode ? 'muil' : 'default',
-          role: cloudMode ? 'muilAdmin' : 'admin',
-          name: 'admin',
-        },
-      });
+    if (email && password) {
+      const adminUser = await this.users.findFirst({ where: { email } });
+      if (!adminUser) {
+        const encryptedPassword = await encryptPassword(password);
+        await this.users.create({
+          data: {
+            email,
+            password: encryptedPassword,
+            projectId: cloudMode ? 'muil' : 'default',
+            role: cloudMode ? 'muilAdmin' : 'admin',
+            name: 'admin',
+          },
+        });
+      }
     }
   }
 
