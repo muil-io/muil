@@ -5,6 +5,7 @@ import {
   Get,
   Post,
   Body,
+  Query,
   Param,
   Delete,
   InternalServerErrorException,
@@ -19,8 +20,14 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async get(@Req() { user: { projectId } }) {
-    return this.usersService.getAll(projectId);
+  async get(
+    @Req() { user: { projectId } },
+    @Query('page') page?: number,
+    @Query('perPage') perPage?: number,
+    @Query('orderBy') orderBy?: string,
+    @Query('orderByDirection') orderByDirection?: string,
+  ) {
+    return this.usersService.getAll(projectId, page, perPage, orderBy, orderByDirection);
   }
 
   @Get('me')

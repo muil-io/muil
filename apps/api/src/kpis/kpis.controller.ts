@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Body, Get } from '@nestjs/common';
+import { Controller, UseGuards, Body, Get, Query } from '@nestjs/common';
 import { AuthGuard, MuilAdminOnly } from 'shared/guards';
 import { KpisService } from './kpis.service';
 
@@ -16,14 +16,24 @@ export class KpisController {
   @Get('/projects')
   @UseGuards(AuthGuard)
   @MuilAdminOnly()
-  async getProjects() {
-    return this.kpisService.getProjects();
+  async getProjects(
+    @Query('page') page?: number,
+    @Query('perPage') perPage?: number,
+    @Query('orderBy') orderBy?: string,
+    @Query('orderByDirection') orderByDirection?: string,
+  ) {
+    return this.kpisService.getProjects(page, perPage, orderBy, orderByDirection);
   }
 
   @Get('/users')
   @UseGuards(AuthGuard)
   @MuilAdminOnly()
-  async getUsers() {
-    return this.kpisService.getUsers();
+  async getUsers(
+    @Query('page') page?: number,
+    @Query('perPage') perPage?: number,
+    @Query('orderBy') orderBy?: string,
+    @Query('orderByDirection') orderByDirection?: string,
+  ) {
+    return this.kpisService.getUsers(page, perPage, orderBy, orderByDirection);
   }
 }

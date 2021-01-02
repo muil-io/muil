@@ -11,7 +11,12 @@ export class KpisService {
     return oldNumber ? (oldNumber - newNumber / oldNumber) * 100 : 100;
   }
 
-  async getUsers() {
+  async getUsers(
+    page: number = 0,
+    perPage: number = 100,
+    orderBy: string = 'email',
+    orderByDirection: string = 'asc',
+  ) {
     return this.prisma.users.findMany({
       select: {
         createdAt: true,
@@ -19,14 +24,33 @@ export class KpisService {
         name: true,
         projectId: true,
       },
+      orderBy: [
+        {
+          [orderBy]: orderByDirection,
+        },
+      ],
+      skip: page * perPage,
+      take: perPage,
     });
   }
 
-  async getProjects() {
+  async getProjects(
+    page: number = 0,
+    perPage: number = 100,
+    orderBy: string = 'id',
+    orderByDirection: string = 'asc',
+  ) {
     const projectsRenderTemplate = (
       await this.prisma.logs.findMany({
         select: { projectId: true },
         distinct: ['projectId'],
+        orderBy: [
+          {
+            [orderBy]: orderByDirection,
+          },
+        ],
+        skip: page * perPage,
+        take: perPage,
       })
     ).map((p) => p.projectId);
 

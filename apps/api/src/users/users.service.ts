@@ -22,8 +22,23 @@ export class UsersService {
     }
   }
 
-  async getAll(projectId: string) {
-    const users = await this.prisma.users.findMany({ where: { projectId } });
+  async getAll(
+    projectId: string,
+    page: number = 0,
+    perPage: number = 100,
+    orderBy: string = 'name',
+    orderByDirection: string = 'asc',
+  ) {
+    const users = await this.prisma.users.findMany({
+      where: { projectId },
+      orderBy: [
+        {
+          [orderBy]: orderByDirection,
+        },
+      ],
+      skip: page * perPage,
+      take: perPage,
+    });
     return users.map(({ password, ...u }) => u);
   }
 
