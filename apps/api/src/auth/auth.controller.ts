@@ -1,4 +1,13 @@
-import { Res, Req, Body, Controller, Post, UseGuards, HttpStatus } from '@nestjs/common';
+import {
+  Res,
+  Req,
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  HttpStatus,
+  ForbiddenException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
@@ -27,6 +36,11 @@ export class AuthController {
 
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const cloudMode = this.configService.get<string>('ENV') === 'CLOUD';
+    if (!cloudMode) {
+      throw new ForbiddenException();
+    }
+
     let projectId = 'default';
     if (createUserDto.projectName) {
       const { id } = await this.projectsService.create({ name: createUserDto.projectName });
