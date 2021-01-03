@@ -17,7 +17,7 @@ export class KpisService {
     orderBy: string = 'email',
     orderByDirection: string = 'asc',
   ) {
-    const data = this.prisma.users.findMany({
+    const data = await this.prisma.users.findMany({
       select: {
         createdAt: true,
         email: true,
