@@ -4,6 +4,7 @@ import { Column } from 'react-virtualized';
 import { Table, FloatingButton } from 'shared/components';
 import { actionRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
+import useUser from 'shared/hooks/useUser';
 import useUsers from '../../hooks/useUsers';
 import InviteUserDialog from './InviteUserDialog';
 import DeleteUserDialog from './DeleteUserDialog';
@@ -16,6 +17,8 @@ const Users = () => {
   const { isLoading, data, inviteUser, deleteUser } = useUsers();
   const [showNewModal, setShowNewModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState();
+
+  const { data: user } = useUser();
 
   if (isLoading) {
     return <SpinnerArea />;
@@ -55,7 +58,7 @@ const Users = () => {
           cellRenderer={actionRenderer}
           cellDataGetter={({ rowData }) => ({
             label: 'Delete',
-            onClick: () => setDeleteModal(rowData),
+            onClick: rowData.id !== user.id ? () => setDeleteModal(rowData) : null,
           })}
         />
       </Table>

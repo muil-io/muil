@@ -76,7 +76,7 @@ export const fetchUsers = () => get('/users');
 
 export const inviteUser = ({ email }) => post('/auth/invite', { email });
 
-export const deleteUser = ({ id }) => httpDelete('/users/invite', { id });
+export const deleteUser = ({ id }) => httpDelete(`/users/${id}`);
 
 export const acceptInvite = ({ name, password, token }) =>
   post('/auth/acceptInvite', { name, password, token });

@@ -11,8 +11,9 @@ export const booleanRenderer = ({ rowData, dataKey, cellData }) => (
   <Toggle isActive={rowData[dataKey]} onChange={(isActive) => cellData?.onChange(isActive)} />
 );
 
-export const actionRenderer = ({ cellData: { label, onClick } }) => (
-  <Button buttonType="tertiary" onClick={onClick}>
-    {label}
-  </Button>
-);
+export const actionRenderer = ({ cellData: { label, onClick } }) =>
+  onClick ? (
+    <Button buttonType="tertiary" onClick={onClick}>
+      {label}
+    </Button>
+  ) : null;
