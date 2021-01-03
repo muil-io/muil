@@ -9,6 +9,8 @@ import {
   Param,
   Delete,
   InternalServerErrorException,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AuthGuard, MuilAdminOnly } from 'shared/guards';
 import { UpdateUserDto, UpdateUserRoleDto } from './users.dto';
@@ -22,8 +24,8 @@ export class UsersController {
   @UseGuards(AuthGuard)
   async get(
     @Req() { user: { projectId } },
-    @Query('page') page?: number,
-    @Query('perPage') perPage?: number,
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+    @Query('perPage', new DefaultValuePipe(100), ParseIntPipe) perPage: number,
     @Query('orderBy') orderBy?: string,
     @Query('orderByDirection') orderByDirection?: string,
   ) {
