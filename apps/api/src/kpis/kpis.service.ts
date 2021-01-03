@@ -17,7 +17,7 @@ export class KpisService {
     orderBy: string = 'email',
     orderByDirection: string = 'asc',
   ) {
-    return this.prisma.users.findMany({
+    const data = this.prisma.users.findMany({
       select: {
         createdAt: true,
         email: true,
@@ -32,6 +32,10 @@ export class KpisService {
       skip: page * perPage,
       take: perPage,
     });
+
+    const total = this.prisma.users.count();
+
+    return { data, total };
   }
 
   async getProjects(
@@ -54,10 +58,14 @@ export class KpisService {
       })
     ).map((p) => p.projectId);
 
-    return (await this.prisma.projects.findMany()).map((p) => ({
+    const data = (await this.prisma.projects.findMany()).map((p) => ({
       ...p,
       renderTemplate: projectsRenderTemplate.includes(p.id),
     }));
+
+    const total = await this.prisma.projects.count();
+
+    return { data, total };
   }
 
   async getKpis(from: { value: number; unit: dayjs.OpUnitType } = { value: 30, unit: 'month' }) {
