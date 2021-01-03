@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "prebuild": "rimraf dist",
+    "postinstall": "prisma:generate",
     "build": "nest build",
     "build:client": "yarn workspace @muil/client build",
     "format": "prettier --write \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\"",
