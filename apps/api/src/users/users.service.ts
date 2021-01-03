@@ -39,7 +39,9 @@ export class UsersService {
       skip: page * perPage,
       take: perPage,
     });
-    return users.map(({ password, ...u }) => u);
+    const total = await this.prisma.users.count();
+
+    return { data: users.map(({ password, ...u }) => u), total };
   }
 
   async create({ name, email, password, projectId, role = 'admin' }: Prisma.UsersCreateInput) {

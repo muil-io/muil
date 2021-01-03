@@ -14,18 +14,22 @@ export class LogsService {
     orderByDirection: string = 'desc',
     from?: string,
   ) {
-    return (
-      await this.prisma.logs.findMany({
-        where: { projectId, AND: [{ datetime: { gte: from } }] },
-        orderBy: [
-          {
-            [orderBy]: orderByDirection,
-          },
-        ],
-        skip: page * perPage,
-        take: perPage,
-      })
-    ).map(({ projectId: pId, ...log }) => log);
+    const data = await this.prisma.logs.findMany({
+      where: { projectId, AND: [{ datetime: { gte: from } }] },
+      orderBy: [
+        {
+          [orderBy]: orderByDirection,
+        },
+      ],
+      skip: page * perPage,
+      take: perPage,
+    });
+    const total = await this.prisma.logs.count();
+
+    return {
+      data: data.map(({ projectId: pId, ...log }) => log),
+      total,
+    };
   }
 
   async write(log: Prisma.LogsCreateInput) {
