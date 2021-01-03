@@ -1,17 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Column } from 'react-virtualized';
-import { Page, DropDown, Table } from 'shared/components';
+import { Page, DropDown, Table, Header2 } from 'shared/components';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import { TIME_RANGE_OPTIONS } from 'shared/constants';
 import usePersistedState from 'shared/hooks/usePersistedState';
+import { dateRenderer } from 'shared/components/Table/cellRenderers';
 import useAdminLogs from '../hooks/useAdminLogs';
 import useProjects from '../hooks/useProjects';
 import useUsers from '../hooks/useUsers';
-
 import Counter from './Counter';
-import { dateRenderer } from '../../shared/components/Table/cellRenderers';
-import { Header2 } from '../../shared/components/Typography/Typography';
 
 const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 } }))`
   display: flex;
