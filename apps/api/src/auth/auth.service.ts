@@ -72,7 +72,7 @@ export class AuthService {
       ${user.name} (${user.email}) has invited you to their Muil project.
       Please follow this link to create a Muil account<br/>
 
-      <a href='${origin}/invite/${token}'>Accept invitation</a>.<br/><br/>
+      <a href='${origin}/#/invite/${token}'>Accept invitation</a>.<br/><br/>
         
       Welcome and thanks!,<br/>
       The Muil Team

@@ -1,6 +1,17 @@
-import { Controller, UseGuards, Req, Get, Post, Body, Param } from '@nestjs/common';
-import { AuthGuard } from 'shared/guards';
-import { UpdateUserDto } from './users.dto';
+import {
+  Controller,
+  UseGuards,
+  Req,
+  Get,
+  Post,
+  Body,
+  Query,
+  Param,
+  Delete,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { AuthGuard, MuilAdminOnly } from 'shared/guards';
+import { UpdateUserDto, UpdateUserRoleDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -9,8 +20,14 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async get(@Req() { user: { projectId } }) {
-    return this.usersService.getAll(projectId);
+  async get(
+    @Req() { user: { projectId } },
+    @Query('page') page?: number,
+    @Query('perPage') perPage?: number,
+    @Query('orderBy') orderBy?: string,
+    @Query('orderByDirection') orderByDirection?: string,
+  ) {
+    return this.usersService.getAll(projectId, page, perPage, orderBy, orderByDirection);
   }
 
   @Get('me')
@@ -23,5 +40,25 @@ export class UsersController {
   @UseGuards(AuthGuard)
   async update(@Req() { user: { projectId } }, @Param() { id }, @Body() { name }: UpdateUserDto) {
     return this.usersService.update(projectId, id, name);
+  }
+
+  @Post('/:id/role')
+  @UseGuards(AuthGuard)
+  @MuilAdminOnly()
+  async updateRole(
+    @Req() { user: { projectId } },
+    @Param() { id },
+    @Body() { role }: UpdateUserRoleDto,
+  ) {
+    return this.usersService.updateRole(projectId, id, role);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard)
+  async delete(@Req() { user: { projectId, id: userId } }, @Param() { id }) {
+    if (userId === id) {
+      throw new InternalServerErrorException('Cannot delete myself');
+    }
+    return this.usersService.delete(projectId, id);
   }
 }

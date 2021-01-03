@@ -8,7 +8,14 @@ export class LogsController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async getProjectLogs(@Req() { user: { projectId } }, @Query('from') from?: string) {
-    return this.logsService.getAll(projectId, from);
+  async getProjectLogs(
+    @Req() { user: { projectId } },
+    @Query('page') page?: number,
+    @Query('perPage') perPage?: number,
+    @Query('orderBy') orderBy?: string,
+    @Query('orderByDirection') orderByDirection?: string,
+    @Query('from') from?: string,
+  ) {
+    return this.logsService.getAll(projectId, page, perPage, orderBy, orderByDirection, from);
   }
 }

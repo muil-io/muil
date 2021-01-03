@@ -16,6 +16,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
+    "dayjs": "^1.9.8",
     "express": "^4.17.1",
     "glob": "^7.1.6",
     "nestjs-pino": "^1.2.0",

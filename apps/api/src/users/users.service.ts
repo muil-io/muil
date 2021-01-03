@@ -22,12 +22,27 @@ export class UsersService {
     }
   }
 
-  async getAll(projectId: string) {
-    const users = await this.prisma.users.findMany({ where: { projectId } });
+  async getAll(
+    projectId: string,
+    page: number = 0,
+    perPage: number = 100,
+    orderBy: string = 'name',
+    orderByDirection: string = 'asc',
+  ) {
+    const users = await this.prisma.users.findMany({
+      where: { projectId },
+      orderBy: [
+        {
+          [orderBy]: orderByDirection,
+        },
+      ],
+      skip: page * perPage,
+      take: perPage,
+    });
     return users.map(({ password, ...u }) => u);
   }
 
-  async create({ name, email, password, projectId }: Prisma.UsersCreateInput) {
+  async create({ name, email, password, projectId, role = 'admin' }: Prisma.UsersCreateInput) {
     const userExists = await this.get(email);
     if (userExists) {
       throw new ConflictError(`User with email '${email}' already exists`);
@@ -40,6 +55,7 @@ export class UsersService {
         email,
         name,
         password: encryptedPassword,
+        role,
       },
     });
 
@@ -52,6 +68,20 @@ export class UsersService {
       data: { name },
     });
 
+    return this.getAll(projectId);
+  }
+
+  async updateRole(projectId: string, id: string, role: string) {
+    await this.prisma.users.updateMany({
+      where: { id },
+      data: { role },
+    });
+
+    return this.getAll(projectId);
+  }
+
+  async delete(projectId: string, id: string) {
+    await this.prisma.users.deleteMany({ where: { AND: [{ projectId }, { id }] } });
     return this.getAll(projectId);
   }
 

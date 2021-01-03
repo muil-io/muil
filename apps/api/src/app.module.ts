@@ -8,6 +8,7 @@ import { PrismaModule } from 'shared/modules/prisma';
 import { ApiKeysModule } from 'apiKeys';
 import { AssetsModule } from 'assets';
 import { AuthModule } from 'auth';
+import { KpisModule } from 'kpis';
 import { LogsModule } from 'logs';
 import { ProjectsModule } from 'projects';
 import { SmtpModule } from 'smtp';
@@ -49,6 +50,7 @@ import { UsersModule } from 'users';
     ApiKeysModule,
     AssetsModule,
     AuthModule,
+    KpisModule,
     LogsModule,
     ProjectsModule,
     SmtpModule,

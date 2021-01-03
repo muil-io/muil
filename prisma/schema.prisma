@@ -9,23 +9,26 @@ datasource db {
 
 model Users {
   id        String  @id @default(uuid())
+  createdAt DateTime  @default(now())
   email     String  @unique
   password  String
   name      String?
   projectId String
+  role      String @default("admin")
 }
 
 model ApiKeys {
   name       String
   id         String @id
   apiKeyHash String
-  createdAt  String
+  createdAt  DateTime @default(now())
   projectId  String
   enabled    Int
 }
 
 model Projects {
   id       String  @id @default(uuid())
+  createdAt  DateTime @default(now())
   name     String
   plan     String
   hostname String?
@@ -33,7 +36,7 @@ model Projects {
 
 model Logs {
   id           String  @id @default(uuid())
-  datetime     String
+  datetime     DateTime  @default(now())
   projectId    String
   branch       String
   templateId   String
