@@ -10,18 +10,20 @@ import useProjects from '../hooks/useProjects';
 import useUsers from '../hooks/useUsers';
 
 import Counter from './Counter';
+import { dateRenderer } from '../../shared/components/Table/cellRenderers';
+import { Header2 } from '../../shared/components/Typography/Typography';
 
 const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 } }))`
   display: flex;
   justify-content: flex-end;
-  margin: -20px 20px 20px;
+  margin: -20px 20px 0;
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
-  padding: 0 10%;
+  padding: 30px 10%;
 `;
 
 const TableWrapper = styled.div`
@@ -29,12 +31,16 @@ const TableWrapper = styled.div`
   max-height: 300px;
 `;
 
+const Title = styled(Header2)`
+  margin-bottom: 20px;
+`;
+
 const Dashboard = () => {
   const [selectedTimeRange, setSelectedTimeRange] = usePersistedState('timeRange', 7);
 
   const { isLoading: adminLogsLoading, data: logs } = useAdminLogs({ selectedTimeRange });
   const { isLoading: projectsLoading, data: projects } = useProjects();
-  const { isLoading: usersLoading } = useUsers();
+  const { isLoading: usersLoading, data: users } = useUsers();
 
   if (adminLogsLoading || projectsLoading || usersLoading) {
     return <SpinnerArea />;
@@ -69,6 +75,8 @@ const Dashboard = () => {
       </Grid>
 
       <TableWrapper>
+        <Title>Projects</Title>
+
         <Table
           items={projects}
           rowHeight={() => 60}
@@ -89,26 +97,29 @@ const Dashboard = () => {
         </Table>
       </TableWrapper>
 
-      {/* <TableWrapper>
+      <TableWrapper>
+        <Title>Users</Title>
         <Table
           items={users}
           rowHeight={() => 60}
           noDataTitle="No Users Found"
-          defaultSortBy="name"
-          defaultSortDirection="ASC"
+          defaultSortBy="createdAt"
+          defaultSortDirection="Desc"
           noDataSubTitle={<>No Users</>}
         >
+          <Column label="Project" dataKey="projectId" flexGrow={1} width={1} />
           <Column label="Name" dataKey="name" flexGrow={1} width={1} />
-          <Column label="Plan" dataKey="plan" flexGrow={1} width={1} />
+          <Column label="Email" dataKey="email" flexGrow={1} width={1} />
           <Column
-            label="Render Template"
-            dataKey="renderTemplate"
+            label="Created At"
+            dataKey="createdAt"
             flexGrow={1}
             width={1}
             columnType="date"
+            cellRenderer={dateRenderer}
           />
         </Table>
-      </TableWrapper> */}
+      </TableWrapper>
     </Page>
   );
 };
