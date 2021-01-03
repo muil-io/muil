@@ -1,4 +1,12 @@
-import { Controller, UseGuards, Get, Req, Query } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Req,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe,
+} from '@nestjs/common';
 import { AuthGuard } from 'shared/guards';
 import { LogsService } from './logs.service';
 
@@ -10,8 +18,8 @@ export class LogsController {
   @UseGuards(AuthGuard)
   async getProjectLogs(
     @Req() { user: { projectId } },
-    @Query('page') page?: number,
-    @Query('perPage') perPage?: number,
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+    @Query('perPage', new DefaultValuePipe(100), ParseIntPipe) perPage: number,
     @Query('orderBy') orderBy?: string,
     @Query('orderByDirection') orderByDirection?: string,
     @Query('from') from?: string,
