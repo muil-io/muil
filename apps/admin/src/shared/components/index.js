@@ -7,3 +7,4 @@ export { default as Spinner } from './Spinner';
 export { default as Page } from './Page';
 export { default as Logo } from './Logo';
 export * from './Typography';
+export { default as Table } from './Table';

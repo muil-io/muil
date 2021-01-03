@@ -20,4 +20,8 @@ export const login = ({ email, password }) => post('/auth/login', { email, passw
 
 export const logout = () => post('/auth/logout');
 
-export const fetchLogs = (from) => get('/logs', { from });
+export const fetchLogs = (from) => get('/kpis/stats', { from });
+
+export const fetchProjects = () => get('/kpis/projects');
+
+export const fetchUsers = () => get('/kpis/users');

@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Page, Flex, DropDown } from 'shared/components';
+import { Column } from 'react-virtualized';
+import { Page, DropDown, Table } from 'shared/components';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import { TIME_RANGE_OPTIONS } from 'shared/constants';
+import usePersistedState from 'shared/hooks/usePersistedState';
 import useAdminLogs from '../hooks/useAdminLogs';
+import useProjects from '../hooks/useProjects';
+import useUsers from '../hooks/useUsers';
 
 import Counter from './Counter';
 
@@ -13,14 +17,26 @@ const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 }
   margin: -20px 20px 20px;
 `;
 
-const Row = styled(Flex)`
-  flex-wrap: wrap;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  padding: 0 10%;
+`;
+
+const TableWrapper = styled.div`
+  padding: 30px 10%;
+  max-height: 300px;
 `;
 
 const Dashboard = () => {
-  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = useAdminLogs();
+  const [selectedTimeRange, setSelectedTimeRange] = usePersistedState('timeRange', 7);
 
-  if (isLoading) {
+  const { isLoading: adminLogsLoading, data: logs } = useAdminLogs({ selectedTimeRange });
+  const { isLoading: projectsLoading, data: projects } = useProjects();
+  const { isLoading: usersLoading } = useUsers();
+
+  if (adminLogsLoading || projectsLoading || usersLoading) {
     return <SpinnerArea />;
   }
 
@@ -32,11 +48,67 @@ const Dashboard = () => {
         options={TIME_RANGE_OPTIONS}
       />
 
-      <Row>
-        {data.map(({ title, value }, index) => (
-          <Counter key={index} title={title} count={value} />
-        ))}
-      </Row>
+      <Grid>
+        <Counter title="Total Projects" count={logs.totalProjectsCount} showTrend={false} />
+
+        <Counter title="New Projects" count={logs.newProjectsCount} trend={logs.newProjectsTrend} />
+
+        <Counter
+          title="Total Users"
+          count={logs.emailsSent}
+          trend={logs.totalUsersCount}
+          showTrend={false}
+        />
+
+        <Counter title="New Users" count={logs.newUsersCount} trend={logs.newUsersTrend} />
+
+        <Counter title="Email Sent" count={logs.emailsSent} trend={logs.emailsSentTrend} />
+        <Counter title="HTML Renderers" count={logs.htmlRenders} trend={logs.htmlRendersTrend} />
+        <Counter title="PDF Renderers" count={logs.pdfRenders} trend={logs.pdfRendersTrend} />
+        <Counter title="PNG Renderers" count={logs.pngRenders} trend={logs.pngRendersTrend} />
+      </Grid>
+
+      <TableWrapper>
+        <Table
+          items={projects}
+          rowHeight={() => 60}
+          noDataTitle="No Projects Found"
+          defaultSortBy="name"
+          defaultSortDirection="ASC"
+          noDataSubTitle={<>No Projects</>}
+        >
+          <Column label="Name" dataKey="name" flexGrow={1} width={1} />
+          <Column label="Plan" dataKey="plan" flexGrow={1} width={1} />
+          <Column
+            label="Render Template"
+            dataKey="renderTemplate"
+            flexGrow={1}
+            width={1}
+            columnType="date"
+          />
+        </Table>
+      </TableWrapper>
+
+      {/* <TableWrapper>
+        <Table
+          items={users}
+          rowHeight={() => 60}
+          noDataTitle="No Users Found"
+          defaultSortBy="name"
+          defaultSortDirection="ASC"
+          noDataSubTitle={<>No Users</>}
+        >
+          <Column label="Name" dataKey="name" flexGrow={1} width={1} />
+          <Column label="Plan" dataKey="plan" flexGrow={1} width={1} />
+          <Column
+            label="Render Template"
+            dataKey="renderTemplate"
+            flexGrow={1}
+            width={1}
+            columnType="date"
+          />
+        </Table>
+      </TableWrapper> */}
     </Page>
   );
 };
