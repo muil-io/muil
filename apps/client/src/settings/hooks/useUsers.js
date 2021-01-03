@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from 'react-query';
+import { queryCache, useMutation, useQuery } from 'react-query';
 import * as api from 'shared/services/api';
 
 const useUsers = () => {
@@ -7,7 +7,9 @@ const useUsers = () => {
 
   const [inviteUser] = useMutation(api.inviteUser);
 
-  const [deleteUser] = useMutation(api.deleteUser);
+  const [deleteUser] = useMutation(api.deleteUser, {
+    onSuccess: () => queryCache.invalidateQueries(storeKey),
+  });
 
   return { isLoading, data, inviteUser, deleteUser };
 };
