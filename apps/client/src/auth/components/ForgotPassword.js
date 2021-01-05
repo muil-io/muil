@@ -54,7 +54,7 @@ const ForgotPassword = () => {
     <Auth
       title="Forgot you password?"
       subtitle="Let’s reset your password"
-      linkText={['Remember you password? Login']}
+      linkText={['Remember your password? Login']}
       linkUrl={['/login']}
     >
       <Form
