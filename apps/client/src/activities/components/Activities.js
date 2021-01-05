@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { Column } from 'react-virtualized';
-import { Page, DropDown, Table, FlexSpace } from 'shared/components';
+import { Page, DropDown, InfiniteTable, FlexSpace } from 'shared/components';
 import { dateRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import useLogs from 'shared/hooks/useLogs';
@@ -25,7 +25,17 @@ const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 }
 const Activities = () => {
   const theme = useTheme();
   const { filter } = useParams();
-  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = useLogs();
+  const {
+    isLoading,
+    isFetchingMore,
+    data = [],
+    selectedTimeRange,
+    setSelectedTimeRange,
+    fetchMore,
+    canFetchMore,
+    sort,
+    handleSort,
+  } = useLogs();
   const [selectedFilter, setSelectedFilter] = useState(filter || 'all');
 
   const filters = useMemo(
@@ -72,13 +82,17 @@ const Activities = () => {
         </Row>
       )}
     >
-      <Table
+      <InfiniteTable
         items={filteredData}
+        isFetchingMore={isFetchingMore}
+        fetchMore={fetchMore}
+        canFetchMore={canFetchMore}
+        sortBy={sort.sortBy}
+        sortDirection={sort.sortDirection}
+        sort={handleSort}
         rowHeight={({ rowData: { type, status } }) =>
           type !== 'email' ? 48 : status === 'error' ? 80 : 60
         }
-        defaultSortBy="datetime"
-        defaultSortDirection="DESC"
         noDataTitle="No Activities Found"
         noDataSubTitle={
           <>
@@ -110,7 +124,14 @@ const Activities = () => {
           cellDataGetter={() => ({ theme })}
           showOnSize="mobile"
         />
-        <Column label="Template" dataKey="displayName" flexGrow={1} width={1} showOnSize="mobile" />
+        <Column
+          label="Template"
+          dataKey="templateId"
+          flexGrow={1}
+          width={1}
+          showOnSize="mobile"
+          cellRenderer={({ rowData }) => rowData?.displayName}
+        />
         <Column label="Branch" dataKey="branch" flexGrow={1} width={1} showOnSize="tablet" />
         <Column
           label="Details"
@@ -119,9 +140,10 @@ const Activities = () => {
           width={1}
           cellRenderer={detailsRenderer}
           showOnSize="tablet"
+          disableSort
         />
         <Column label="" dataKey="to" width={30} cellRenderer={infoRenderer} />
-      </Table>
+      </InfiniteTable>
     </Page>
   );
 };

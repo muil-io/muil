@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Column } from 'react-virtualized';
-import { Table, FloatingButton } from 'shared/components';
+import { FloatingButton } from 'shared/components';
 import { actionRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import useUser from 'shared/hooks/useUser';
 import useUsers from '../../hooks/useUsers';
 import InviteUserDialog from './InviteUserDialog';
 import DeleteUserDialog from './DeleteUserDialog';
+import InfiniteTable from '../../../shared/components/Table/InfiniteTable';
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
 const Users = () => {
-  const { isLoading, data, inviteUser, deleteUser } = useUsers();
+  const {
+    isLoading,
+    isFetchingMore,
+    data,
+    fetchMore,
+    canFetchMore,
+    sort,
+    handleSort,
+    inviteUser,
+    deleteUser,
+  } = useUsers();
   const [showNewModal, setShowNewModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState();
 
@@ -40,9 +51,14 @@ const Users = () => {
         />
       )}
 
-      <Table
+      <InfiniteTable
         items={data}
-        defaultSortBy="name"
+        isFetchingMore={isFetchingMore}
+        fetchMore={fetchMore}
+        canFetchMore={canFetchMore}
+        sortBy={sort.sortBy}
+        sortDirection={sort.sortDirection}
+        sort={handleSort}
         noDataTitle="No Users"
         noDataSubTitle='Click the "+" button to invite a user'
       >
@@ -61,7 +77,7 @@ const Users = () => {
             onClick: rowData.id !== user.id ? () => setDeleteModal(rowData) : null,
           })}
         />
-      </Table>
+      </InfiniteTable>
     </Wrapper>
   );
 };

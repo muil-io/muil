@@ -12,7 +12,7 @@ const TABS = [
   { label: 'Api Keys', value: 'apiKeys' },
   { label: 'SMTP', value: 'smtp' },
   { label: 'Cloud Storage', value: 'cloudStorage' },
-  !process.env.IS_CLOUD ? { label: 'Host Name', value: 'hostname' } : undefined,
+  process.env.ENV !== 'CLOUD' ? { label: 'Host Name', value: 'hostname' } : undefined,
   { label: 'Profile', value: 'profile' },
 ];
 

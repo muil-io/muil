@@ -41,7 +41,7 @@ const TemplateView = ({
       <TopBar {...{ templateName, onExit, selectedSize, setSelectedSize }} />
 
       <Container>
-        <Options {...{ dynamicProps, setDynamicProps, baseTemplateUrl }} />
+        <Options {...{ dynamicProps, setDynamicProps, baseTemplateUrl, templateName }} />
         <Iframe {...{ debouncedProps, baseTemplateUrl, selectedSize }} />
       </Container>
     </Wrapper>

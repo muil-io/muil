@@ -25,7 +25,9 @@ const Row = styled(FlexColumn)`
 
 const Dashboard = () => {
   const theme = useTheme();
-  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = useLogs();
+  const { isLoading, data = [], selectedTimeRange, setSelectedTimeRange } = useLogs({
+    perPage: 100000,
+  });
 
   const { groups, formattedData, topTemplates, lastErrors } = useDashboardData({ data });
 

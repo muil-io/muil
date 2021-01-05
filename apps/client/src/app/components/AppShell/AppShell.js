@@ -12,6 +12,7 @@ import SideBar from './SideBar';
 import { SIDE_BAR_WIDTH } from '../../constants';
 
 const Wrapper = styled.div`
+  height: 100vh;
   flex: 1;
   display: grid;
   grid-template-columns: auto 1fr;

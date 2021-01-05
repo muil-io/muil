@@ -112,7 +112,7 @@ const Register = () => {
               )}
             />
 
-            {process.env.IS_CLOUD && (
+            {process.env.ENV === 'CLOUD' && (
               <Field
                 name="projectName"
                 validate={required}

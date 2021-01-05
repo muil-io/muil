@@ -75,11 +75,14 @@ const Table = ({
   }, []);
 
   const sortedList = useMemo(() => {
+    if (tableProps.sort) {
+      return items;
+    }
     const { columnType = 'string' } = columns.find(({ dataKey }) => dataKey === _sortBy);
 
     const sorted = items.sort((a, b) => SORT_MAP[columnType](a[_sortBy], b[_sortBy]));
     return _sortDirection === 'ASC' ? sorted : sorted.reverse();
-  }, [_sortBy, _sortDirection, columns, items]);
+  }, [_sortBy, _sortDirection, columns, items, tableProps.sort]);
 
   if (sortedList.length === 0) {
     return (

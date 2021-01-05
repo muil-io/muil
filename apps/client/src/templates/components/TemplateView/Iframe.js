@@ -60,7 +60,7 @@ const BaseIframe = styled.iframe`
 const Iframe = ({ debouncedProps, baseTemplateUrl, selectedSize }) => {
   const iframeRef = useRef();
 
-  const { isLoading, data } = useQuery([baseTemplateUrl, debouncedProps], () =>
+  const { isLoading, data = '' } = useQuery([baseTemplateUrl, debouncedProps], () =>
     api.post(baseTemplateUrl, { props: debouncedProps }, { responseType: 'text' }),
   );
 
