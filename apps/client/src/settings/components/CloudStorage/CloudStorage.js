@@ -43,7 +43,7 @@ const CloudStorage = () => {
       isLoading={isLoading}
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      onDelete={!process.env.IS_CLOUD && deleteCloudStorage}
+      onDelete={process.env.ENV !== 'CLOUD' && deleteCloudStorage}
       dialogText="Are you sure you want to delete Cloud Storage settings?"
     >
       {({ initialValues, values }) => (
@@ -57,7 +57,7 @@ const CloudStorage = () => {
                 placeHolder={'Select Type'}
                 selectedValue={input.value}
                 onChange={({ value }) => input.onChange(value)}
-                options={(process.env.IS_CLOUD
+                options={(process.env.ENV === 'CLOUD'
                   ? [{ label: "Muil's service", value: 'muil' }]
                   : []
                 ).concat([

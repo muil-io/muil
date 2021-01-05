@@ -1,16 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import queryString from 'qs';
 import { CopyButton, DropDown, flexMiddle, Button } from 'shared/components';
+import * as api from 'shared/services/api';
 import ExternalIcon from 'shared/assets/icons/external.svg';
+import DownloadIcon from 'shared/assets/icons/download.svg';
 import EmailForm from './EmailForm';
+import downloadFile from '../../../shared/utils/downloadFile';
 
 const TYPES = {
-  email: {
-    label: 'Email',
-    method: 'POST',
-    urlSuffix: '/email',
-  },
   pdf: {
     label: 'PDF',
     method: 'GET',
@@ -25,6 +23,11 @@ const TYPES = {
     label: 'Image',
     method: 'GET',
     urlSuffix: '?type=png',
+  },
+  email: {
+    label: 'Email',
+    method: 'POST',
+    urlSuffix: '/email',
   },
 };
 
@@ -62,8 +65,8 @@ const OpenButton = styled(Button)`
   }
 `;
 
-const Api = ({ dynamicProps, onChange, baseTemplateUrl }) => {
-  const [selectedType, setSelectedType] = useState('email');
+const Api = ({ dynamicProps, onChange, baseTemplateUrl, templateName }) => {
+  const [selectedType, setSelectedType] = useState('pdf');
 
   const options = useMemo(
     () => Object.entries(TYPES).map(([key, { label }]) => ({ label, value: key })),
@@ -78,6 +81,18 @@ const Api = ({ dynamicProps, onChange, baseTemplateUrl }) => {
     }
     return `${baseTemplateUrl}${TYPES[selectedType].urlSuffix}${qsProps ? `&${qsProps}` : qsProps}`;
   }, [baseTemplateUrl, qsProps, selectedType]);
+
+  const handleDownload = useCallback(async () => {
+    try {
+      const data = await api.post(
+        `${baseTemplateUrl}${TYPES[selectedType].urlSuffix}`,
+        { props: dynamicProps },
+        { responseType: 'blob' },
+      );
+
+      downloadFile(data, templateName);
+    } catch (err) {}
+  }, [baseTemplateUrl, dynamicProps, selectedType, templateName]);
 
   return (
     <>
@@ -96,10 +111,19 @@ const Api = ({ dynamicProps, onChange, baseTemplateUrl }) => {
       {selectedType === 'email' ? (
         <EmailForm dynamicProps={dynamicProps} baseTemplateUrl={url} />
       ) : (
-        <OpenButton onClick={() => window.open(url)}>
-          Open Template
-          <ExternalIcon />
-        </OpenButton>
+        <>
+          {qsProps.length <= 2000 && (
+            <OpenButton onClick={() => window.open(url)}>
+              Open Template
+              <ExternalIcon />
+            </OpenButton>
+          )}
+
+          <OpenButton onClick={handleDownload}>
+            Download
+            <DownloadIcon />
+          </OpenButton>
+        </>
       )}
     </>
   );

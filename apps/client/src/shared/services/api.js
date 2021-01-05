@@ -30,7 +30,7 @@ export const resetPassword = ({ newPassword, token }) =>
 
 export const fetchProjects = () => get('/projects');
 
-export const fetchActivities = (from) => get('/logs', { from });
+export const fetchActivities = (params) => get('/logs', params);
 
 export const fetchTemplates = () => get('/templates');
 
@@ -72,7 +72,7 @@ export const fetchHostname = () => get('/hostname');
 
 export const updateHostname = (settings) => post('/hostname', settings);
 
-export const fetchUsers = () => get('/users');
+export const fetchUsers = (params) => get('/users', params);
 
 export const inviteUser = ({ email }) => post('/auth/invite', { email });
 

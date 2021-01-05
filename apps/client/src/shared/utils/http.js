@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = (fn, args) =>
   fn
     .apply(axios, args)
-    .then((res) => res?.data?.data || res?.data)
+    .then((res) => (res?.data?.total ? res?.data : res?.data?.data || res?.data))
     .catch((err) => Promise.reject(err?.response?.data || err?.response));
 
 export const get = (...rest) => {

@@ -18,7 +18,8 @@ let LINKS = {
   '/forgot': 'Forgot your password?',
 };
 
-LINKS = process.env.IS_CLOUD ? { '/register': "Don't have an account? Sign up", ...LINKS } : LINKS;
+LINKS =
+  process.env.ENV === 'CLOUD' ? { '/register': "Don't have an account? Sign up", ...LINKS } : LINKS;
 
 const Wrapper = styled.form`
   ${flexColumn};

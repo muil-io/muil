@@ -4,7 +4,7 @@
 	<title>Muil - Portal</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<script>const isCloud =<%= JSON.stringify(htmlWebpackPlugin.options.IS_CLOUD) %></script>
+	<script>const isCloud =<%= (htmlWebpackPlugin.options.ENV === "CLOUD") %></script>
 
 	<!--Start of Tawk.to Script-->
 	<script type="text/javascript">
