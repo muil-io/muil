@@ -19,7 +19,7 @@ const TimeRangeDropDown = styled(DropDown).attrs(() => ({ location: { right: 0 }
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
   padding: 30px 10%;
 `;
@@ -55,14 +55,9 @@ const Dashboard = () => {
       <Grid>
         <Counter title="Total Projects" count={logs.totalProjectsCount} showTrend={false} />
 
-        <Counter title="New Projects" count={logs.newProjectsCount} trend={logs.newProjectsTrend} />
+        <Counter title="Total Users" count={logs.totalUsersCount} showTrend={false} />
 
-        <Counter
-          title="Total Users"
-          count={logs.emailsSent}
-          trend={logs.totalUsersCount}
-          showTrend={false}
-        />
+        <Counter title="New Projects" count={logs.newProjectsCount} trend={logs.newProjectsTrend} />
 
         <Counter title="New Users" count={logs.newUsersCount} trend={logs.newUsersTrend} />
 

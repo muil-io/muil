@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FlexMiddle, FlexSpace } from 'shared/components';
+import Logo from './Logo';
 import Profile from './Profile';
 
 const Wrapper = styled(FlexMiddle)`
@@ -23,7 +24,7 @@ const Container = styled(FlexSpace)`
 const TopBar = () => (
   <Wrapper>
     <Container>
-      <div />
+      <Logo size="small" />
       <Profile />
     </Container>
   </Wrapper>
