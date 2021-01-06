@@ -23,6 +23,7 @@ export class KpisService {
         email: true,
         name: true,
         projectId: true,
+        role: true,
       },
       orderBy: [
         {
@@ -33,7 +34,7 @@ export class KpisService {
       take: perPage,
     });
 
-    const total = this.prisma.users.count();
+    const total = await this.prisma.users.count();
 
     return { data, total };
   }
