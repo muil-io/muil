@@ -7,7 +7,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const paths = {
   src: path.resolve(__dirname, 'src'),
-  dist: path.resolve(__dirname, '../../dist/apps/client'),
+  dist: path.resolve(__dirname, '../../dist/apps/admin'),
   html: path.resolve(__dirname, 'src', 'index.html'),
   favicon: path.resolve(__dirname, 'src', 'favicon.ico'),
   faviconDev: path.resolve(__dirname, 'src', 'favicon-dev.ico'),
