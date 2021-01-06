@@ -23,4 +23,13 @@ export class ProjectsService {
 
     return this.prisma.projects.create({ data });
   }
+
+  async updatePlan(projectId: string, id: string, plan: 'free' | 'pro') {
+    await this.prisma.projects.updateMany({
+      where: { id },
+      data: { plan },
+    });
+
+    return this.get(projectId);
+  }
 }

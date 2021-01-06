@@ -56,7 +56,7 @@ const ResetPassword = () => {
   return (
     <Auth
       title="Reset your password"
-      linkText={['Remember you password? Login']}
+      linkText={['Remember your password? Login']}
       linkUrl={['/login']}
     >
       <Form
