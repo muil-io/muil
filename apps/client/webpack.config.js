@@ -16,7 +16,7 @@ const paths = {
 module.exports = (env) => ({
   entry: paths.src,
   output: {
-    filename: 'main.js',
+    publicPath: '/',
     path: paths.dist,
   },
   module: {
@@ -62,6 +62,7 @@ module.exports = (env) => ({
   },
   devServer: {
     open: true,
+    historyApiFallback: true,
   },
   plugins: [
     isDevelopment && new webpack.HotModuleReplacementPlugin(),

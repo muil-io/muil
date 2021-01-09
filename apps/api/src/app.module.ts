@@ -45,6 +45,7 @@ import { UsersModule } from 'users';
     },
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'client'),
+      exclude: ['/api*'],
     }),
     PrismaModule,
     ApiKeysModule,
