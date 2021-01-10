@@ -20,7 +20,7 @@ const useUser = ({ enabled = false } = {}) => {
 
   const [updateProfile] = useMutation(api.updateProfile, {
     throwOnError: true,
-    onSuccess: (data) => queryCache.setQueryData(storeKey, data[0]),
+    onSuccess: ({ data }) => queryCache.setQueryData(storeKey, data[0]),
   });
 
   const [updatePassword] = useMutation(api.updatePassword, { throwOnError: true });

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { fadeIn } from 'style/animations';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
@@ -57,11 +58,14 @@ const Dialog = ({
   cancelButtonText = 'Cancel',
   onCancel,
   isLoading,
+  usePortal = false,
 }) => {
   const ref = useRef();
   useOnClickOutside(ref, onClose);
 
-  return (
+  const el = useRef(document.getElementById('modal'));
+
+  const content = (
     <Layout>
       <Wrapper ref={ref}>
         {title && <Title>{title}</Title>}
@@ -86,6 +90,12 @@ const Dialog = ({
       </Wrapper>
     </Layout>
   );
+
+  if (usePortal) {
+    return ReactDOM.createPortal(content, el.current);
+  }
+
+  return content;
 };
 
 export default Dialog;

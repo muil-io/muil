@@ -1,35 +1,50 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { FORM_ERROR } from 'final-form';
-import { Field } from 'react-final-form';
-import { Input as BaseInput } from 'shared/components';
+import { Field, Form } from 'react-final-form';
+import { Input as BaseInput, Dialog, header3 } from 'shared/components';
 import { composeValidators, required, validPassword, confirmPassword } from 'auth/utils/form';
 import useUser from 'shared/hooks/useUser';
-import Layout from '../Layout';
 
 const Input = styled(BaseInput)`
   width: 100%;
   margin: 8px 0;
 `;
 
-const ChangePassword = () => {
+const Errors = styled.div`
+  ${header3};
+  color: ${({ theme }) => theme.colors.error};
+  text-align: left;
+  margin-top: 10px;
+`;
+
+const ChangePassword = ({ onClose }) => {
   const { updatePassword } = useUser();
 
   const handleSubmit = useCallback(
     async ({ oldPassword, password }) => {
       try {
         await updatePassword({ oldPassword, newPassword: password });
+        onClose();
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
     },
-    [updatePassword],
+    [onClose, updatePassword],
   );
 
   return (
-    <Layout title="Change Password" onSubmit={handleSubmit} showErrorsList>
-      {() => (
-        <>
+    <Form
+      onSubmit={handleSubmit}
+      render={({ handleSubmit, submitting, submitError, pristine, errors }) => (
+        <Dialog
+          onClose={onClose}
+          onCancel={onClose}
+          onConfirm={handleSubmit}
+          isLoading={submitting}
+          title="Change Password"
+          usePortal
+        >
           <Field
             name="oldPassword"
             validate={required}
@@ -74,9 +89,14 @@ const ChangePassword = () => {
               />
             )}
           />
-        </>
+
+          <Errors>
+            {submitError && <div>{submitError}</div>}
+            {!pristine && Object.entries(errors).map(([key, error]) => <li key={key}>{error}</li>)}
+          </Errors>
+        </Dialog>
       )}
-    </Layout>
+    />
   );
 };
 

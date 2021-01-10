@@ -4,7 +4,6 @@ import ApiKeys from './ApiKeys';
 import Users from './Users/Users';
 import SMTP from './SMTP';
 import CloudStorage from './CloudStorage';
-import Profile from './Profile';
 import Hostname from './Hostname';
 
 const TABS = [
@@ -13,7 +12,6 @@ const TABS = [
   { label: 'SMTP', value: 'smtp' },
   { label: 'Cloud Storage', value: 'cloudStorage' },
   process.env.ENV !== 'CLOUD' ? { label: 'Host Name', value: 'hostname' } : undefined,
-  { label: 'Profile', value: 'profile' },
 ];
 
 const Settings = () => (
@@ -23,7 +21,6 @@ const Settings = () => (
     <SMTP tab="smtp" />
     <CloudStorage tab="cloudStorage" />
     <Hostname tab="hostname" />
-    <Profile tab="profile" />
   </Page>
 );
 
