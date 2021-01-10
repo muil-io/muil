@@ -1,7 +1,7 @@
 import { get as _get, post as _post, put as _put, _delete } from 'shared/utils/http';
 
 const httpOptions = {
-  baseURL: process.env.BASE_URL,
+  baseURL: `${process.env.BASE_URL}/api`,
   responseType: 'json',
   withCredentials: true,
   withHeaders: false,
