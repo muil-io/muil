@@ -25,3 +25,7 @@ export const fetchLogs = (from) => get('/kpis/stats', { from });
 export const fetchProjects = () => get('/kpis/projects');
 
 export const fetchUsers = () => get('/kpis/users');
+
+export const setUserRole = ({ id, role }) => post(`/users/${id}/role`, { role });
+
+export const setProjectPlan = ({ id, plan }) => post(`/projects/${id}/plan`, { plan });

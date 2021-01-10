@@ -6,6 +6,7 @@ import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import { TIME_RANGE_OPTIONS } from 'shared/constants';
 import usePersistedState from 'shared/hooks/usePersistedState';
 import { dateRenderer } from 'shared/components/Table/cellRenderers';
+import useUser from 'shared/hooks/useUser';
 import useAdminLogs from '../hooks/useAdminLogs';
 import useProjects from '../hooks/useProjects';
 import useUsers from '../hooks/useUsers';
@@ -26,7 +27,6 @@ const Grid = styled.div`
 
 const TableWrapper = styled.div`
   padding: 30px 10%;
-  max-height: 300px;
 `;
 
 const Title = styled(Header2)`
@@ -36,9 +36,13 @@ const Title = styled(Header2)`
 const Dashboard = () => {
   const [selectedTimeRange, setSelectedTimeRange] = usePersistedState('timeRange', 7);
 
+  const {
+    data: { id: userId },
+  } = useUser();
+
   const { isLoading: adminLogsLoading, data: logs } = useAdminLogs({ selectedTimeRange });
-  const { isLoading: projectsLoading, data: projects } = useProjects();
-  const { isLoading: usersLoading, data: users } = useUsers();
+  const { isLoading: projectsLoading, data: projects, setProjectPlan } = useProjects();
+  const { isLoading: usersLoading, data: users, setUserRole } = useUsers();
 
   if (adminLogsLoading || projectsLoading || usersLoading) {
     return <SpinnerArea />;
@@ -77,9 +81,24 @@ const Dashboard = () => {
           defaultSortBy="name"
           defaultSortDirection="ASC"
           noDataSubTitle={<>No Projects</>}
+          height={400}
         >
           <Column label="Name" dataKey="name" flexGrow={1} width={1} />
-          <Column label="Plan" dataKey="plan" flexGrow={1} width={1} />
+          <Column
+            label="Plan"
+            dataKey="plan"
+            flexGrow={1}
+            width={1}
+            cellRenderer={({ rowData }) => (
+              <select
+                value={rowData.plan}
+                onChange={(e) => setProjectPlan({ id: rowData.id, plan: e.target.value })}
+              >
+                <option>free</option>
+                <option>pro</option>
+              </select>
+            )}
+          />
           <Column
             label="Render Template"
             dataKey="renderTemplate"
@@ -97,12 +116,32 @@ const Dashboard = () => {
           rowHeight={() => 60}
           noDataTitle="No Users Found"
           defaultSortBy="createdAt"
-          defaultSortDirection="Desc"
+          defaultSortDirection="DESC"
           noDataSubTitle={<>No Users</>}
+          height={400}
         >
           <Column label="Project" dataKey="projectId" flexGrow={1} width={1} />
           <Column label="Name" dataKey="name" flexGrow={1} width={1} />
           <Column label="Email" dataKey="email" flexGrow={1} width={1} />
+          <Column
+            label="Role"
+            dataKey="role"
+            flexGrow={1}
+            width={1}
+            cellRenderer={({ rowData }) =>
+              rowData.id === userId ? (
+                rowData.role
+              ) : (
+                <select
+                  value={rowData.role}
+                  onChange={(e) => setUserRole({ id: rowData.id, role: e.target.value })}
+                >
+                  <option>muil</option>
+                  <option>muilAdmin</option>
+                </select>
+              )
+            }
+          />
           <Column
             label="Created At"
             dataKey="createdAt"

@@ -1,11 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { Table as BaseTable, WindowScroller, AutoSizer } from 'react-virtualized';
+import { Table as BaseTable, AutoSizer } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import { FlexColumn, FlexColumnCenter } from '../Flex';
 import { card } from '../Card';
 import { Header2, Header3 } from '../Typography';
 import media from '../../../style/media';
+import scrollbar from '../../../style/scrollbar';
 
 const SORT_MAP = {
   string: (a = '', b = '') => a.localeCompare(b),
@@ -16,6 +17,9 @@ const SORT_MAP = {
 
 const Wrapper = styled(FlexColumn).attrs(() => ({ level: 3 }))`
   ${card};
+  .ReactVirtualized__Grid {
+    ${scrollbar}
+  }
 `;
 
 const EmptyStateWrapper = styled(FlexColumnCenter)`
@@ -93,33 +97,24 @@ const Table = ({
 
   return (
     <Wrapper>
-      <WindowScroller>
-        {({ height, isScrolling, onChildScroll, scrollTop }) => (
-          <AutoSizer disableHeight>
-            {({ width }) => (
-              <StyledTable
-                rowCount={sortedList.length}
-                rowGetter={({ index }) => sortedList[index]}
-                sortBy={_sortBy}
-                sortDirection={_sortDirection}
-                sort={handleSort}
-                columnsShowSizes={columnsShowSizes}
-                headerHeight={50}
-                rowHeight={({ index }) => rowHeight?.({ index, rowData: sortedList[index] }) || 48}
-                width={width}
-                height={height}
-                autoHeight
-                isScrolling={isScrolling}
-                onScroll={onChildScroll}
-                scrollTop={scrollTop}
-                {...tableProps}
-              >
-                {children}
-              </StyledTable>
-            )}
-          </AutoSizer>
+      <AutoSizer disableHeight>
+        {({ width }) => (
+          <StyledTable
+            rowCount={sortedList.length}
+            rowGetter={({ index }) => sortedList[index]}
+            sortBy={_sortBy}
+            sortDirection={_sortDirection}
+            sort={handleSort}
+            columnsShowSizes={columnsShowSizes}
+            headerHeight={50}
+            rowHeight={({ index }) => rowHeight?.({ index, rowData: sortedList[index] }) || 48}
+            width={width}
+            {...tableProps}
+          >
+            {children}
+          </StyledTable>
         )}
-      </WindowScroller>
+      </AutoSizer>
     </Wrapper>
   );
 };
