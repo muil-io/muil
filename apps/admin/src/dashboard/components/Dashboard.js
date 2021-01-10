@@ -120,9 +120,9 @@ const Dashboard = () => {
           noDataSubTitle={<>No Users</>}
           height={400}
         >
-          <Column label="Project" dataKey="projectId" flexGrow={1} width={1} />
           <Column label="Name" dataKey="name" flexGrow={1} width={1} />
           <Column label="Email" dataKey="email" flexGrow={1} width={1} />
+          <Column label="Project" dataKey="projectId" flexGrow={1} width={1} />
           <Column
             label="Role"
             dataKey="role"

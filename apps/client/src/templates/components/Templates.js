@@ -59,7 +59,7 @@ const Templates = () => {
     <Page
       title="Templates"
       renderRight={
-        branches.length === 0
+        branches.length < 2
           ? undefined
           : () => (
               <>
