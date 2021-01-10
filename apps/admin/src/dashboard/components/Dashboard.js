@@ -34,7 +34,7 @@ const Title = styled(Header2)`
 `;
 
 const Dashboard = () => {
-  const [selectedTimeRange, setSelectedTimeRange] = usePersistedState('timeRange', 7);
+  const [selectedTimeRange, setSelectedTimeRange] = usePersistedState('timeRange', '7-days');
 
   const {
     data: { id: userId },

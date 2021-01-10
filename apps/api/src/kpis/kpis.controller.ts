@@ -1,12 +1,4 @@
-import {
-  Controller,
-  UseGuards,
-  Body,
-  Get,
-  Query,
-  DefaultValuePipe,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, UseGuards, Get, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard, MuilAdminOnly } from 'shared/guards';
 import { KpisService } from './kpis.service';
 
@@ -17,8 +9,8 @@ export class KpisController {
   @Get('/stats')
   @UseGuards(AuthGuard)
   @MuilAdminOnly()
-  async getKpis(@Body() { from }) {
-    return this.kpisService.getKpis(from);
+  async getKpis(@Query() { value, unit }) {
+    return this.kpisService.getKpis({ value, unit });
   }
 
   @Get('/projects')
