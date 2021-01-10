@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env BASE_URL=https://app.muil.io webpack serve --mode development --env development",
-    "build": "cross-env NODE_ENV=production webpack"
+    "build": "cross-env BASE_URL=https://app.muil.io NODE_ENV=production webpack"
   },
   "dependencies": {
     "axios": "^0.21.0",
