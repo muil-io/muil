@@ -9,7 +9,9 @@ import theme from './style/theme';
 import GlobalStyle from './style/globalStyle';
 import App from './app/components/App';
 
-const REACT_QUERY_CONFIG = { queries: { staleTime: Infinity, refetchOnWindowFocus: false } };
+const REACT_QUERY_CONFIG = {
+  queries: { staleTime: Infinity, refetchOnWindowFocus: false, retry: false },
+};
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>

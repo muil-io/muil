@@ -15,6 +15,7 @@ const paths = {
 
 module.exports = (env) => ({
   entry: paths.src,
+  devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
   output: {
     publicPath: '/',
     path: paths.dist,

@@ -33,7 +33,7 @@ const Trend = styled.div`
 const Counter = ({ className, title, count, trend, showTrend = true }) => (
   <Wrapper className={className}>
     <Title>{title}</Title>
-    <Count>{count.toLocaleString()}</Count>
+    <Count>{count?.toLocaleString()}</Count>
     {showTrend && (
       <Trend isUp={trend > 0} isDown={trend < 0}>
         {trend || 0}%
