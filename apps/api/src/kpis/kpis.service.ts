@@ -19,6 +19,7 @@ export class KpisService {
   ) {
     const data = await this.prisma.users.findMany({
       select: {
+        id: true,
         createdAt: true,
         email: true,
         name: true,
