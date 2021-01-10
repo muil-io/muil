@@ -73,7 +73,7 @@ module.exports = (env) => ({
       IS_CLOUD: Boolean(process.env.IS_CLOUD),
     }),
     new webpack.DefinePlugin({
-      'process.env.BASE_URL': process.env.BASE_URL,
+      'process.env.BASE_URL': JSON.stringify(process.env.BASE_URL),
       'process.env.IS_CLOUD': process.env.IS_CLOUD,
     }),
   ].filter(Boolean),
