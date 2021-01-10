@@ -16,7 +16,7 @@ const paths = {
 module.exports = (env) => ({
   entry: paths.src,
   output: {
-    filename: 'main.js',
+    publicPath: '/',
     path: paths.dist,
   },
   module: {
@@ -62,6 +62,7 @@ module.exports = (env) => ({
   },
   devServer: {
     open: true,
+    historyApiFallback: true,
   },
   plugins: [
     isDevelopment && new webpack.HotModuleReplacementPlugin(),
@@ -72,7 +73,7 @@ module.exports = (env) => ({
       IS_CLOUD: Boolean(process.env.IS_CLOUD),
     }),
     new webpack.DefinePlugin({
-      'process.env.BASE_URL': JSON.stringify(isDevelopment ? 'http://localhost:3000' : ''),
+      'process.env.BASE_URL': process.env.BASE_URL,
       'process.env.IS_CLOUD': process.env.IS_CLOUD,
     }),
   ].filter(Boolean),
