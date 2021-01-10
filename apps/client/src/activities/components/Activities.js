@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { Column } from 'react-virtualized';
-import { Page, DropDown, InfiniteTable, FlexSpace } from 'shared/components';
+import { Page, DropDown, InfiniteTable, FlexSpace, Header3, FlexMiddle } from 'shared/components';
 import { dateRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import useLogs from 'shared/hooks/useLogs';
@@ -14,6 +14,11 @@ import detailsRenderer from '../utils/detailsRenderer';
 
 const Row = styled(FlexSpace)`
   flex: 1;
+`;
+
+const Prefix = styled(Header3)`
+  height: 15px;
+  margin-right: 8px;
 `;
 
 const FilterDropDown = styled(DropDown)`
@@ -67,12 +72,15 @@ const Activities = () => {
       title="Activities"
       renderRight={() => (
         <Row>
-          <FilterDropDown
-            placeHolder="Select..."
-            selectedValue={selectedFilter}
-            options={filters}
-            onChange={({ value }) => setSelectedFilter(value)}
-          />
+          <FlexMiddle>
+            <Prefix>Type: </Prefix>
+            <FilterDropDown
+              placeHolder="Select..."
+              selectedValue={selectedFilter}
+              options={filters}
+              onChange={({ value }) => setSelectedFilter(value)}
+            />
+          </FlexMiddle>
 
           <TimeRangeDropDown
             selectedValue={selectedTimeRange}

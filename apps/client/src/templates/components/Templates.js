@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { Column } from 'react-virtualized';
-import { Page, DropDown, Table } from 'shared/components';
+import { Page, DropDown, Table, Header3 } from 'shared/components';
 import { dateRenderer } from 'shared/components/Table/cellRenderers';
 import SpinnerArea from 'shared/components/Spinner/SpinnerArea';
 import { groupBy } from 'shared/utils/data';
@@ -14,9 +14,14 @@ const BranchDropDown = styled(DropDown)`
   height: 27px;
 `;
 
+const Prefix = styled(Header3)`
+  height: 15px;
+  margin-right: 8px;
+`;
+
 const Templates = () => {
   const { isLoading, data, deleteBranch } = useTemplates();
-  const [selectedBranch, setSelectedBranch] = useState();
+  const [selectedBranch, setSelectedBranch] = useState('master');
   const [selectedTemplate, setSelectedTemplate] = useState();
 
   const groupedByBranch = useMemo(() => groupBy(data || [], 'branch'), [data]);
@@ -57,12 +62,15 @@ const Templates = () => {
         branches.length === 0
           ? undefined
           : () => (
-              <BranchDropDown
-                placeHolder="Select..."
-                selectedValue={selectedBranch}
-                options={branches}
-                onChange={({ value }) => setSelectedBranch(value)}
-              />
+              <>
+                <Prefix>Branch:</Prefix>
+                <BranchDropDown
+                  placeHolder="Select..."
+                  selectedValue={selectedBranch}
+                  options={branches}
+                  onChange={({ value }) => setSelectedBranch(value)}
+                />
+              </>
             )
       }
     >
