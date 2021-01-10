@@ -136,7 +136,7 @@ const Dashboard = () => {
                   value={rowData.role}
                   onChange={(e) => setUserRole({ id: rowData.id, role: e.target.value })}
                 >
-                  <option>muil</option>
+                  <option>admin</option>
                   <option>muilAdmin</option>
                 </select>
               )
