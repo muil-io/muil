@@ -3,7 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import * as Sentry from '@sentry/node';
 import { json } from 'body-parser';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
 import { ExceptionsInterceptor } from 'shared/interceptor/ExceptionsInterceptor';
 import { AppModule } from './app.module';
 
@@ -16,7 +15,7 @@ async function bootstrap() {
 
   const corsOrigin = app.get('ConfigService').get('CORS_ORIGIN');
   if (corsOrigin) {
-    app.use(cors({ origin: corsOrigin, credentials: true }));
+    app.enableCors({ origin: corsOrigin.split(','), credentials: true });
   }
 
   const sentryDsn = app.get('ConfigService').get('SENTRY_DSN');
