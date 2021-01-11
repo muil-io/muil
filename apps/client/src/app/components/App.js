@@ -22,6 +22,13 @@ const AppShell = () => {
   const { isLoading, isAuth, logout } = useUser({ enabled: true });
   const queryConfig = useMemo(
     () => ({
+      mutations: {
+        onError: (err) => {
+          if (err?.statusCode === 401) {
+            logout();
+          }
+        },
+      },
       queries: {
         onError: (err) => {
           if (err?.statusCode === 401) {
