@@ -77,7 +77,6 @@ export class AuthController {
   }
 
   @Post('logout')
-  @UseGuards(AuthGuard)
   async logout(@Res() res: Response) {
     res.cookie('jwt', '', {
       httpOnly: true,
