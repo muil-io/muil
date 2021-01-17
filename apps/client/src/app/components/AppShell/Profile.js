@@ -6,10 +6,7 @@ import ChangeProfile from './ChangeProfile';
 import ChangePassword from './ChangePassword';
 
 const Profile = () => {
-  const {
-    data: { name },
-    logout,
-  } = useUser();
+  const { data, logout } = useUser();
   const { push } = useHistory();
   const [showChangeProfile, setShowChangeProfile] = useState(false);
   const [showChangePassword, setShowChangePassword] = useState(false);
@@ -35,7 +32,7 @@ const Profile = () => {
         ]}
         location={{ right: 0 }}
       >
-        {name}
+        {data?.name}
       </DropDown>
 
       {showChangeProfile && <ChangeProfile onClose={() => setShowChangeProfile(false)} />}

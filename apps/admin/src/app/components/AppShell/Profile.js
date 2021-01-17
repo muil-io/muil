@@ -4,10 +4,7 @@ import useUser from 'shared/hooks/useUser';
 import { DropDown } from 'shared/components';
 
 const Profile = () => {
-  const {
-    data: { name },
-    logout,
-  } = useUser();
+  const { data, logout } = useUser();
   const { push } = useHistory();
 
   return (
@@ -24,7 +21,7 @@ const Profile = () => {
       ]}
       location={{ right: 0 }}
     >
-      {name}
+      {data?.name}
     </DropDown>
   );
 };
