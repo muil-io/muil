@@ -101,7 +101,7 @@ export class TemplatesService {
         `${templateId}.css`,
       );
 
-      const html = this.templatesRendererService.render({
+      const html = await this.templatesRendererService.render({
         type,
         templatePath,
         templateCssPath: fs.existsSync(templateCssPath) ? templateCssPath : undefined,
@@ -130,7 +130,7 @@ export class TemplatesService {
         status: 'error',
         errorMessage: err.message,
       });
-      throw err;
+      throw new Error(`Template render failure: ${err.message}`);
     }
   }
 

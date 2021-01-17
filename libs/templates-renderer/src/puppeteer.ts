@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import puppeteer from 'puppeteer-core';
 
 const pageSize = {
@@ -14,14 +15,33 @@ const pageSize = {
   Ledger: { height: '43.18cm', width: '27.94cm' },
 };
 
+let executablePath = '/usr/bin/chromium-browser';
+let product = 'chrome';
+if (process.platform === 'win32') {
+  if (fs.existsSync('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe')) {
+    executablePath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+  } else if (fs.existsSync('C:\\Program Files\\Mozilla Firefox\\firefox.exe')) {
+    product = 'firefox';
+    executablePath = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe';
+  }
+} else if (process.platform === 'darwin') {
+  if (fs.existsSync('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')) {
+    executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+  } else if (fs.existsSync('/Applications/Firefox.app/Contents/MacOS/firefox')) {
+    product = 'firefox';
+    executablePath = '/Applications/Firefox.app/Contents/MacOS/firefox';
+  }
+}
+
 export const generatePdf = async (
   html: string,
   format: puppeteer.PDFFormat = 'A4',
   orientation: 'portrait' | 'landscape' = 'portrait',
 ) => {
   const browser = await puppeteer.launch({
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: ['--no-sandbox'],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || executablePath,
+    product,
+    args: product === 'chrome' ? ['--no-sandbox'] : undefined,
   });
 
   try {
@@ -43,8 +63,9 @@ export const generatePdf = async (
 
 export const generatePng = async (html: string) => {
   const browser = await puppeteer.launch({
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: ['--no-sandbox'],
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || executablePath,
+    product,
+    args: product === 'chrome' ? ['--no-sandbox'] : undefined,
   });
 
   try {
