@@ -49,6 +49,7 @@ const Templates = () => {
     return (
       <TemplateView
         selectedTemplate={selectedTemplate}
+        selectedBranch={selectedBranch}
         baseTemplateUrl={`${process.env.BASE_URL}/api/templates/${selectedBranch}/${selectedTemplate.templateId}`}
         onExit={() => setSelectedTemplate()}
       />

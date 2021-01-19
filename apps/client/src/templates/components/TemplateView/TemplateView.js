@@ -29,7 +29,8 @@ const Container = styled(FlexColumn)`
 
 const TemplateView = ({
   baseTemplateUrl,
-  selectedTemplate: { displayName: templateName, dynamicProps: defaultDynamicProps },
+  selectedBranch,
+  selectedTemplate: { templateId, displayName: templateName, dynamicProps: defaultDynamicProps },
   onExit,
 }) => {
   const [selectedSize, setSelectedSize] = useState('full');
@@ -42,7 +43,7 @@ const TemplateView = ({
 
       <Container>
         <Options {...{ dynamicProps, setDynamicProps, baseTemplateUrl, templateName }} />
-        <Iframe {...{ debouncedProps, baseTemplateUrl, selectedSize }} />
+        <Iframe {...{ debouncedProps, selectedBranch, templateId, selectedSize }} />
       </Container>
     </Wrapper>
   );

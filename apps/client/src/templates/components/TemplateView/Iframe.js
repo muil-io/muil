@@ -57,11 +57,15 @@ const BaseIframe = styled.iframe`
   flex: 1;
 `;
 
-const Iframe = ({ debouncedProps, baseTemplateUrl, selectedSize }) => {
+const Iframe = ({ debouncedProps, selectedBranch, templateId, selectedSize }) => {
   const iframeRef = useRef();
 
-  const { isLoading, data = '' } = useQuery([baseTemplateUrl, debouncedProps], () =>
-    api.post(baseTemplateUrl, { props: debouncedProps }, { responseType: 'text' }),
+  const { isLoading, data = '' } = useQuery([selectedBranch, templateId, debouncedProps], () =>
+    api.post(
+      `/templates/${selectedBranch}/${templateId}`,
+      { props: debouncedProps },
+      { responseType: 'text' },
+    ),
   );
 
   useEffect(() => {
