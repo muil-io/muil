@@ -19,7 +19,7 @@ const TYPES = {
     method: 'GET',
     urlSuffix: '?type=html',
   },
-  image: {
+  png: {
     label: 'Image',
     method: 'GET',
     urlSuffix: '?type=png',
@@ -65,7 +65,7 @@ const OpenButton = styled(Button)`
   }
 `;
 
-const Api = ({ dynamicProps, onChange, baseTemplateUrl, templateName }) => {
+const Api = ({ dynamicProps, onChange, selectedBranch, templateId, templateName }) => {
   const [selectedType, setSelectedType] = useState('pdf');
 
   const options = useMemo(
@@ -77,22 +77,26 @@ const Api = ({ dynamicProps, onChange, baseTemplateUrl, templateName }) => {
 
   const url = useMemo(() => {
     if (selectedType === 'email') {
-      return `${baseTemplateUrl}${TYPES[selectedType].urlSuffix}`;
+      return `${process.env.BASE_URL}/api/templates/${selectedBranch}/${templateId}${TYPES[selectedType].urlSuffix}`;
     }
-    return `${baseTemplateUrl}${TYPES[selectedType].urlSuffix}${qsProps ? `&${qsProps}` : qsProps}`;
-  }, [baseTemplateUrl, qsProps, selectedType]);
+    return `${process.env.BASE_URL}/api/templates/${selectedBranch}/${templateId}${
+      TYPES[selectedType].urlSuffix
+    }${qsProps ? `&${qsProps}` : qsProps}`;
+  }, [qsProps, selectedBranch, selectedType, templateId]);
 
   const handleDownload = useCallback(async () => {
     try {
-      const data = await api.post(
-        `${baseTemplateUrl}${TYPES[selectedType].urlSuffix}`,
-        { props: dynamicProps },
-        { responseType: 'blob' },
-      );
+      const data = await api.renderTemplate({
+        branchId: selectedBranch,
+        templateId,
+        type: selectedType,
+        props: dynamicProps,
+        responseType: 'blob',
+      });
 
       downloadFile(data, templateName);
     } catch (err) {}
-  }, [baseTemplateUrl, dynamicProps, selectedType, templateName]);
+  }, [dynamicProps, selectedBranch, selectedType, templateId, templateName]);
 
   return (
     <>

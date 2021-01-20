@@ -61,11 +61,7 @@ const Iframe = ({ debouncedProps, selectedBranch, templateId, selectedSize }) =>
   const iframeRef = useRef();
 
   const { isLoading, data = '' } = useQuery([selectedBranch, templateId, debouncedProps], () =>
-    api.post(
-      `/templates/${selectedBranch}/${templateId}`,
-      { props: debouncedProps },
-      { responseType: 'text' },
-    ),
+    api.renderTemplate({ branchId: selectedBranch, templateId, props: debouncedProps }),
   );
 
   useEffect(() => {

@@ -80,3 +80,11 @@ export const deleteUser = ({ id }) => httpDelete(`/users/${id}`);
 
 export const acceptInvite = ({ name, password, token }) =>
   post('/auth/acceptInvite', { name, password, token });
+
+export const renderTemplate = ({
+  branchId,
+  templateId,
+  type = 'html',
+  props,
+  responseType = 'text',
+}) => post(`/templates/${branchId}/${templateId}?type=${type}`, { props }, { responseType });

@@ -29,7 +29,7 @@ const Container = styled.div`
   ${scrollbar};
 `;
 
-const Options = ({ dynamicProps, setDynamicProps, baseTemplateUrl, templateName }) => {
+const Options = ({ dynamicProps, setDynamicProps, selectedBranch, templateId, templateName }) => {
   const [activeTab, setActiveTab] = useState('props');
 
   return (
@@ -40,18 +40,15 @@ const Options = ({ dynamicProps, setDynamicProps, baseTemplateUrl, templateName 
       </Tabs>
 
       <Container isVisible={activeTab === 'props'}>
-        <DynamicProps
-          dynamicProps={dynamicProps}
-          onChange={setDynamicProps}
-          baseTemplateUrl={baseTemplateUrl}
-        />
+        <DynamicProps dynamicProps={dynamicProps} onChange={setDynamicProps} />
       </Container>
 
       <Container isVisible={activeTab === 'api'}>
         <Api
           dynamicProps={dynamicProps}
           onChange={setDynamicProps}
-          baseTemplateUrl={baseTemplateUrl}
+          selectedBranch={selectedBranch}
+          templateId={templateId}
           templateName={templateName}
         />
       </Container>

@@ -28,7 +28,6 @@ const Container = styled(FlexColumn)`
 `;
 
 const TemplateView = ({
-  baseTemplateUrl,
   selectedBranch,
   selectedTemplate: { templateId, displayName: templateName, dynamicProps: defaultDynamicProps },
   onExit,
@@ -42,7 +41,7 @@ const TemplateView = ({
       <TopBar {...{ templateName, onExit, selectedSize, setSelectedSize }} />
 
       <Container>
-        <Options {...{ dynamicProps, setDynamicProps, baseTemplateUrl, templateName }} />
+        <Options {...{ dynamicProps, setDynamicProps, selectedBranch, templateId, templateName }} />
         <Iframe {...{ debouncedProps, selectedBranch, templateId, selectedSize }} />
       </Container>
     </Wrapper>
