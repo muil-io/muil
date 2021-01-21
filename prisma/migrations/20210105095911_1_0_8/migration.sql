@@ -47,7 +47,7 @@ CREATE TABLE "new_Projects" (
     "hostname" TEXT,
     PRIMARY KEY ("id")
 );
-INSERT INTO "new_Projects" ("id", "name", "plan", "hostname") SELECT "id", "name", "plan", "hostname" FROM "Projects";
+INSERT INTO "new_Projects" ("id", "createdAt", "name", "plan", "hostname") SELECT "id", "createdAt", "name", "plan", "hostname" FROM "Projects";
 DROP TABLE "Projects";
 ALTER TABLE "new_Projects" RENAME TO "Projects";
 CREATE TABLE "new_Users" (
@@ -60,7 +60,7 @@ CREATE TABLE "new_Users" (
     "role" TEXT NOT NULL DEFAULT 'admin',
     PRIMARY KEY ("id")
 );
-INSERT INTO "new_Users" ("id", "email", "password", "name", "projectId") SELECT "id", "email", "password", "name", "projectId" FROM "Users";
+INSERT INTO "new_Users" ("id", "createdAt", "email", "password", "name", "projectId", "role") SELECT "id", "createdAt", "email", "password", "name", "projectId", "role" FROM "Users";
 DROP TABLE "Users";
 ALTER TABLE "new_Users" RENAME TO "Users";
 CREATE UNIQUE INDEX "Users.email_unique" ON "Users"("email");
