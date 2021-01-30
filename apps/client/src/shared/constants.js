@@ -5,12 +5,12 @@ import Images from './assets/icons/images.svg';
 import Errors from './assets/icons/errors.svg';
 
 export const ACTIVITIES_MAP = {
-  email: {
-    title: 'Emails Sent',
-    shortTitle: 'Emails',
-    singular: 'Email',
-    color: 'category1',
-    icon: Emails,
+  html: {
+    title: 'HTML Generated',
+    shortTitle: 'HTML',
+    singular: 'HTML',
+    color: 'category3',
+    icon: HTML,
   },
   pdf: {
     title: 'PDFs Generated',
@@ -19,19 +19,19 @@ export const ACTIVITIES_MAP = {
     color: 'category2',
     icon: Pdfs,
   },
-  html: {
-    title: 'HTML Generated',
-    shortTitle: 'HTML',
-    singular: 'HTML',
-    color: 'category3',
-    icon: HTML,
-  },
   png: {
     title: 'Images Generated',
     shortTitle: 'Images',
     singular: 'Image',
     color: 'category4',
     icon: Images,
+  },
+  email: {
+    title: 'Emails Sent',
+    shortTitle: 'Emails',
+    singular: 'Email',
+    color: 'category1',
+    icon: Emails,
   },
   error: {
     title: 'Errors',
