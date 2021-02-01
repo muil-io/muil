@@ -1,7 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, createElement } from 'react';
 import * as fs from 'fs';
 import { minify } from 'html-minifier';
 import juice from 'juice';
+import { renderToStaticMarkup as renderToStatic } from 'react-dom/server';
 import { v4 as uuid } from 'uuid';
 import { NodeVM } from 'vm2';
 import emailTemplate from './emailTemplate';
@@ -66,6 +67,7 @@ const renderToStaticMarkup = (ReactElement: ReactNode): string => {
 
 const renderTemplate = async ({
   type = 'html',
+  sandbox = true,
   templatePath,
   templateCssPath = null,
   props = {},
@@ -78,8 +80,16 @@ const renderTemplate = async ({
 }: RenderOptions): Promise<string | Buffer> => {
   if (!templatePath) return '';
 
-  const ReactElement = await createReactElement(templatePath, props);
-  const content = renderToStaticMarkup(ReactElement);
+  let ReactElement;
+  let content: string;
+  if (sandbox) {
+    ReactElement = await createReactElement(templatePath, props);
+    content = renderToStaticMarkup(ReactElement);
+  } else {
+    const ReactComponent = require(templatePath); // eslint-disable-line import/no-dynamic-require, global-require
+    ReactElement = createElement(ReactComponent.default, props);
+    content = renderToStatic(ReactElement);
+  }
 
   const templateCss =
     templateCssPath && fs.existsSync(templateCssPath)
@@ -88,9 +98,9 @@ const renderTemplate = async ({
 
   let html = emailTemplate({
     css: templateCss,
-    styles: (await Promise.all(styleCollectors.map((collector) => collector(ReactElement)))).join(
-      '\n',
-    ),
+    styles: (
+      await Promise.all(styleCollectors.map((collector) => collector(ReactElement, { sandbox })))
+    ).join('\n'),
     content,
     shadowSupport,
   });
