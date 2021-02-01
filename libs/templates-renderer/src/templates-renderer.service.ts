@@ -6,7 +6,6 @@ import { RenderOptions } from './types';
 export class TemplatesRendererService {
   async render({
     type = 'html',
-    sandbox = true,
     templatePath,
     templateCssPath = null,
     props = {},
@@ -18,7 +17,6 @@ export class TemplatesRendererService {
   }: RenderOptions): Promise<string | Buffer> {
     return renderTemplate({
       type,
-      sandbox,
       templatePath,
       templateCssPath,
       props,

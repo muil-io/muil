@@ -1,15 +1,7 @@
-import { ServerStyleSheet } from 'styled-components';
 import { ReactNode } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import { NodeVM } from 'vm2';
 
-export const styledComponentsStyleCollector = (ReactElement: ReactNode, { sandbox = true }) => {
-  if (!sandbox) {
-    const sheet = new ServerStyleSheet();
-    renderToStaticMarkup(sheet.collectStyles(ReactElement));
-    return sheet.getStyleTags();
-  }
-
+export const styledComponentsStyleCollector = (ReactElement: ReactNode) => {
   const vm = new NodeVM({
     timeout: 5000,
     sandbox: {
