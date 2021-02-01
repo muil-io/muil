@@ -8,7 +8,9 @@ export class KpisService {
 
   percentageChange(oldNumber: number, newNumber: number) {
     if (newNumber === 0 && oldNumber === 0) return null;
-    return oldNumber ? (oldNumber - newNumber / oldNumber) * 100 : 100;
+    return oldNumber
+      ? (((oldNumber - newNumber) / oldNumber) * 100 * (oldNumber > newNumber ? -1 : 1)).toFixed(2)
+      : 100;
   }
 
   async getUsers(
