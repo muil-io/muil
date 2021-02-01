@@ -78,17 +78,24 @@ const Dashboard = () => {
           items={projects}
           rowHeight={() => 60}
           noDataTitle="No Projects Found"
-          defaultSortBy="name"
-          defaultSortDirection="ASC"
+          defaultSortBy="createdAt"
+          defaultSortDirection="DESC"
           noDataSubTitle={<>No Projects</>}
           height={400}
         >
+          <Column
+            label="Created At"
+            dataKey="createdAt"
+            width={170}
+            columnType="date"
+            cellRenderer={dateRenderer}
+          />
+          <Column label="ID" dataKey="id" width={280} />
           <Column label="Name" dataKey="name" flexGrow={1} width={1} />
           <Column
             label="Plan"
             dataKey="plan"
-            flexGrow={1}
-            width={1}
+            width={80}
             cellRenderer={({ rowData }) => (
               <select
                 value={rowData.plan}
@@ -99,13 +106,7 @@ const Dashboard = () => {
               </select>
             )}
           />
-          <Column
-            label="Render Template"
-            dataKey="renderTemplate"
-            flexGrow={1}
-            width={1}
-            columnType="date"
-          />
+          <Column label="Render Template" dataKey="renderTemplate" width={160} columnType="date" />
         </Table>
       </TableWrapper>
 
@@ -120,14 +121,20 @@ const Dashboard = () => {
           noDataSubTitle={<>No Users</>}
           height={400}
         >
+          <Column
+            label="Created At"
+            dataKey="createdAt"
+            width={170}
+            columnType="date"
+            cellRenderer={dateRenderer}
+          />
           <Column label="Name" dataKey="name" flexGrow={1} width={1} />
           <Column label="Email" dataKey="email" flexGrow={1} width={1} />
-          <Column label="Project" dataKey="projectId" flexGrow={1} width={1} />
+          <Column label="Project" dataKey="projectId" width={300} />
           <Column
             label="Role"
             dataKey="role"
-            flexGrow={1}
-            width={1}
+            width={100}
             cellRenderer={({ rowData }) =>
               rowData.id === userId ? (
                 rowData.role
@@ -141,14 +148,6 @@ const Dashboard = () => {
                 </select>
               )
             }
-          />
-          <Column
-            label="Created At"
-            dataKey="createdAt"
-            flexGrow={1}
-            width={1}
-            columnType="date"
-            cellRenderer={dateRenderer}
           />
         </Table>
       </TableWrapper>
