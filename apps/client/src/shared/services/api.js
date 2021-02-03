@@ -88,3 +88,6 @@ export const renderTemplate = ({
   props,
   responseType = 'text',
 }) => post(`/templates/${branchId}/${templateId}?type=${type}`, { props }, { responseType });
+
+export const sendEmail = ({ branchId, templateId, ...props }) =>
+  post(`/templates/${branchId}/${templateId}/email`, props);

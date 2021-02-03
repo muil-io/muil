@@ -1,27 +1,30 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import queryString from 'qs';
-import { CopyButton, DropDown, flexMiddle, Button } from 'shared/components';
+import { CopyButton, DropDown, flex, Button, Editor as BaseEditor } from 'shared/components';
 import * as api from 'shared/services/api';
 import ExternalIcon from 'shared/assets/icons/external.svg';
 import DownloadIcon from 'shared/assets/icons/download.svg';
 import EmailForm from './EmailForm';
 import downloadFile from '../../../shared/utils/downloadFile';
+import { header4, Header4SemiBold } from '../../../shared/components/Typography/Typography';
+import useHostname from '../../../settings/hooks/useHostname';
+import scrollbar from 'style/scrollbar';
 
 const TYPES = {
   pdf: {
     label: 'PDF',
-    method: 'GET',
+    method: 'POST',
     urlSuffix: '?type=pdf',
   },
   html: {
     label: 'HTML',
-    method: 'GET',
+    method: 'POST',
     urlSuffix: '?type=html',
   },
   png: {
     label: 'Image',
-    method: 'GET',
+    method: 'POST',
     urlSuffix: '?type=png',
   },
   email: {
@@ -31,8 +34,17 @@ const TYPES = {
   },
 };
 
+const Title = styled(Header4SemiBold)`
+  margin: 10px 0 2px;
+  color: ${({ theme }) => theme.colors.gray1};
+
+  > span {
+    color: green;
+  }
+`;
+
 const InputRow = styled.div`
-  ${flexMiddle};
+  ${flex};
   position: relative;
   border: 1px solid ${({ theme }) => theme.colors.gray2};
   background: ${({ theme }) => theme.colors.gray4};
@@ -43,18 +55,27 @@ const InputRow = styled.div`
   transition: border-color 200ms;
 `;
 
-const Method = styled.div`
-  color: green;
-  font-weight: bold;
-  font-size: 11px;
-  margin-right: 3px;
-`;
-
-const InsideInput = styled.input.attrs(() => ({ readOnly: true }))`
+const InsideInput = styled.div`
+  ${header4}
   flex: 1;
   border: none;
   background: transparent;
   outline: none;
+  word-break: break-all;
+`;
+
+const Editor = styled(BaseEditor)`
+  > div {
+    max-height: 200px;
+    overflow: auto !important;
+    ${scrollbar};
+  }
+`;
+
+const EditorCopyButton = styled(CopyButton)`
+  position: absolute;
+  right: 10px;
+  top: 10px;
 `;
 
 const OpenButton = styled(Button)`
@@ -80,14 +101,28 @@ const Api = ({ dynamicProps, onChange, selectedBranch, templateId, templateName 
 
   const qsProps = useMemo(() => queryString.stringify(dynamicProps), [dynamicProps]);
 
-  const url = useMemo(() => {
+  const baseUrl = useMemo(() => {
     if (selectedType === 'email') {
-      return `${process.env.BASE_URL}/api/templates/${selectedBranch}/${templateId}${TYPES[selectedType].urlSuffix}`;
+      return `/api/templates/${selectedBranch}/${templateId}${TYPES[selectedType].urlSuffix}`;
     }
-    return `${process.env.BASE_URL}/api/templates/${selectedBranch}/${templateId}${
-      TYPES[selectedType].urlSuffix
-    }${qsProps ? `&${qsProps}` : qsProps}`;
-  }, [qsProps, selectedBranch, selectedType, templateId]);
+    return `/api/templates/${selectedBranch}/${templateId}${TYPES[selectedType].urlSuffix}`;
+  }, [selectedBranch, selectedType, templateId]);
+
+  // const downloadUrl = useMemo(() => {
+  //   if (selectedType === 'email') {
+  //     return `${process.env.BASE_URL}${baseUrl}`;
+  //   }
+  //   return `${process.env.BASE_URL}${baseUrl}${qsProps ? `&${qsProps}` : qsProps}`;
+  // }, [baseUrl, qsProps, selectedType]);
+
+  const { data } = useHostname();
+
+  const urlWithHost = useMemo(() => {
+    if (process.env.ENV !== 'CLOUD') {
+      return `https://${data?.hostname || ''}${baseUrl}`;
+    }
+    return `https://app.muil.io/${baseUrl}`;
+  }, [baseUrl, data?.hostname]);
 
   const handleDownload = useCallback(async () => {
     try {
@@ -111,18 +146,36 @@ const Api = ({ dynamicProps, onChange, selectedBranch, templateId, templateName 
         options={options}
       />
 
+      <Title>
+        Request URL: <span>({TYPES[selectedType].method})</span>
+      </Title>
+
       <InputRow>
-        <Method>{TYPES[selectedType].method}</Method>
-        <InsideInput value={url} />
-        <CopyButton copyText={url} />
+        <InsideInput>{urlWithHost}</InsideInput>
+        <CopyButton copyText={urlWithHost} />
       </InputRow>
 
+      <Title>Request Payload:</Title>
+
+      <Editor value={{ props: dynamicProps }}>
+        <EditorCopyButton copyText={JSON.stringify({ props: dynamicProps })} />
+      </Editor>
+
       {selectedType === 'email' ? (
-        <EmailForm dynamicProps={dynamicProps} baseTemplateUrl={url} />
+        <EmailForm
+          branchId={selectedBranch}
+          templateId={templateId}
+          dynamicProps={dynamicProps}
+          baseTemplateUrl={baseUrl}
+        />
       ) : (
         <>
           {qsProps.length <= 2000 && (
-            <OpenButton onClick={() => window.open(url)}>
+            <OpenButton
+              onClick={() =>
+                window.open(`${process.env.BASE_URL}${baseUrl}${qsProps ? `&${qsProps}` : qsProps}`)
+              }
+            >
               Open Template
               <ExternalIcon />
             </OpenButton>

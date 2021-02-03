@@ -48,11 +48,13 @@ const Success = styled(Header3)`
   margin: 10px 0;
 `;
 
-const EmailForm = ({ dynamicProps, baseTemplateUrl }) => {
+const EmailForm = ({ branchId, templateId, dynamicProps }) => {
   const handleSubmitForm = useCallback(
     async ({ subject, to, cc, bcc }) => {
       try {
-        await api.post(baseTemplateUrl, {
+        await api.sendEmail({
+          branchId,
+          templateId,
           subject,
           to,
           cc,
@@ -63,7 +65,7 @@ const EmailForm = ({ dynamicProps, baseTemplateUrl }) => {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
       }
     },
-    [baseTemplateUrl, dynamicProps],
+    [branchId, dynamicProps, templateId],
   );
 
   return (

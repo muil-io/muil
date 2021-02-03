@@ -8,6 +8,8 @@ import 'prismjs/themes/prism-coy.css';
 import { Header4SemiBold } from '../Typography';
 
 const Wrapper = styled.div`
+  position: relative;
+
   .container__editor {
     border: 1px solid
       ${({ theme, hasError }) => (hasError ? theme.colors.error : theme.colors.gray2)}!important;
@@ -16,7 +18,6 @@ const Wrapper = styled.div`
     transition: border-color 200ms;
     font-size: 12px;
     line-height: 16px;
-    margin: 6px 0;
 
     > * {
       font-family: Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
@@ -38,7 +39,7 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 
-const Editor = ({ title, value, onChange }) => {
+const Editor = ({ title, value, onChange, children, className }) => {
   const [code, setCode] = useState('');
   const [hasError, setHasError] = useState(false);
 
@@ -67,15 +68,17 @@ const Editor = ({ title, value, onChange }) => {
   );
 
   return (
-    <Wrapper hasError={hasError}>
+    <Wrapper hasError={hasError} className={className}>
       {title && <Title>{title}</Title>}
       <BaseEditor
         value={code}
         onValueChange={handleChangeCode}
         highlight={(code) => highlight(code, languages.json)}
         className="container__editor"
+        readOnly={!onChange}
       />
       <ErrorMessage>{hasError && 'Invalid JSON'}</ErrorMessage>
+      {children}
     </Wrapper>
   );
 };
