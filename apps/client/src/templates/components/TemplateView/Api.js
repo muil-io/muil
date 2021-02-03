@@ -58,10 +58,15 @@ const InsideInput = styled.input.attrs(() => ({ readOnly: true }))`
 `;
 
 const OpenButton = styled(Button)`
+  min-width: 170px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  margin: 10px 0;
+
   svg {
     width: 20px;
     height: 20px;
-    margin: 0 10px -3px 15px;
   }
 `;
 
