@@ -60,19 +60,23 @@ export class KpisService {
         skip: page * perPage,
         take: perPage,
       })
-    ).map((p) => p.projectId);
+    )
+      .filter(({ projectId }) => projectId !== 'default')
+      .map(({ projectId }) => projectId);
 
-    const data = (await this.prisma.projects.findMany()).map((p) => ({
-      ...p,
-      renderTemplate: projectsRenderTemplate.includes(p.id),
-    }));
+    const data = (await this.prisma.projects.findMany({ where: { NOT: [{ id: 'default' }] } })).map(
+      (p) => ({
+        ...p,
+        renderTemplate: projectsRenderTemplate.includes(p.id),
+      }),
+    );
 
-    const total = await this.prisma.projects.count();
+    const total = await this.prisma.projects.count({ where: { NOT: [{ id: 'default' }] } });
 
     return { data, total };
   }
 
-  async getKpis(from: { value: number; unit: dayjs.OpUnitType } = { value: 30, unit: 'month' }) {
+  async getKpis(from: { value: number; unit: dayjs.OpUnitType } = { value: 7, unit: 'day' }) {
     const pdfRenders = await this.prisma.logs.count({
       where: {
         AND: [
@@ -217,17 +221,25 @@ export class KpisService {
       },
     });
 
-    const totalProjectsCount = await this.prisma.projects.count();
+    const totalProjectsCount = await this.prisma.projects.count({
+      where: { NOT: { id: 'default' } },
+    });
     const newProjectsCount = await this.prisma.projects.count({
       where: {
-        createdAt: {
-          gte: new Date(dayjs().subtract(from.value, from.unit).format()),
-        },
+        AND: [
+          { NOT: { id: 'default' } },
+          {
+            createdAt: {
+              gte: new Date(dayjs().subtract(from.value, from.unit).format()),
+            },
+          },
+        ],
       },
     });
     const prevNewProjectsCount = await this.prisma.projects.count({
       where: {
         AND: [
+          { NOT: { id: 'default' } },
           {
             createdAt: {
               gte: new Date(

@@ -1,4 +1,5 @@
 import { Controller, UseGuards, Get, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import dayjs from 'dayjs';
 import { AuthGuard, MuilAdminOnly } from 'shared/guards';
 import { KpisService } from './kpis.service';
 
@@ -9,8 +10,8 @@ export class KpisController {
   @Get('/stats')
   @UseGuards(AuthGuard)
   @MuilAdminOnly()
-  async getKpis(@Query() { value, unit }) {
-    return this.kpisService.getKpis({ value, unit });
+  async getKpis(@Query() { value = 7, unit = 'day' }) {
+    return this.kpisService.getKpis({ value, unit: unit as dayjs.OpUnitType });
   }
 
   @Get('/projects')
