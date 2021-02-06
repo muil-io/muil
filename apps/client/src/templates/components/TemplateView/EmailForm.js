@@ -17,7 +17,6 @@ const FormContainer = styled.form`
   ${flexColumn};
   padding: 20px;
   margin: 0 -20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray2};
 
   ${Header3} {
     margin: 0 0 15px;
@@ -59,7 +58,7 @@ const EmailForm = ({ branchId, templateId, dynamicProps }) => {
           to,
           cc,
           bcc,
-          props: dynamicProps,
+          props: dynamicProps.props,
         });
       } catch (err) {
         return { [FORM_ERROR]: err?.message || 'Unexpected error occurred' };
@@ -73,8 +72,6 @@ const EmailForm = ({ branchId, templateId, dynamicProps }) => {
       onSubmit={handleSubmitForm}
       render={({ handleSubmit, submitting, submitError, submitSucceeded }) => (
         <FormContainer onSubmit={handleSubmit}>
-          <Header3>Send a test</Header3>
-
           <Field
             name="subject"
             validate={required}

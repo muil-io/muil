@@ -74,7 +74,7 @@ module.exports = (env) => ({
       ENV: process.env.ENV,
     }),
     new webpack.DefinePlugin({
-      'process.env.BASE_URL': JSON.stringify(isDevelopment ? 'http://localhost:3000' : ''),
+      'process.env.BASE_URL': JSON.stringify(isDevelopment ? 'https://app.muil.io' : ''),
       'process.env.ENV': JSON.stringify(process.env.ENV),
     }),
   ].filter(Boolean),

@@ -33,8 +33,8 @@ const TemplateView = ({
   onExit,
 }) => {
   const [selectedSize, setSelectedSize] = useState('full');
-  const [dynamicProps, setDynamicProps] = useState(defaultDynamicProps);
-  const debouncedProps = useDebounce(dynamicProps, 500);
+  const [dynamicProps, setDynamicProps] = useState({ props: defaultDynamicProps });
+  const debouncedProps = useDebounce(dynamicProps.props, 500);
 
   return (
     <Wrapper>

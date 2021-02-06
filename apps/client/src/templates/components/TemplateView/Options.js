@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Card, Tabs, Tab } from 'shared/components';
+import { Card } from 'shared/components';
 import media from 'style/media';
 import scrollbar from 'style/scrollbar';
-import DynamicProps from './DynamicProps';
 import Api from './Api';
 
 const Wrapper = styled(Card).attrs(() => ({ level: 1 }))`
@@ -17,43 +16,26 @@ const Wrapper = styled(Card).attrs(() => ({ level: 1 }))`
 `;
 
 const Container = styled.div`
-  padding: 16px;
-  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
-
+  box-sizing: border-box;
+  padding: 20px 16px;
   position: absolute;
-  top: 52px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  height: 100%;
   overflow: hidden auto;
   ${scrollbar};
 `;
 
-const Options = ({ dynamicProps, setDynamicProps, selectedBranch, templateId, templateName }) => {
-  const [activeTab, setActiveTab] = useState('props');
-
-  return (
-    <Wrapper>
-      <Tabs activeTab={activeTab} onTabChange={setActiveTab}>
-        <Tab name="props">Dynamic Props</Tab>
-        <Tab name="api">API</Tab>
-      </Tabs>
-
-      <Container isVisible={activeTab === 'props'}>
-        <DynamicProps dynamicProps={dynamicProps} onChange={setDynamicProps} />
-      </Container>
-
-      <Container isVisible={activeTab === 'api'}>
-        <Api
-          dynamicProps={dynamicProps}
-          onChange={setDynamicProps}
-          selectedBranch={selectedBranch}
-          templateId={templateId}
-          templateName={templateName}
-        />
-      </Container>
-    </Wrapper>
-  );
-};
+const Options = ({ dynamicProps, setDynamicProps, selectedBranch, templateId, templateName }) => (
+  <Wrapper>
+    <Container isVisible>
+      <Api
+        dynamicProps={dynamicProps}
+        onChange={setDynamicProps}
+        selectedBranch={selectedBranch}
+        templateId={templateId}
+        templateName={templateName}
+      />
+    </Container>
+  </Wrapper>
+);
 
 export default Options;
