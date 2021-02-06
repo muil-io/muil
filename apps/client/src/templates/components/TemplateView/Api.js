@@ -114,7 +114,7 @@ const Api = ({ dynamicProps, onChange, selectedBranch, templateId, templateName 
     if (process.env.ENV !== 'CLOUD') {
       return `${data?.hostname ? `https://${data.hostname}` : ''}${baseUrl}`;
     }
-    return `https://app.muil.io/${baseUrl}`;
+    return `https://app.muil.io${baseUrl}`;
   }, [baseUrl, data?.hostname]);
 
   const handleDownload = useCallback(async () => {
