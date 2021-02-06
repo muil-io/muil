@@ -112,7 +112,7 @@ const Api = ({ dynamicProps, onChange, selectedBranch, templateId, templateName 
 
   const urlWithHost = useMemo(() => {
     if (process.env.ENV !== 'CLOUD') {
-      return `https://${data?.hostname || ''}${baseUrl}`;
+      return `${data?.hostname ? `https://${data.hostname}` : ''}${baseUrl}`;
     }
     return `https://app.muil.io/${baseUrl}`;
   }, [baseUrl, data?.hostname]);
