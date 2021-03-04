@@ -10,5 +10,6 @@ import { TemplatesService } from './templates.service';
   imports: [TemplatesRendererModule, LogsModule, MailerModule, SmtpModule],
   controllers: [TemplatesController],
   providers: [TemplatesService],
+  exports: [TemplatesService],
 })
 export class TemplatesModule {}

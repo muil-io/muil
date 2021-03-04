@@ -2,7 +2,7 @@ import { PDFFormat } from 'puppeteer-core';
 
 export type File = {
   originalname: string;
-  buffer: Buffer;
+  buffer: Buffer | string;
 };
 
 export type RenderOptions = {

@@ -1,11 +1,19 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { v4 as uuid } from 'uuid';
 import { PrismaService } from 'shared/modules/prisma';
+import { TemplatesService } from 'templates';
 import { Project } from './types';
 
 @Injectable()
 export class ProjectsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private templatesService: TemplatesService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async get(projectId: string) {
     return this.prisma.projects.findFirst({ where: { id: projectId } });
@@ -20,6 +28,24 @@ export class ProjectsService {
       name: project.name ?? uuid(),
       plan: project.plan ?? 'free',
     };
+
+    const cloudMode = this.configService.get<string>('ENV') === 'CLOUD';
+    if (cloudMode) {
+      const sampleTemplatesDirectory = this.configService.get<string>('SAMPLE_TEMPLATES_DIRECTORY');
+      const filenames = await fs.promises.readdir(sampleTemplatesDirectory);
+
+      const filesPromises = filenames.map((originalname) =>
+        fs.promises.readFile(path.resolve(sampleTemplatesDirectory, originalname), 'utf8'),
+      );
+      const filesBufferArray = await Promise.all(filesPromises);
+
+      const files = filenames.map((originalname, index) => ({
+        originalname,
+        buffer: filesBufferArray[index] as string,
+      }));
+
+      this.templatesService.upload(data.name, 'master', files);
+    }
 
     return this.prisma.projects.create({ data });
   }
