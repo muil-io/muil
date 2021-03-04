@@ -24,10 +24,12 @@ export class ProjectsService {
   }
 
   async create(project: Project) {
-    const data = {
-      name: project.name ?? uuid(),
-      plan: project.plan ?? 'free',
-    };
+    const projectObject = await this.prisma.projects.create({
+      data: {
+        name: project.name ?? uuid(),
+        plan: project.plan ?? 'free',
+      },
+    });
 
     const cloudMode = this.configService.get<string>('ENV') === 'CLOUD';
     if (cloudMode) {
@@ -44,10 +46,10 @@ export class ProjectsService {
         buffer: filesBufferArray[index] as string,
       }));
 
-      this.templatesService.upload(data.name, 'master', files);
+      this.templatesService.upload(projectObject.id, 'master', files);
     }
 
-    return this.prisma.projects.create({ data });
+    return projectObject;
   }
 
   async updatePlan(projectId: string, id: string, plan: 'free' | 'pro') {
