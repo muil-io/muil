@@ -1,7 +1,5 @@
-![alt text](https://docs.muil.io/img/favicon.ico)
-
 # Muil
-
+<div style="text-align:center"><img src="https://docs.muil.io/img/favicon.ico" /></div>
 [Muil](https://www.muil.io) is a framework to build, maintain, and manage dynamic email, PDF, and image templates using React
 
 ## Why Muil
