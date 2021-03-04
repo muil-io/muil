@@ -1,5 +1,6 @@
 # Muil
-![alt text](https://docs.muil.io/img/favicon.ico)
+![](https://docs.muil.io/img/favicon.ico | width=100)
+
 [Muil](https://www.muil.io) is a framework to build, maintain, and manage dynamic email, PDF, and image templates using React
 
 ## Why Muil
