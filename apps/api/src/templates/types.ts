@@ -11,4 +11,5 @@ export type RenderOptions = {
   minifyHtml: boolean;
   pdfFormat?: PDFFormat;
   pdfOrientation?: 'portrait' | 'landscape';
+  writeLog?: boolean;
 };

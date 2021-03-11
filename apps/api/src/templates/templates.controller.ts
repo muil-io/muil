@@ -82,6 +82,7 @@ export class TemplatesController {
   @AllowApiKey()
   @UseGuards(AuthGuard, RenderLimitGuard)
   async renderTemplate(
+    @Req() { headers: { origin } },
     @Req() { user: { projectId } },
     @Res() res: Response,
     @Param('branch') branch: string,
@@ -95,6 +96,7 @@ export class TemplatesController {
       minifyHtml: minifyHtml !== 'false',
       pdfFormat,
       pdfOrientation,
+      writeLog: origin !== 'https://app.muil.io',
     });
 
     switch (type) {
@@ -119,6 +121,7 @@ export class TemplatesController {
   @AllowApiKey()
   @UseGuards(AuthGuard, RenderLimitGuard)
   async renderTemplateGet(
+    @Req() { headers: { origin } },
     @Req() { user: { projectId } },
     @Res() res: Response,
     @Param('branch') branch: string,
@@ -136,6 +139,7 @@ export class TemplatesController {
         minifyHtml: minifyHtml !== 'false',
         pdfFormat,
         pdfOrientation,
+        writeLog: origin !== 'https://app.muil.io',
       },
     );
 

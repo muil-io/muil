@@ -81,7 +81,14 @@ export class TemplatesService {
     branch: string = 'master',
     templateId: string,
     props = {},
-    { type = 'html', inlineCss, minifyHtml, pdfFormat, pdfOrientation }: RenderOptions,
+    {
+      type = 'html',
+      inlineCss,
+      minifyHtml,
+      pdfFormat,
+      pdfOrientation,
+      writeLog = true,
+    }: RenderOptions,
   ) {
     try {
       const templatePath = path.join(
@@ -112,24 +119,28 @@ export class TemplatesService {
         pdfOrientation,
       });
 
-      await this.logsService.write({
-        projectId,
-        branch,
-        templateId,
-        type,
-        status: 'success',
-      });
+      if (writeLog) {
+        await this.logsService.write({
+          projectId,
+          branch,
+          templateId,
+          type,
+          status: 'success',
+        });
+      }
 
       return html;
     } catch (err) {
-      await this.logsService.write({
-        projectId,
-        branch,
-        templateId,
-        type,
-        status: 'error',
-        errorMessage: err.message,
-      });
+      if (writeLog) {
+        await this.logsService.write({
+          projectId,
+          branch,
+          templateId,
+          type,
+          status: 'error',
+          errorMessage: err.message,
+        });
+      }
       throw new Error(`Template render failure: ${err.message}`);
     }
   }
