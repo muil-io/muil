@@ -33,6 +33,7 @@ module.exports = {
           __dirname,
           path.join(__dirname, '/apps/api'),
           path.join(__dirname, '/apps/client'),
+          path.join(__dirname, '/apps/devops'),
           path.join(__dirname, '/libs/cloud-storage'),
           path.join(__dirname, '/libs/templates-renderer'),
         ],

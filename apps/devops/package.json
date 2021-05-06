@@ -1,0 +1,14 @@
+{
+  "name": "@muil/devops",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "deploy": "pulumi up"
+  },
+  "dependencies": {
+    "@pulumi/aws": "^4.0.0",
+    "@pulumi/awsx": "^0.30.0",
+    "@pulumi/pulumi": "^3.0.0"
+  }
+}
