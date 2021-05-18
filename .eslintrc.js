@@ -6,8 +6,8 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: ['airbnb-typescript/base', 'prettier', 'prettier/@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
+  extends: ['airbnb-typescript/base', 'prettier', 'prettier'],
   root: true,
   env: {
     node: true,

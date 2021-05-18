@@ -1,4 +1,4 @@
-import { PDFFormat } from 'puppeteer-core';
+import { PaperFormat } from 'puppeteer-core';
 
 export type File = {
   originalname: string;
@@ -9,7 +9,7 @@ export type RenderOptions = {
   type?: 'html' | 'png' | 'pdf';
   inlineCss: boolean;
   minifyHtml: boolean;
-  pdfFormat?: PDFFormat;
+  pdfFormat?: PaperFormat;
   pdfOrientation?: 'portrait' | 'landscape';
   writeLog?: boolean;
 };

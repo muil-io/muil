@@ -16,7 +16,7 @@
     "@nestjs/common": "^7.5.3",
     "html-minifier": "^4.0.0",
     "juice": "^7.0.0",
-    "puppeteer-core": "^5.3.1",
+    "puppeteer-core": "^9.1.1",
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.2",
     "rxjs": "^6.5.4",

@@ -12,9 +12,9 @@ export class TemplatesRendererService {
     shadowSupport = false,
     inlineCss = true,
     minifyHtml = true,
-    pdfFormat = 'A4',
+    pdfFormat = 'a4',
     pdfOrientation = 'portrait',
-  }: RenderOptions): Promise<string | Buffer> {
+  }: RenderOptions): Promise<string | Buffer | void> {
     return renderTemplate({
       type,
       templatePath,
