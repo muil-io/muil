@@ -1,13 +1,20 @@
+import * as fs from 'fs';
+import http from 'http';
+import https from 'https';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import * as Sentry from '@sentry/node';
 import { json } from 'body-parser';
 import cookieParser from 'cookie-parser';
+import express from 'express';
 import { ExceptionsInterceptor } from 'shared/interceptor/ExceptionsInterceptor';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const server = express();
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+
   app.setGlobalPrefix('api');
 
   app.use(cookieParser());
@@ -27,7 +34,26 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ExceptionsInterceptor());
 
-  await app.listen(app.get('ConfigService').get('PORT') || 3000);
+  await app.init();
+
+  const port = app.get('ConfigService').get('PORT') || 3000;
+
+  if (
+    app.get('ConfigService').get('PRIVATE_KEY') &&
+    app.get('ConfigService').get('PUBLIC_CERTIFICATE')
+  ) {
+    https
+      .createServer(
+        {
+          key: fs.readFileSync(app.get('ConfigService').get('PRIVATE_KEY')),
+          cert: fs.readFileSync(app.get('ConfigService').get('PUBLIC_CERTIFICATE')),
+        },
+        server,
+      )
+      .listen(port);
+  } else {
+    http.createServer(server).listen(port);
+  }
 }
 
 bootstrap();
