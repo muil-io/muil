@@ -19,6 +19,7 @@
     "start:prod": "node dist/apps/api/src/main",
     "start:client": "yarn workspace @muil/client start",
     "start:admin": "yarn workspace @muil/admin start",
+    "deploy": "yarn workspace @muil/devops deploy",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,tsx,js,jsx}\"",
     "lerna:publish": "lerna publish",
     "test": "jest",
