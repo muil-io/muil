@@ -53,8 +53,14 @@ export class AuthController {
 
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: !!this.configService.get<string>('PRIVATE_KEY'),
-      sameSite: this.configService.get<string>('PRIVATE_KEY') ? 'none' : undefined,
+      secure:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        !!this.configService.get<string>('PRIVATE_KEY'),
+      sameSite:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        this.configService.get<string>('PRIVATE_KEY')
+          ? 'none'
+          : undefined,
       maxAge: 3600000,
     });
 
@@ -68,8 +74,14 @@ export class AuthController {
 
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: !!this.configService.get<string>('PRIVATE_KEY'),
-      sameSite: this.configService.get<string>('PRIVATE_KEY') ? 'none' : undefined,
+      secure:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        !!this.configService.get<string>('PRIVATE_KEY'),
+      sameSite:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        this.configService.get<string>('PRIVATE_KEY')
+          ? 'none'
+          : undefined,
       maxAge: 3600000,
     });
 
@@ -80,8 +92,14 @@ export class AuthController {
   async logout(@Res() res: Response) {
     res.cookie('jwt', '', {
       httpOnly: true,
-      secure: !!this.configService.get<string>('PRIVATE_KEY'),
-      sameSite: this.configService.get<string>('PRIVATE_KEY') ? 'none' : undefined,
+      secure:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        !!this.configService.get<string>('PRIVATE_KEY'),
+      sameSite:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        this.configService.get<string>('PRIVATE_KEY')
+          ? 'none'
+          : undefined,
       maxAge: 0,
     });
     return res.status(HttpStatus.OK).send();
@@ -115,8 +133,14 @@ export class AuthController {
 
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: !!this.configService.get<string>('PRIVATE_KEY'),
-      sameSite: this.configService.get<string>('PRIVATE_KEY') ? 'none' : undefined,
+      secure:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        !!this.configService.get<string>('PRIVATE_KEY'),
+      sameSite:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        this.configService.get<string>('PRIVATE_KEY')
+          ? 'none'
+          : undefined,
       maxAge: 3600000,
     });
 
@@ -139,8 +163,14 @@ export class AuthController {
 
     res.cookie('jwt', token, {
       httpOnly: true,
-      secure: !!this.configService.get<string>('PRIVATE_KEY'),
-      sameSite: this.configService.get<string>('PRIVATE_KEY') ? 'none' : undefined,
+      secure:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        !!this.configService.get<string>('PRIVATE_KEY'),
+      sameSite:
+        this.configService.get<string>('HTTP_SECURE') === 'true' ||
+        this.configService.get<string>('PRIVATE_KEY')
+          ? 'none'
+          : undefined,
       maxAge: 3600000,
     });
 
