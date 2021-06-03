@@ -44,6 +44,10 @@ const service = new awsx.ecs.FargateService('muil', {
         portMappings: [listener],
         environment: [
           {
+            name: 'HOST_NAME',
+            value: 'app.muil.io',
+          },
+          {
             name: 'PORT',
             value: '443',
           },
