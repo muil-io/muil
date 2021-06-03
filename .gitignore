@@ -40,4 +40,6 @@ lerna-debug.log*
 .npmrc
 
 .dockerignore
-Dockerfile
+Dockerfile*
+
+secrets

@@ -3,6 +3,7 @@
 </p>
 
 # Muil
+
 [Muil](https://www.muil.io) is a framework to build, maintain, and manage dynamic email, PDF, and image templates using React
 
 ## Why Muil
@@ -49,23 +50,24 @@ yarn start
 
 ## Available environment variables
 
-Environment Variables | Description |
---------------------- | ----------- |
-HTTP_SECURE           | Use secure authentication cookies |
-SECRET                | Authentication token secret |
-HOST_NAME             | Service hostname / FQDN              |
-DATABASE_URL          | SQLite Database file location |
-ADMIN_USERNAME        | Default admin username (will be created on service first run) |
-ADMIN_PASSWORD        | Default admin password |
-TEMPLATES_DIRECTORY   | The templates directory |
-SMTP_DEFAULT_FROM     | Email will be sent with this from email address | 
-SMTP_HOST             | SMTP Server host |
-SMTP_PORT             | SMTP Server port |
-SMTP_SECURE           | SMTP Server secure |
-SMTP_USER             | SMTP Server user |
-SMTP_PASS             | SMTP Server password |
-CORS_ORIGIN           | List of allowed cors origin hosts |
-PUPPETEER_EXECUTABLE_PATH | Path to chrome or firefox executable |
+| Environment Variables     | Description                                                   |
+| ------------------------- | ------------------------------------------------------------- |
+| PRIVATE_KEY               | HTTPS Private key                                             |
+| PUBLIC_CERTIFICATE        | HTTPS Public Certificate                                      |
+| SECRET                    | Authentication token secret                                   |
+| HOST_NAME                 | Service hostname / FQDN                                       |
+| DATABASE_URL              | SQLite Database file location                                 |
+| ADMIN_USERNAME            | Default admin username (will be created on service first run) |
+| ADMIN_PASSWORD            | Default admin password                                        |
+| TEMPLATES_DIRECTORY       | The templates directory                                       |
+| SMTP_DEFAULT_FROM         | Email will be sent with this from email address               |
+| SMTP_HOST                 | SMTP Server host                                              |
+| SMTP_PORT                 | SMTP Server port                                              |
+| SMTP_SECURE               | SMTP Server secure                                            |
+| SMTP_USER                 | SMTP Server user                                              |
+| SMTP_PASS                 | SMTP Server password                                          |
+| CORS_ORIGIN               | List of allowed cors origin hosts                             |
+| PUPPETEER_EXECUTABLE_PATH | Path to chrome or firefox executable                          |
 
 ## Contributing
 
