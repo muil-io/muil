@@ -51,7 +51,9 @@ export class TemplatesService {
       branch,
     );
 
-    await fs.promises.rmdir(templatesDirectory, { recursive: true });
+    if (fs.existsSync(templatesDirectory)) {
+      await fs.promises.rmdir(templatesDirectory, { recursive: true });
+    }
     await fs.promises.mkdir(templatesDirectory, { recursive: true });
 
     files

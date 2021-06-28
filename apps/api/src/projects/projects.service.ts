@@ -31,22 +31,28 @@ export class ProjectsService {
       },
     });
 
-    const cloudMode = this.configService.get<string>('ENV') === 'CLOUD';
-    if (cloudMode) {
-      const sampleTemplatesDirectory = this.configService.get<string>('SAMPLE_TEMPLATES_DIRECTORY');
-      const filenames = await fs.promises.readdir(sampleTemplatesDirectory);
+    try {
+      const cloudMode = this.configService.get<string>('ENV') === 'CLOUD';
+      if (cloudMode) {
+        const sampleTemplatesDirectory = this.configService.get<string>(
+          'SAMPLE_TEMPLATES_DIRECTORY',
+        );
+        const filenames = await fs.promises.readdir(sampleTemplatesDirectory);
 
-      const filesPromises = filenames.map((originalname) =>
-        fs.promises.readFile(path.resolve(sampleTemplatesDirectory, originalname), 'utf8'),
-      );
-      const filesBufferArray = await Promise.all(filesPromises);
+        const filesPromises = filenames.map((originalname) =>
+          fs.promises.readFile(path.resolve(sampleTemplatesDirectory, originalname), 'utf8'),
+        );
+        const filesBufferArray = await Promise.all(filesPromises);
 
-      const files = filenames.map((originalname, index) => ({
-        originalname,
-        buffer: filesBufferArray[index] as string,
-      }));
+        const files = filenames.map((originalname, index) => ({
+          originalname,
+          buffer: filesBufferArray[index] as string,
+        }));
 
-      this.templatesService.upload(projectObject.id, 'master', files);
+        await this.templatesService.upload(projectObject.id, 'master', files);
+      }
+    } catch {
+      // do nothing
     }
 
     return projectObject;
@@ -59,5 +65,9 @@ export class ProjectsService {
     });
 
     return this.get(projectId);
+  }
+
+  async delete(id: string) {
+    await this.prisma.projects.delete({ where: { id } });
   }
 }

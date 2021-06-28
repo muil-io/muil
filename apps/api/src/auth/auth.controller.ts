@@ -11,6 +11,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { ConflictError } from 'shared/exceptions';
 import { LocalAuthGuard, AuthGuard } from 'shared/guards';
 import { ProjectsService } from 'projects/projects.service';
 import { UsersService } from 'users';
@@ -39,6 +40,11 @@ export class AuthController {
     const cloudMode = this.configService.get<string>('ENV') === 'CLOUD';
     if (!cloudMode) {
       throw new ForbiddenException();
+    }
+
+    const userExists = await this.usersService.get(createUserDto.email);
+    if (userExists) {
+      throw new ConflictError(`User with email '${createUserDto.email}' already exists`);
     }
 
     let projectId = 'default';

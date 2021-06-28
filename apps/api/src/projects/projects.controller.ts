@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Post, Param, Body, Req } from '@nestjs/common';
+import { Controller, UseGuards, Get, Post, Delete, Param, Body, Req } from '@nestjs/common';
 import { AuthGuard, AllowApiKey, MuilAdminOnly } from 'shared/guards';
 import { UpdateProjectPlanDto } from './projects.dto';
 import { ProjectsService } from './projects.service';
@@ -23,5 +23,12 @@ export class ProjectsController {
     @Body() { plan }: UpdateProjectPlanDto,
   ) {
     return this.projectService.updatePlan(projectId, id, plan);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AuthGuard)
+  @MuilAdminOnly()
+  async delete(@Param() { id }) {
+    return this.projectService.delete(id);
   }
 }
