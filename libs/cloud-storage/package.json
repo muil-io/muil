@@ -1,6 +1,6 @@
 {
   "name": "@muil/cloud-storage",
-  "version": "1.3.10",
+  "version": "1.3.11",
   "license": "MIT",
   "main": "src/index.js",
   "files": [
