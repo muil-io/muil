@@ -20,7 +20,7 @@
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.2",
     "uuid": "^8.3.1",
-    "vm2": "^3.9.2"
+    "vm2": "3.9.2"
   },
   "peerDependencies": {
     "react": "^16.12.0",
