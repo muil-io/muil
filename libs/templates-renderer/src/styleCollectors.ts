@@ -8,7 +8,7 @@ export const styledComponentsStyleCollector = (ReactElement: ReactNode) => {
       ReactElement,
     },
     require: {
-      external: ['react', 'react-dom/server', 'styled-components'],
+      external: ['react', 'react-dom', 'styled-components'],
     },
   });
 

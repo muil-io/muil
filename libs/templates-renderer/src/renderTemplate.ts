@@ -16,7 +16,7 @@ const createReactElement = async (templatePath: string, props): Promise<ReactNod
       props,
     },
     require: {
-      external: ['react', 'react-dom/server'],
+      external: ['react', 'react-dom'],
     },
   });
 
@@ -47,7 +47,7 @@ const renderToStaticMarkup = (ReactElement: ReactNode): string => {
       ReactElement,
     },
     require: {
-      external: ['react-dom/server'],
+      external: ['react-dom'],
     },
   });
 

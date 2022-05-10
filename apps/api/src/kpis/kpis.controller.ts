@@ -11,7 +11,7 @@ export class KpisController {
   @UseGuards(AuthGuard)
   @MuilAdminOnly()
   async getKpis(@Query() { value = 7, unit = 'day' }) {
-    return this.kpisService.getKpis({ value, unit: unit as dayjs.OpUnitType });
+    return this.kpisService.getKpis({ value, unit: unit as dayjs.ManipulateType });
   }
 
   @Get('/projects')

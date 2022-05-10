@@ -81,7 +81,7 @@ export class KpisService {
     return { data, total };
   }
 
-  async getKpis(from: { value: number; unit: dayjs.OpUnitType } = { value: 7, unit: 'day' }) {
+  async getKpis(from: { value: number; unit: dayjs.ManipulateType } = { value: 7, unit: 'day' }) {
     const pdfRenders = await this.prisma.logs.count({
       where: {
         AND: [
