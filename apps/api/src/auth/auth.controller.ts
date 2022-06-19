@@ -156,7 +156,7 @@ export class AuthController {
   @Post('invite')
   @UseGuards(AuthGuard)
   async invite(@Req() { headers: { origin }, user }, @Body() inviteUserDto: InviteUserDto) {
-    this.authService.sendInviteUserEmail(user, origin, inviteUserDto.email);
+    await this.authService.sendInviteUserEmail(user, origin, inviteUserDto.email);
   }
 
   @Post('acceptInvite')
