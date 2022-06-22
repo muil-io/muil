@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import * as fs from 'fs';
+import he from 'he';
 import { minify } from 'html-minifier';
 import juice from 'juice';
 import { v4 as uuid } from 'uuid';
@@ -98,6 +99,10 @@ const renderTemplate = async ({
   if (type === 'html' && inlineCss) {
     html = juice(html);
   }
+
+  html = he.encode(html.toString(), {
+    allowUnsafeSymbols: true,
+  });
 
   if (minifyHtml) {
     html = minify(html, {
