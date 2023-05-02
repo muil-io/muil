@@ -76,15 +76,15 @@ export async function cloudinaryUpload(
   });
 
   if (typeof file === 'string') {
-    const { secure_url: secureUrl } = await cloudinary.uploader.upload(file, {
+    const { secure_url: secureUrl } = (await cloudinary.uploader.upload(file, {
       folder: options.folder,
       public_id: filename.split('.').slice(0, -1).join('.'),
-    });
+    })) as { secure_url: string };
 
     return secureUrl;
   }
 
-  const { secure_url: secureUrl } = await new Promise((res, rej) =>
+  const { secure_url: secureUrl } = (await new Promise((res, rej) =>
     streamifier
       .createReadStream(file)
       .pipe(
@@ -93,7 +93,7 @@ export async function cloudinaryUpload(
           (error, d) => (error ? rej(error) : res(d)),
         ),
       ),
-  );
+  )) as { secure_url: string };
 
   return secureUrl;
 }
