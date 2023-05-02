@@ -1,6 +1,6 @@
 {
   "name": "@muil/client",
-  "version": "1.0.0",
+  "version": "1.5.2",
   "private": true,
   "scripts": {
     "start": "webpack serve --mode development --env development",
