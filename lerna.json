@@ -1,6 +1,5 @@
 {
-  "packages": [
-    "libs/*"
-  ],
-  "version": "1.5.1"
+  "packages": ["libs/*"],
+  "version": "1.5.1",
+  "useWorkspaces": true
 }
