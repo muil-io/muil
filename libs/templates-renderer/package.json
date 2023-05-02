@@ -19,7 +19,6 @@
     "juice": "^7.0.0",
     "puppeteer-core": "^14.0.0",
     "reflect-metadata": "^0.1.13",
-    "request": "^2.88.2",
     "rxjs": "^6.5.4",
     "uuid": "^8.3.1",
     "vm2": "3.9.17"
