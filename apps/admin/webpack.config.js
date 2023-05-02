@@ -51,9 +51,12 @@ module.exports = (env) => ({
             options: {
               ref: true,
               svgoConfig: {
-                plugins: {
-                  removeViewBox: false,
-                },
+                plugins: [
+                  {
+                    name: 'removeViewBox',
+                    active: false,
+                  },
+                ],
               },
             },
           },
