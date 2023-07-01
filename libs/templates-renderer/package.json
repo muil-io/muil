@@ -21,7 +21,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.4",
     "uuid": "^8.3.1",
-    "vm2": "3.9.17"
+    "vm2": "3.9.19"
   },
   "peerDependencies": {
     "react": "^17.0.1",
