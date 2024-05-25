@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import puppeteer from 'puppeteer-core';
+import chrome from '@sparticuz/chromium';
+import * as puppeteer from 'puppeteer-core';
 
 const pageSize = {
   a0: { height: '118.9cm', width: '84.1cm' },
@@ -15,34 +15,31 @@ const pageSize = {
   ledger: { height: '43.18cm', width: '27.94cm' },
 };
 
-let executablePath = '/usr/bin/chromium-browser';
-let product: puppeteer.Product = 'chrome';
-if (process.platform === 'win32') {
-  if (fs.existsSync('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe')) {
-    executablePath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
-  } else if (fs.existsSync('C:\\Program Files\\Mozilla Firefox\\firefox.exe')) {
-    product = 'firefox';
-    executablePath = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe';
+const getBrowser = async () => {
+  const isProd = process.env.NODE_ENV === 'production';
+  let browser: puppeteer.Browser;
+  if (isProd) {
+    browser = await puppeteer.launch({
+      args: chrome.args,
+      defaultViewport: chrome.defaultViewport,
+      executablePath: await chrome.executablePath(),
+      ignoreHTTPSErrors: true,
+    });
+  } else {
+    browser = await puppeteer.launch({
+      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    });
   }
-} else if (process.platform === 'darwin') {
-  if (fs.existsSync('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')) {
-    executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-  } else if (fs.existsSync('/Applications/Firefox.app/Contents/MacOS/firefox')) {
-    product = 'firefox';
-    executablePath = '/Applications/Firefox.app/Contents/MacOS/firefox';
-  }
-}
+
+  return browser;
+};
 
 export const generatePdf = async (
   html: string,
   format: puppeteer.PaperFormat = 'a4',
   orientation: 'portrait' | 'landscape' = 'portrait',
 ) => {
-  const browser = await puppeteer.launch({
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || executablePath,
-    product,
-    args: product === 'chrome' ? ['--no-sandbox'] : undefined,
-  });
+  const browser = await getBrowser();
 
   try {
     const page = await browser.newPage();
@@ -62,11 +59,7 @@ export const generatePdf = async (
 };
 
 export const generatePng = async (html: string) => {
-  const browser = await puppeteer.launch({
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || executablePath,
-    product,
-    args: product === 'chrome' ? ['--no-sandbox'] : undefined,
-  });
+  const browser = await getBrowser();
 
   try {
     const page = await browser.newPage();

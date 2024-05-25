@@ -1,68 +1,26 @@
-import { ReactNode } from 'react';
+import { createElement } from 'react';
 import * as fs from 'fs';
 import he from 'he';
 import { minify } from 'html-minifier';
 import juice from 'juice';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { v4 as uuid } from 'uuid';
-import { NodeVM } from 'vm2';
 import emailTemplate from './emailTemplate';
 import { generatePdf, generatePng } from './puppeteer';
 import { styledComponentsStyleCollector } from './styleCollectors';
 import { RenderOptions } from './types';
 
-const createReactElement = async (templatePath: string, props): Promise<ReactNode> => {
-  const reactElementVm = new NodeVM({
-    timeout: 5000,
-    sandbox: {
-      props,
-    },
-    require: {
-      external: ['react', 'react-dom'],
-    },
-  });
-
+const createReactElement = async (templatePath: string, props) => {
   const tempFileName = `./.muil/temp/${uuid()}.js`;
   await fs.promises.mkdir('./.muil/temp', { recursive: true });
   await fs.promises.copyFile(templatePath, tempFileName);
 
-  const ReactElement = reactElementVm.run(
-    `
-        const {createElement} = require('react');
-
-        const ReactComponent = require('${tempFileName}');
-        const ReactElement = createElement(ReactComponent.default, props);
-        module.exports = ReactElement;
-      `,
-    'renderTemplate.js',
-  );
+  const ReactComponent = await import(tempFileName);
+  const ReactElement = createElement(ReactComponent.default, props);
 
   await fs.promises.unlink(tempFileName);
 
   return ReactElement;
-};
-
-const renderToStaticMarkup = (ReactElement: ReactNode): string => {
-  const contentVm = new NodeVM({
-    timeout: 5000,
-    sandbox: {
-      ReactElement,
-    },
-    require: {
-      external: ['react-dom'],
-    },
-  });
-
-  const content = contentVm.run(
-    `
-        const { renderToStaticMarkup } = require('react-dom/server');
-        
-        const content = renderToStaticMarkup(ReactElement);
-        module.exports = content;
-      `,
-    'renderTemplate.js',
-  );
-
-  return content;
 };
 
 const renderTemplate = async ({
