@@ -1,5 +1,6 @@
 import { createElement } from 'react';
 import * as fs from 'fs';
+import * as path from 'path';
 import he from 'he';
 import { minify } from 'html-minifier';
 import juice from 'juice';
@@ -15,7 +16,7 @@ const createReactElement = async (templatePath: string, props) => {
   await fs.promises.mkdir('./.muil/temp', { recursive: true });
   await fs.promises.copyFile(templatePath, tempFileName);
 
-  const ReactComponent = await import(tempFileName);
+  const ReactComponent = await import(path.join(process.cwd(), tempFileName));
   const ReactElement = createElement(ReactComponent.default, props);
 
   await fs.promises.unlink(tempFileName);
