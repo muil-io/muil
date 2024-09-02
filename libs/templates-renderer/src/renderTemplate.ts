@@ -7,7 +7,7 @@ import juice from 'juice';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { v4 as uuid } from 'uuid';
 import emailTemplate from './emailTemplate';
-import { generatePdf, generatePng } from './puppeteer';
+import { generatePdf, generatePng } from './playwrightEngine';
 import { styledComponentsStyleCollector } from './styleCollectors';
 import { RenderOptions } from './types';
 

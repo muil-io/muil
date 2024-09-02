@@ -1,7 +1,7 @@
-import chrome from '@sparticuz/chromium';
-import * as puppeteer from 'puppeteer-core';
+import { chromium, Page } from 'playwright';
+import { PageFormat } from './types';
 
-const pageSize = {
+const pageSize: Record<PageFormat, { height: string; width: string }> = {
   a0: { height: '118.9cm', width: '84.1cm' },
   a1: { height: '84.1cm', width: '59.4cm' },
   a2: { height: '59.4cm', width: '42cm' },
@@ -15,62 +15,43 @@ const pageSize = {
   ledger: { height: '43.18cm', width: '27.94cm' },
 };
 
-const getBrowser = async () => {
-  const isProd = process.env.NODE_ENV === 'production';
-  let browser: puppeteer.Browser;
-  if (isProd) {
-    browser = await puppeteer.launch({
-      args: chrome.args,
-      defaultViewport: chrome.defaultViewport,
-      executablePath: await chrome.executablePath(),
-      ignoreHTTPSErrors: true,
-    });
-  } else {
-    browser = await puppeteer.launch({
-      executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    });
-  }
-
-  return browser;
-};
-
 export const generatePdf = async (
   html: string,
-  format: puppeteer.PaperFormat = 'a4',
+  format: PageFormat = 'a4',
   orientation: 'portrait' | 'landscape' = 'portrait',
 ) => {
-  const browser = await getBrowser();
+  const browser = await chromium.launch();
+  const page: Page = await browser.newPage();
 
+  let pdf: Buffer;
   try {
-    const page = await browser.newPage();
     await page.setContent(html);
 
-    const pdf = await page.pdf({
+    pdf = await page.pdf({
       format,
       landscape: orientation === 'landscape',
       height: pageSize[format].height || undefined,
       width: pageSize[format].width || undefined,
     });
-
-    return pdf;
   } finally {
     await browser.close();
   }
+
+  return pdf;
 };
 
 export const generatePng = async (html: string) => {
-  const browser = await getBrowser();
+  const browser = await chromium.launch();
+  const page: Page = await browser.newPage();
 
+  let screenshot: Buffer;
   try {
-    const page = await browser.newPage();
     await page.setContent(html);
 
-    const screenshot = await page.screenshot({ fullPage: true });
-
-    await browser.close();
-
-    return screenshot;
+    screenshot = await page.screenshot({ fullPage: true });
   } finally {
     await browser.close();
   }
+
+  return screenshot;
 };

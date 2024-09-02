@@ -14,11 +14,10 @@
   },
   "dependencies": {
     "@nestjs/common": "^7.5.3",
-    "@sparticuz/chromium": "^123.0.1",
     "he": "^1.2.0",
     "html-minifier": "^4.0.0",
     "juice": "^7.0.0",
-    "puppeteer-core": "^22.6.1",
+    "playwright": "^1.46.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.4",
     "uuid": "^8.3.1"
