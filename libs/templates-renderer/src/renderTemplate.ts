@@ -35,7 +35,7 @@ const renderTemplate = async ({
   minifyHtml = true,
   pdfFormat = 'a4',
   pdfOrientation = 'portrait',
-}: RenderOptions): Promise<string | Uint8Array | void> => {
+}: RenderOptions): Promise<string | Buffer | void> => {
   if (!templatePath) return '';
 
   const ReactElement = await createReactElement(templatePath, props);

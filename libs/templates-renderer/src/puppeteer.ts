@@ -57,7 +57,7 @@ export const generatePdf = async (
   await page.close();
   await browser.close();
 
-  return pdf;
+  return Buffer.from(pdf);
 };
 
 export const generatePng = async (html: string) => {
@@ -75,5 +75,5 @@ export const generatePng = async (html: string) => {
   await page.close();
   await browser.close();
 
-  return screenshot;
+  return Buffer.from(screenshot);
 };
