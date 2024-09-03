@@ -1,6 +1,6 @@
 {
   "name": "@muil/admin",
-  "version": "2.0.0",
+  "version": "2.2.0",
   "private": true,
   "scripts": {
     "start": "cross-env BASE_URL=https://app.muil.io webpack serve --mode development --env development",
