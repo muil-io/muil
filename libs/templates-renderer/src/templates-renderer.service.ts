@@ -14,7 +14,7 @@ export class TemplatesRendererService {
     minifyHtml = true,
     pdfFormat = 'a4',
     pdfOrientation = 'portrait',
-  }: RenderOptions): Promise<string | Buffer | void> {
+  }: RenderOptions): Promise<string | Uint8Array | void> {
     return renderTemplate({
       type,
       templatePath,

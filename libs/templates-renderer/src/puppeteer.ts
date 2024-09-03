@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import puppeteer, { Product, PaperFormat } from 'puppeteer-core';
+import puppeteer, { SupportedBrowser, PaperFormat } from 'puppeteer-core';
 
 const pageSize = {
   a0: { height: '118.9cm', width: '84.1cm' },
@@ -16,19 +16,19 @@ const pageSize = {
 };
 
 let executablePath = '/usr/bin/chromium-browser';
-let product: Product = 'chrome';
+let browserType: SupportedBrowser = 'chrome' as SupportedBrowser;
 if (process.platform === 'win32') {
   if (fs.existsSync('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe')) {
     executablePath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
   } else if (fs.existsSync('C:\\Program Files\\Mozilla Firefox\\firefox.exe')) {
-    product = 'firefox';
+    browserType = 'firefox' as SupportedBrowser;
     executablePath = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe';
   }
 } else if (process.platform === 'darwin') {
   if (fs.existsSync('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')) {
     executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
   } else if (fs.existsSync('/Applications/Firefox.app/Contents/MacOS/firefox')) {
-    product = 'firefox';
+    browserType = 'firefox' as SupportedBrowser;
     executablePath = '/Applications/Firefox.app/Contents/MacOS/firefox';
   }
 }
@@ -40,26 +40,22 @@ export const generatePdf = async (
 ) => {
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || executablePath,
-    product,
-    args: product === 'chrome' ? ['--no-sandbox'] : undefined,
+    browser: browserType,
+    args: browserType === 'chrome' ? ['--no-sandbox', '--disable-setuid-sandbox'] : undefined,
+  });
+  const page = await browser.newPage();
+
+  await page.setContent(html);
+
+  const pdf = await page.pdf({
+    format,
+    landscape: orientation === 'landscape',
+    height: pageSize[format].height || undefined,
+    width: pageSize[format].width || undefined,
   });
 
-  let pdf: Buffer;
-  try {
-    const page = await browser.newPage();
-    await page.setContent(html);
-
-    pdf = await page.pdf({
-      format,
-      landscape: orientation === 'landscape',
-      height: pageSize[format].height || undefined,
-      width: pageSize[format].width || undefined,
-    });
-
-    await browser.close();
-  } finally {
-    await browser.close();
-  }
+  await page.close();
+  await browser.close();
 
   return pdf;
 };
@@ -67,21 +63,17 @@ export const generatePdf = async (
 export const generatePng = async (html: string) => {
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || executablePath,
-    product,
-    args: product === 'chrome' ? ['--no-sandbox'] : undefined,
+    browser: browserType,
+    args: browserType === 'chrome' ? ['--no-sandbox', '--disable-setuid-sandbox'] : undefined,
   });
+  const page = await browser.newPage();
 
-  let screenshot: Buffer;
-  try {
-    const page = await browser.newPage();
-    await page.setContent(html);
+  await page.setContent(html);
 
-    screenshot = await page.screenshot({ fullPage: true });
+  const screenshot = await page.screenshot({ fullPage: true });
 
-    await browser.close();
-  } finally {
-    await browser.close();
-  }
+  await page.close();
+  await browser.close();
 
   return screenshot;
 };
