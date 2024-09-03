@@ -44,21 +44,24 @@ export const generatePdf = async (
     args: product === 'chrome' ? ['--no-sandbox'] : undefined,
   });
 
+  let pdf: Buffer;
   try {
     const page = await browser.newPage();
     await page.setContent(html);
 
-    const pdf = await page.pdf({
+    pdf = await page.pdf({
       format,
       landscape: orientation === 'landscape',
       height: pageSize[format].height || undefined,
       width: pageSize[format].width || undefined,
     });
 
-    return pdf;
+    await browser.close();
   } finally {
     await browser.close();
   }
+
+  return pdf;
 };
 
 export const generatePng = async (html: string) => {
@@ -68,16 +71,17 @@ export const generatePng = async (html: string) => {
     args: product === 'chrome' ? ['--no-sandbox'] : undefined,
   });
 
+  let screenshot: Buffer;
   try {
     const page = await browser.newPage();
     await page.setContent(html);
 
-    const screenshot = await page.screenshot({ fullPage: true });
+    screenshot = await page.screenshot({ fullPage: true });
 
     await browser.close();
-
-    return screenshot;
   } finally {
     await browser.close();
   }
+
+  return screenshot;
 };
