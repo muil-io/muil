@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import puppeteer from 'puppeteer-core';
+import puppeteer, { Product, PaperFormat } from 'puppeteer-core';
 
 const pageSize = {
   a0: { height: '118.9cm', width: '84.1cm' },
@@ -16,7 +16,7 @@ const pageSize = {
 };
 
 let executablePath = '/usr/bin/chromium-browser';
-let product: puppeteer.Product = 'chrome';
+let product: Product = 'chrome';
 if (process.platform === 'win32') {
   if (fs.existsSync('C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe')) {
     executablePath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
@@ -35,7 +35,7 @@ if (process.platform === 'win32') {
 
 export const generatePdf = async (
   html: string,
-  format: puppeteer.PaperFormat = 'a4',
+  format: PaperFormat = 'a4',
   orientation: 'portrait' | 'landscape' = 'portrait',
 ) => {
   const browser = await puppeteer.launch({
