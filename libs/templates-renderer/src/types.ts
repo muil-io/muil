@@ -1,15 +1,4 @@
-export type PageFormat =
-  | 'a0'
-  | 'a1'
-  | 'a2'
-  | 'a3'
-  | 'a4'
-  | 'a5'
-  | 'a6'
-  | 'tabloid'
-  | 'letter'
-  | 'legal'
-  | 'ledger';
+import { PaperFormat } from 'puppeteer-core';
 
 export type RenderOptions = {
   type?: 'html' | 'png' | 'pdf';
@@ -20,6 +9,6 @@ export type RenderOptions = {
   shadowSupport?: boolean;
   inlineCss?: boolean;
   minifyHtml?: boolean;
-  pdfFormat?: PageFormat;
+  pdfFormat?: PaperFormat;
   pdfOrientation?: 'portrait' | 'landscape';
 };
