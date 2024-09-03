@@ -1,10 +1,10 @@
 {
   "name": "@muil/api",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "private": true,
   "dependencies": {
     "@muil/cloud-storage": "^2.2.0",
-    "@muil/templates-renderer": "^2.2.1",
+    "@muil/templates-renderer": "^2.2.2",
     "@nestjs/config": "^0.6.1",
     "@nestjs/jwt": "^7.1.0",
     "@nestjs/serve-static": "^2.1.3",
