@@ -13,7 +13,7 @@
     "postpublish": "rimraf dist && rimraf src && mv temp_src src"
   },
   "dependencies": {
-    "@nestjs/common": "^7.5.3",
+    "@nestjs/common": "^11.1.1",
     "he": "^1.2.0",
     "html-minifier": "^4.0.0",
     "juice": "^7.0.0",
