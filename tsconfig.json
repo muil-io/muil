@@ -14,6 +14,7 @@
     "incremental": true,
     "types": ["react", "jest"],
     "jsx": "react",
+    "skipLibCheck": true,
     "paths": {
       "@muil/templates-renderer": ["libs/templates-renderer/src"],
       "@muil/templates-renderer/*": ["libs/templates-renderer/src/*"],
