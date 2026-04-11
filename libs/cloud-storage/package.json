@@ -1,6 +1,6 @@
 {
   "name": "@muil/cloud-storage",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "license": "MIT",
   "main": "src/index.js",
   "files": [
@@ -22,5 +22,5 @@
     "streamifier": "^0.1.1",
     "uuid": "^8.3.1"
   },
-  "gitHead": "e929b01dad7dab9d40a60933244c923f0916a4a2"
+  "gitHead": "419bfb541fcc022c7526a60d90cd7bd0092aa732"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@muil/templates-renderer",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "license": "MIT",
   "main": "src/index.js",
   "files": [
@@ -32,5 +32,5 @@
     "react-dom": "^18.3.1",
     "styled-components": "^6.1.11"
   },
-  "gitHead": "ea759254df1b2862d22c5ad97715bb2edfbbd736"
+  "gitHead": "419bfb541fcc022c7526a60d90cd7bd0092aa732"
 }
