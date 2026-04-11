@@ -37,9 +37,9 @@
     "@nestjs/platform-express": "^7.0.0",
     "class-transformer": "0.4.0",
     "class-validator": "^0.14.0",
-    "reflect-metadata": "^0.1.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "styled-components": "^6.1.11"
