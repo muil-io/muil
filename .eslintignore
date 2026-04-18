@@ -2,3 +2,5 @@ dist
 node_modules
 sample-templates
 .eslintrc.js
+libs/templates-renderer/test/fixtures
+libs/templates-renderer/test/output

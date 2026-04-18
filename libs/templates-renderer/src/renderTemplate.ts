@@ -16,8 +16,9 @@ const createReactElement = async (templatePath: string, props) => {
   await fs.promises.mkdir('./.muil/temp', { recursive: true });
   await fs.promises.copyFile(templatePath, tempFileName);
 
-  const ReactComponent = await import(path.join(process.cwd(), tempFileName));
-  const ReactElement = createElement(ReactComponent.default, props);
+  const mod = await import(path.join(process.cwd(), tempFileName));
+  const Component = typeof mod.default === 'function' ? mod.default : mod.default?.default;
+  const ReactElement = createElement(Component, props);
 
   await fs.promises.unlink(tempFileName);
 

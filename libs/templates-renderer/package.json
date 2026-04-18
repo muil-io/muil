@@ -9,6 +9,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepublish": "npm run build && mv src temp_src && cp -r ../../dist/libs/templates-renderer/dist src",
     "postpublish": "rimraf dist && rimraf src && mv temp_src src"
   },
@@ -22,11 +24,12 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "@types/he": "^1.1.2"
+    "@types/he": "^1.1.2",
+    "vitest": "^4.1.4"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "styled-components": "^6.1.11"
   },
   "gitHead": "419bfb541fcc022c7526a60d90cd7bd0092aa732"
