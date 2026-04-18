@@ -44,3 +44,5 @@ libs/*/test/output
 Dockerfile*
 
 secrets
+
+prisma/dev.db

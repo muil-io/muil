@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import * as fs from 'fs';
-import AWS from 'aws-sdk';
+import { S3Client } from '@aws-sdk/client-s3';
+import { Upload } from '@aws-sdk/lib-storage';
 import { v2 as cloudinary } from 'cloudinary';
 import streamifier from 'streamifier';
 import { v4 as uuid } from 'uuid';
@@ -42,21 +43,24 @@ export async function s3Upload(
 
   const { accessKeyId, secretAccessKey, bucketName } = options;
 
-  const s3 = new AWS.S3({
-    accessKeyId,
-    secretAccessKey,
+  const s3 = new S3Client({
+    region: options.region || process.env.AWS_REGION,
+    ...(accessKeyId && secretAccessKey ? { credentials: { accessKeyId, secretAccessKey } } : {}),
   });
 
   const Body = typeof file === 'string' ? await fs.promises.readFile(file) : file;
-  const { Location: url } = await s3
-    .upload({
+  const uploader = new Upload({
+    client: s3,
+    params: {
       Bucket: bucketName,
       Body,
       Key: options.folder ? `${options.folder}/${filename}` : filename,
-    })
-    .promise();
+    },
+  });
 
-  return url;
+  const result = await uploader.done();
+  if (!result.Location) throw new Error('S3 upload did not return a Location');
+  return result.Location;
 }
 
 export async function cloudinaryUpload(

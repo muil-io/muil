@@ -2,6 +2,7 @@ export type AWSOptions = {
   bucketName: string;
   accessKeyId?: string;
   secretAccessKey?: string;
+  region?: string;
   folder?: string;
 };
 

@@ -13,8 +13,9 @@
     "postpublish": "rimraf dist && rimraf src && mv temp_src src"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1032.0",
+    "@aws-sdk/lib-storage": "^3.1032.0",
     "@nestjs/common": "^11.0.0",
-    "aws-sdk": "^2.781.0",
     "cloudinary": "^2.7.0",
     "file-type": "^21.3.1",
     "reflect-metadata": "^0.2.2",

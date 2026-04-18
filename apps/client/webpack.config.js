@@ -3,7 +3,10 @@ const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const BASE_URL = process.env.BASE_URL ?? (isDevelopment ? 'https://app.muil.io' : '');
 
 const paths = {
   src: path.resolve(__dirname, 'src'),
@@ -53,8 +56,12 @@ module.exports = (env) => ({
               svgoConfig: {
                 plugins: [
                   {
-                    name: 'removeViewBox',
-                    active: false,
+                    name: 'preset-default',
+                    params: {
+                      overrides: {
+                        removeViewBox: false,
+                      },
+                    },
                   },
                 ],
               },
@@ -77,7 +84,7 @@ module.exports = (env) => ({
       ENV: process.env.ENV,
     }),
     new webpack.DefinePlugin({
-      'process.env.BASE_URL': JSON.stringify(isDevelopment ? 'https://app.muil.io' : ''),
+      'process.env.BASE_URL': JSON.stringify(BASE_URL),
       'process.env.ENV': JSON.stringify(process.env.ENV),
     }),
   ].filter(Boolean),
