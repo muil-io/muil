@@ -13,14 +13,13 @@
     "postpublish": "rimraf dist && rimraf src && mv temp_src src"
   },
   "dependencies": {
-    "@nestjs/common": "^7.5.3",
+    "@nestjs/common": "^11.0.0",
     "aws-sdk": "^2.781.0",
-    "body-parser": "^1.19.0",
-    "cloudinary": "^1.23.0",
-    "file-type": "^16.0.0",
-    "reflect-metadata": "^0.1.13",
+    "cloudinary": "^2.7.0",
+    "file-type": "^21.3.1",
+    "reflect-metadata": "^0.2.2",
     "streamifier": "^0.1.1",
-    "uuid": "^8.3.1"
+    "uuid": "^13.0.0"
   },
   "gitHead": "419bfb541fcc022c7526a60d90cd7bd0092aa732"
 }

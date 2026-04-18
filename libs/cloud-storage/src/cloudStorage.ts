@@ -1,10 +1,23 @@
+/// <reference types="node" />
 import * as fs from 'fs';
 import AWS from 'aws-sdk';
 import { v2 as cloudinary } from 'cloudinary';
-import FileType from 'file-type';
 import streamifier from 'streamifier';
 import { v4 as uuid } from 'uuid';
 import { AWSOptions, CloudinaryOptions, UploadOptions } from './types';
+
+// eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
+const esmImport = new Function('m', 'return import(m)') as <T>(m: string) => Promise<T>;
+
+async function detectExt(file: Buffer | string): Promise<string> {
+  const { fileTypeFromFile, fileTypeFromBuffer } = await esmImport<typeof import('file-type')>(
+    'file-type',
+  );
+  const result =
+    typeof file === 'string' ? await fileTypeFromFile(file) : await fileTypeFromBuffer(file);
+  if (!result) throw new Error('Unable to detect file type');
+  return result.ext;
+}
 
 export async function s3Upload(
   filename: string,
@@ -22,8 +35,7 @@ export async function s3Upload(
   options: AWSOptions,
 ): Promise<string> {
   if (!filename) {
-    const { ext } =
-      typeof file === 'string' ? await FileType.fromFile(file) : await FileType.fromBuffer(file);
+    const ext = await detectExt(file);
     // eslint-disable-next-line no-param-reassign
     filename = `${uuid()}.${ext}`;
   }
@@ -63,8 +75,7 @@ export async function cloudinaryUpload(
   options: CloudinaryOptions,
 ): Promise<string> {
   if (!filename) {
-    const { ext } =
-      typeof file === 'string' ? await FileType.fromFile(file) : await FileType.fromBuffer(file);
+    const ext = await detectExt(file);
     // eslint-disable-next-line no-param-reassign
     filename = `${uuid()}.${ext}`;
   }
