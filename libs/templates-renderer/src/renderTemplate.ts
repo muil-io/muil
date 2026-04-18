@@ -2,7 +2,7 @@ import { createElement } from 'react';
 import * as fs from 'fs';
 import * as path from 'path';
 import he from 'he';
-import { minify } from 'html-minifier';
+import { minify } from 'html-minifier-terser';
 import juice from 'juice';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { v4 as uuid } from 'uuid';
@@ -64,7 +64,7 @@ const renderTemplate = async ({
   });
 
   if (minifyHtml) {
-    html = minify(html, {
+    html = await minify(html, {
       preventAttributesEscaping: true,
       minifyCSS: true,
       minifyURLs: true,
