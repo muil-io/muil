@@ -52,7 +52,7 @@ export class TemplatesService {
     );
 
     if (fs.existsSync(templatesDirectory)) {
-      await fs.promises.rmdir(templatesDirectory, { recursive: true });
+      await fs.promises.rm(templatesDirectory, { recursive: true, force: true });
     }
     await fs.promises.mkdir(templatesDirectory, { recursive: true });
 

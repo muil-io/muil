@@ -45,4 +45,6 @@ Dockerfile*
 
 secrets
 
+templates
+
 prisma/dev.db
