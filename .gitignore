@@ -41,7 +41,6 @@ libs/*/test/output
 .npmrc
 
 .dockerignore
-Dockerfile*
 
 secrets
 

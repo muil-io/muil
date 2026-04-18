@@ -44,6 +44,9 @@
     "rxjs": "^6.5.4",
     "styled-components": "^6.1.11"
   },
+  "resolutions": {
+    "@parcel/watcher": "^2.5.0"
+  },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
