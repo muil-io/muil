@@ -35,12 +35,11 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           PACKAGE: ${{ github.event.repository.name }}
         run: |
-          set -euo pipefail
-          highest=$(gh api --paginate \
+          set -eu
+          tags=$(gh api --paginate \
             "/orgs/${OWNER}/packages/container/${PACKAGE}/versions" \
-            --jq '.[].metadata.container.tags[]' 2>/dev/null \
-            | { grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' || true; } \
-            | sort -V | tail -n1)
+            --jq '.[].metadata.container.tags[]' 2>/dev/null || true)
+          highest=$(printf '%s\n' "$tags" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1 || true)
           if [ -z "$highest" ]; then
             next=1.0.0
           else
