@@ -20,7 +20,7 @@
     "file-type": "^21.3.1",
     "reflect-metadata": "^0.2.2",
     "streamifier": "^0.1.1",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "gitHead": "419bfb541fcc022c7526a60d90cd7bd0092aa732"
 }
