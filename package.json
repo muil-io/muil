@@ -45,7 +45,8 @@
     "styled-components": "^6.1.11"
   },
   "resolutions": {
-    "@parcel/watcher": "^2.5.0"
+    "@parcel/watcher": "^2.5.0",
+    "fast-xml-parser": "^5.7.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
