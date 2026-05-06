@@ -151,12 +151,7 @@ const SideBar = ({ isOpen, setIsOpen }) => {
         </Link>
 
         <ExternalLinks>
-          <Link
-            href="https://docs.muil.io/"
-            as={A}
-            target="_blank"
-            onClick={() => setIsOpen(false)}
-          >
+          <Link href="" as={A} target="_blank" onClick={() => setIsOpen(false)}>
             <DocsIcon />
             <span>Documentation</span>
           </Link>

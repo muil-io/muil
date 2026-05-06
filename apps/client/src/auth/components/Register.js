@@ -125,7 +125,7 @@ const Register = () => {
 
             <SmallTitle>
               By creating an account, you agree to the{' '}
-              <a href="https://www.muil.io/service" target="_blank" rel="noopener noreferrer">
+              <a href="" target="_blank" rel="noopener noreferrer">
                 Terms of Service
               </a>
               .

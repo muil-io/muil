@@ -63,7 +63,7 @@
             ],
           }),
           (0, o.jsx)('a', {
-            href: 'https://www.muil.io',
+            href: 'https://www.google.com',
             target: '_blank',
             rel: 'noopener noreferrer',
             className: 'get-started___S7ERt',

@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 const templatesDirectory = '/app/templates';
 const dbDirectory = '/app/db';
-export const adminUserName = 'admin@muil.io';
+export const adminUserName = '';
 export const adminPassword = uuid().replace(/-/g, '');
 
 // Create network listener on port 443
@@ -45,7 +45,7 @@ const service = new awsx.ecs.FargateService('muil', {
         environment: [
           {
             name: 'HOST_NAME',
-            value: 'app.muil.io',
+            value: '',
           },
           {
             name: 'PORT',

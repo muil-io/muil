@@ -105,11 +105,7 @@ const Activities = () => {
         noDataSubTitle={
           <>
             Visit our{' '}
-            <a
-              href="https://docs.muil.io/docs/api/authorization/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="" target="_blank" rel="noopener noreferrer">
               documentation
             </a>{' '}
             to see how to generate template

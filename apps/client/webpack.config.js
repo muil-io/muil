@@ -6,7 +6,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
-const BASE_URL = process.env.BASE_URL ?? (isDevelopment ? 'https://app.muil.io' : '');
+const BASE_URL = process.env.BASE_URL;
 
 const paths = {
   src: path.resolve(__dirname, 'src'),

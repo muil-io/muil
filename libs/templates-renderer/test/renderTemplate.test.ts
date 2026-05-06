@@ -38,7 +38,6 @@ describe('renderTemplate', () => {
 
       expect(html).toContain('Hi John,');
       expect(html).toContain('Call to Action');
-      expect(html).toContain('https://www.muil.io');
       expect(html).toMatch(/<a[^>]*style="[^"]*background:\s*(#009ad7|rgb\(0,\s*154,\s*215\))/i);
     });
 

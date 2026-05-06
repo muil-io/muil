@@ -67,7 +67,7 @@
       });
     };
   (l.displayName = 'Simple Template'),
-    (l.dynamicProps = { name: 'John', callToActionUrl: 'https://www.muil.io' });
+    (l.dynamicProps = { name: 'John', callToActionUrl: 'https://www.google.com' });
   const n = l;
   module.exports = o;
 })();
